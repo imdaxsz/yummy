@@ -14,6 +14,10 @@ module.exports = {
     hot: true,
     port: 9000,
     open: true,
+    historyApiFallback: true,
+    static: {
+      directory: path.join(__dirname, 'assets'),
+    },
   },
   devtool: IS_PRODUCTION ? 'source-map' : 'eval-cheap-module-source-map',
   module: {
@@ -31,7 +35,7 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
     ],
   },
@@ -42,9 +46,10 @@ module.exports = {
       '@assets': path.resolve(__dirname, 'src/assets'),
       '@components': path.resolve(__dirname, 'src/components'),
       '@pages': path.resolve(__dirname, 'src/pages'),
+      '@stores': path.resolve(__dirname, 'src/stores'),
       '@styles': path.resolve(__dirname, 'src/styles'),
       '@utils': path.resolve(__dirname, 'src/utils'),
     },
   },
-  plugins: [new HtmlWebpackPlugin({ template: './src/index.html' })],
+  plugins: [new HtmlWebpackPlugin({ template: './index.html' })],
 };
