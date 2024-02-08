@@ -1,7 +1,7 @@
 {
   "name": "yummy",
   "version": "1.0.0",
-  "description": "이것저것 스터디용 프로젝트 !",
+  "description": "맛집 정보 공유 웹앱",
   "main": "index.js",
   "scripts": {
     "prod": "webpack serve --mode=production",
@@ -32,5 +32,9 @@
     "webpack": "^5.90.1",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.23.9",
+    "@babel/runtime-corejs3": "^7.23.9"
   }
 }
