@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.23.9",
-    "@babel/runtime-corejs3": "^7.23.9"
+    "@babel/runtime-corejs3": "^7.23.9",
+    "@phosphor-icons/web": "^2.0.3"
   }
 }
