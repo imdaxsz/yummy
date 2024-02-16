@@ -28,5 +28,10 @@ module.exports = {
       },
     },
   },
-  rules: {},
+  rules: {
+    'no-new': 0,
+    'class-methods-use-this': 0,
+    'no-alert': 0,
+    'no-console': 0,
+  },
 };
