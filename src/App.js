@@ -1,9 +1,17 @@
-function App() {
-  const element = document.createElement('div');
+import { router } from '@/Router';
+import Component from './components';
+import Layout from '@components/Layout';
 
-  element.innerHTML = 'Hello World!';
+export default class App extends Component {
+  template() {
+    return `
+        <div id='wrapper' class='max-w-screen-sm h-full mx-auto'></div>
+    `;
+  }
 
-  return element;
+  didMount() {
+    const $wrapper = document.querySelector('#wrapper');
+    new Layout($wrapper);
+    router();
+  }
 }
-
-document.body.appendChild(App());
