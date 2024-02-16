@@ -1,6 +1,8 @@
 export default class Component {
   $target;
+
   $props;
+
   $state;
 
   constructor($target, $props) {
@@ -38,6 +40,7 @@ export default class Component {
   }
 
   didMount() {}
+
   didUpdate() {}
 
   setState(newState) {
@@ -57,7 +60,7 @@ export default class Component {
       children.includes(target) || target.closest(selector);
     this.$target.addEventListener(eventType, (event) => {
       if (!isTarget(event.target)) return false;
-      callback(event);
+      return callback(event);
     });
   }
 }

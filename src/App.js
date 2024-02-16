@@ -1,6 +1,6 @@
 import { router } from '@/Router';
-import Component from './components';
 import Layout from '@components/Layout';
+import Component from './components';
 
 export default class App extends Component {
   template() {
