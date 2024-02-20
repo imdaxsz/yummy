@@ -1,21 +1,21 @@
 export default class Component {
   $target;
 
-  $props;
+  props;
 
-  $state;
+  state;
 
-  constructor($target, $props) {
+  constructor($target, props) {
     this.$target = $target;
-    this.$props = $props;
-    this.$state = {};
+    this.props = props;
     this.setup();
+    this.render();
     this.setEvent();
-    this.mount();
   }
 
-  // state 초기화
   setup() {}
+
+  didMount() {}
 
   template() {
     return '';
@@ -25,31 +25,17 @@ export default class Component {
     const template = this.template();
     if (template) {
       this.$target.innerHTML = template;
+      this.didMount();
     }
   }
 
-  // 컴포넌트가 마운트 되었을 때
-  mount() {
-    this.render();
-    this.didMount();
-  }
-
-  update() {
-    this.render();
-    this.didUpdate();
-  }
-
-  didMount() {}
-
-  didUpdate() {}
-
   setState(newState) {
-    const updatedState = { ...this.$state, ...newState };
-    if (JSON.stringify(this.$state) === JSON.stringify(updatedState)) {
+    const updatedState = { ...this.state, ...newState };
+    if (JSON.stringify(this.state) === JSON.stringify(updatedState)) {
       return;
     }
     this.state = updatedState;
-    this.update();
+    this.render();
   }
 
   setEvent() {}
