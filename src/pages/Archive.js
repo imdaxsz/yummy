@@ -1,9 +1,8 @@
 import AbstractView from './AbstractView';
 
 export default class Archive extends AbstractView {
-  constructor($target, $props) {
-    super($target, $props);
-    this.setTitle('보관함 | yummy');
+  constructor($target, props) {
+    super($target, props, '보관함 | yummy');
   }
 
   template() {

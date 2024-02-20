@@ -1,9 +1,8 @@
 import AbstractView from './AbstractView';
 
 export default class Home extends AbstractView {
-  constructor($target, $props) {
-    super($target, $props);
-    this.setTitle('홈 | yummy');
+  constructor($target, props) {
+    super($target, props, '홈 | yummy');
   }
 
   template() {
