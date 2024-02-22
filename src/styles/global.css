@@ -71,3 +71,18 @@ body,
 .active {
   color: #ffcd00;
 }
+
+#drawer {
+  box-shadow: -5px 0px 15px 0px rgba(0, 0, 0, 0.1);
+}
+
+#profile .ph {
+  font-size: 38px;
+  color: #ffcd00;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

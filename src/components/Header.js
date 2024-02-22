@@ -4,9 +4,19 @@ import Component from '.';
 export default class Header extends Component {
   template() {
     return `
-      <div><button id='back'>이전</button></div>
-      <div><a href='/' data-key='logo'>yummy</a></div>
-      <div><button id='sidebar'>바</button></div>
+      <div>
+        <button id='back'>
+          <i class='ph ph-caret-left'></i>
+        </button>
+      </div>
+      <div class='justify-center'>
+        <a href='/' data-key='logo'>yummy</a>
+      </div>
+      <div class='justify-end'>
+        <button id='menu'>
+          <i class='ph ph-list'></i>
+        </button>
+      </div>
     `;
   }
 
@@ -16,8 +26,13 @@ export default class Header extends Component {
       navigate('/');
     });
 
-    this.addEvent('click', '#back', (e) => {
-      history.back();
+    this.addEvent('click', '#back', () => {
+      window.history.back();
+    });
+    
+    this.addEvent('click', '#menu', () => {
+      const { toggleSidebarIsVisible } = this.props;
+      toggleSidebarIsVisible();
     });
   }
 }
