@@ -4,26 +4,28 @@ export default class Rating extends Component {
   template() {
     const { value } = this.props;
     return `
-    <div id='rating-container' class='w-fit m-auto relative'>
-      <div
-        id='back-star'
-        class='flex-center text-36 text-neutral-200 gap-4'
-      >
-        ${[1, 2, 3, 4, 5].map((i) =>
-          `<i data-value=${i} class="ph-fill ph-star"></i>`).join('')}
+      <div id='rating-container' class='w-fit m-auto relative'>
+        <div
+          id='back-star'
+          class='flex-center text-36 text-neutral-200 gap-4 cursor-pointer'
+        >
+          ${[1, 2, 3, 4, 5]
+            .map((i) => `<i data-value=${i} class="ph-fill ph-star"></i>`)
+            .join('')}
+        </div>
+        <div
+          id='color-star' 
+          class='w-0 flex gap-4 text-36 absolute top-0 
+            overflow-hidden active cursor-pointer'
+        >
+          ${[1, 2, 3, 4, 5]
+            .map((i) => `<i data-value=${i} class="ph-fill ph-star"></i>`)
+            .join('')}
+        </div>
+        <p class='text-12 text-neutral-300 text-center pt-4'>
+          ${value === 0 ? '아직 방문 전이에요' : `${value}점`}
+        </p>
       </div>
-      <div
-        id='color-star' 
-        class='w-0 flex gap-4 text-36 absolute top-0 
-        overflow-hidden active'
-      >
-        ${[1, 2, 3, 4, 5].map((i) =>
-          `<i data-value=${i} class="ph-fill ph-star"></i>`).join('')}
-      </div>
-      <p class='text-12 text-neutral-300 text-center pt-4'>
-        ${value === 0 ? '아직 방문 전이에요' : `${value}점`}
-      </p>
-    </div>
     `;
   }
 

@@ -10,6 +10,6 @@ export default class Archive extends AbstractView {
       <div>
         보관함 페이지
       </div>
-      `;
+    `;
   }
 }

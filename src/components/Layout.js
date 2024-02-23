@@ -25,10 +25,10 @@ export default class Layout extends Component {
 
   template() {
     return `
-    <div id='header' class='bg-white flex max-w-screen-sm w-full fixed top-0 h-60 z-10'></div>
-    <div id='content'></div>
-    <nav id='navbar' class='flex max-w-screen-sm w-full fixed bottom-0 h-60'></nav>
-    <div id='sidebar' class='w-full h-dvh z-20 fixed inset-0 hidden'></div>
+      <div id='header' class='bg-white flex max-w-screen-sm w-full fixed top-0 h-60 z-10'></div>
+      <div id='content'></div>
+      <nav id='navbar' class='flex max-w-screen-sm w-full fixed bottom-0 h-60'></nav>
+      <div id='sidebar' class='w-full h-dvh z-20 fixed inset-0 hidden'></div>
     `;
   }
 
