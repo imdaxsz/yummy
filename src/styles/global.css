@@ -29,6 +29,10 @@ textarea {
   outline: none;
 }
 
+input::placeholder, textarea::placeholder {
+  color: #ACB2BB;
+}
+
 #content {
   padding-top: 60px;
 }
@@ -111,5 +115,47 @@ textarea {
 }
 
 .bg-secondary {
-  background: #FF7272;
+  background: #ff7272;
+}
+
+.slider {
+  height: 8px;
+  background: #ddd;
+  border-radius: 9999px;
+  position: relative;
+}
+
+.slider .progress {
+  height: 8px;
+  border-radius: 9999px;
+  background: #ff7272;
+  left: 0%;
+  right: 0%;
+  position: absolute;
+}
+
+.range-input {
+  position: relative;
+}
+
+.range-input input {
+  position: absolute;
+  top: -8px;
+  height: 8px;
+  width: 100%;
+  pointer-events: none;
+  background: none;
+  appearance: none;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  width: 24px;
+  height: 24px;
+  border: solid 4px white;
+  box-shadow: 0 0 0 1.5px #e0e0e0;
+  appearance: none;
+  background: #ff7272;
+  border-radius: 9999px;
+  pointer-events: auto;
+  cursor: pointer;
 }
