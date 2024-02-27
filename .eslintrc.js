@@ -35,4 +35,12 @@ module.exports = {
     'no-console': 0,
     'prefer-destructuring': 0,
   },
+  'import/extensions': [
+    'error',
+    'always',
+    {
+      js: 'never',
+      mjs: 'never',
+    },
+  ],
 };
