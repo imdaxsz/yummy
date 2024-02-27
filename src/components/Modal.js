@@ -1,4 +1,5 @@
 import Component from '@components';
+import scrollLock from '@utils/ScrollLock';
 
 export default class Modal extends Component {
   $modal;
@@ -48,19 +49,24 @@ export default class Modal extends Component {
     `;
   }
 
+  didMount() {
+    scrollLock('block');
+  }
+
   setEvent() {
-    this.addEvent('mousedown', '#backdrop, #close', () => {
-      this.$modal.remove();
-    });
+    this.addEvent('mousedown', '#backdrop, #close', this.closeModal.bind(this));
     this.addEvent('click', '#ok', () => {
       const { onClose } = this.props;
       if (onClose) onClose();
-      this.$modal.remove();
+      this.closeModal();
     });
     if (this.props.type === 'confirm') {
-      this.addEvent('click', '#cancel', () => {
-        this.$modal.remove();
-      });
+      this.addEvent('click', '#cancel', this.closeModal.bind(this));
     }
+  }
+
+  closeModal() {
+    scrollLock('none');
+    this.$modal.remove();
   }
 }
