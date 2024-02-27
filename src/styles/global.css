@@ -29,11 +29,12 @@ textarea {
   outline: none;
 }
 
-input::placeholder, textarea::placeholder {
-  color: #ACB2BB;
+input::placeholder,
+textarea::placeholder {
+  color: #acb2bb;
 }
 
-#content {
+#page {
   padding-top: 60px;
 }
 
@@ -158,4 +159,34 @@ input[type='range']::-webkit-slider-thumb {
   border-radius: 9999px;
   pointer-events: auto;
   cursor: pointer;
+}
+
+input[type='checkbox'] {
+  appearance: none;
+  border-radius: 0.25rem;
+  width: 20px;
+  height: 20px;
+  border: solid 1px #ddd;
+  cursor: pointer;
+}
+
+input[type='checkbox']::before {
+  content: '';
+  display: block;
+  width: inherit;
+  height: inherit;
+  border-radius: inherit;
+  background-color: transparent;
+  background-position: center;
+  background-size: contain;
+}
+
+input[type='checkbox']:checked {
+  background: rgb(255, 204, 0);
+  border-color: rgb(255, 204, 0);
+  padding-right: 1px;
+}
+
+input[type='checkbox']:checked::before {
+  background-image: url('https://s2.svgbox.net/hero-solid.svg?color=white&ic=check');
 }
