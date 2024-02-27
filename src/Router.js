@@ -24,7 +24,6 @@ const router = async ($container) => {
         const data = prev ? [prev[0], to] : [to];
       
         window.history.pushState({ data }, '', to);
-        console.log(window.history.state);
       } 
 
       render();
