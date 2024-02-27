@@ -1,11 +1,12 @@
-import { navigate } from '@/Router';
+import toggleSidebar from '@utils/ToggleSidebar';
+import navigate from '@utils/Navigate';
 import Component from '.';
 
 export default class Sidebar extends Component {
   template() {
     return `
       <div id='backdrop' class='w-full h-full bg-black/30'></div>
-      <div id='drawer' class='fixed top-0 right-0 w-290 h-full bg-white p-14 z-3'>
+      <div id='drawer' class='fixed top-0 right-0 w-290 h-full bg-white p-14'>
         <div class='h-40'>
           <button class='text-24'>
             <i class='ph ph-x'></i>
@@ -37,16 +38,15 @@ export default class Sidebar extends Component {
   // 로그인 여부에 따라 메뉴 항목 분기 처리
 
   setEvent() {
-    const { toggleSidebarIsVisible } = this.props;
     this.addEvent('click', 'a', (e) => {
       e.preventDefault();
       const target = e.target.tagName === 'I' ? e.target.parentNode : e.target;
       navigate(target.href);
-      toggleSidebarIsVisible();
+      toggleSidebar();
     });
 
     this.addEvent('click', 'button, #backdrop', () => {
-      toggleSidebarIsVisible();
+      toggleSidebar();
     });
   }
 }
