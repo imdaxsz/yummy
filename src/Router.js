@@ -1,38 +1,39 @@
-import Archive from '@pages/Archive';
-import Home from '@pages/Home';
-import Write from '@pages/Write';
+import routes from '@pages';
 
-export const router = async () => {
-  const $target = document.querySelector('#content');
+const router = async ($container) => {
+  const render = () => {
+    let page = routes.find((route) => window.location.pathname === route.path);
 
-  const routes = [
-    { path: '/', view: Home },
-    { path: '/write', view: Write },
-    { path: '/archive', view: Archive },
-  ];
+    if (!page) {
+      window.alert('존재하지 않는 페이지입니다!');
+      window.history.pushState(null, null, '/');
+      page = routes[0];
+    }
+    // eslint-disable-next-line new-cap
+    new page.view($container);
+  };
 
-  const potentialMatches = routes.map((route) => ({
-    route,
-    isMatch: window.location.pathname === route.path,
-  }));
+  const init = () => {
+    window.addEventListener('historychange', ({ detail }) => {
+      const { to, isReplace } = detail;
 
-  let match = potentialMatches.find((potentialMatch) => potentialMatch.isMatch);
+      if (isReplace || to === window.location.pathname)
+        window.history.replaceState(null, '', to);
+      else {
+        const prev = window.history.state?.data;
+        const data = prev ? [prev[0], to] : [to];
+      
+        window.history.pushState({ data }, '', to);
+        console.log(window.history.state);
+      } 
 
-  if (!match) {
-    window.alert('존재하지 않는 페이지입니다!');
-    window.history.pushState(null, null, '/');
-    match = {
-      route: routes[0],
-      isMatch: true,
-    };
-  }
-  // eslint-disable-next-line new-cap
-  new match.route.view($target);
+      render();
+    });
+    window.addEventListener('popstate', render);
+  };
+
+  init();
+  render();
 };
 
-export const navigate = (url) => {
-  window.history.pushState(null, null, url);
-  router();
-};
-
-window.addEventListener('popstate', router);
+export default router;
