@@ -1,7 +1,7 @@
-import { navigate } from '@/Router';
+import navigate from '@utils/Navigate';
 import Component from '.';
 
-export default class Navigation extends Component {
+export default class BottomNavigation extends Component {
   template() {
     return `
       <ul class='w-full flex flex-1 gray-1'>
@@ -25,7 +25,7 @@ export default class Navigation extends Component {
   }
 
   didMount() {
-    this.setActiveStyle();
+    this.setStyle();
   }
 
   setEvent() {
@@ -33,14 +33,21 @@ export default class Navigation extends Component {
       e.preventDefault();
       const target = e.target.tagName === 'I' ? e.target.parentNode : e.target;
       navigate(target.href);
-      this.setActiveStyle();
+      this.setStyle();
     });
-    // 뒤로가기 클릭을 통해 이전 페이지 이동 시 스타일 적용 
-    window.addEventListener('popstate', this.setActiveStyle.bind(this));
+
+    window.addEventListener('popstate', this.setStyle.bind(this));
   }
 
   // 현재 페이지 item에 active 스타일 적용
-  setActiveStyle() {
+  setStyle() {
+    const { pathname } = window.location;
+    if (pathname === '/write') {
+      this.$target.style.display = 'none';
+      return;
+    }
+    
+    this.$target.style.display = 'flex';
     const items = this.$target.querySelectorAll('a');
     items.forEach((item) =>
       item.href === window.location.href

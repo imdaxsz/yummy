@@ -1,6 +1,6 @@
 import router from '@/Router';
 import Component from '.';
-import Navigation from './Navigation';
+import BottomNavigation from './BottomNavigation';
 import Sidebar from './Sidebar';
 
 export default class Layout extends Component {
@@ -17,7 +17,7 @@ export default class Layout extends Component {
     const $navbar = document.querySelector('#navbar');
     const $sidebar = document.querySelector('#sidebar');
     router($page);
-    new Navigation($navbar);
+    new BottomNavigation($navbar);
     new Sidebar($sidebar);
   }
 }
