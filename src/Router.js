@@ -2,7 +2,7 @@ import routes from '@pages';
 
 const router = async ($container) => {
   const render = () => {
-    let page = routes.find((route) => window.location.pathname === route.path);
+    let page = routes.find((route) => route.path.test(window.location.pathname + window.location.search));
 
     if (!page) {
       window.alert('존재하지 않는 페이지입니다!');
