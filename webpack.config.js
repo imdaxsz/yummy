@@ -17,8 +17,9 @@ module.exports = {
     port: 9000,
     open: true,
     historyApiFallback: true,
+    compress: true,
     static: {
-      directory: path.join(__dirname, 'assets'),
+      directory: path.join(__dirname, 'dist'),
     },
   },
   devtool: IS_PRODUCTION ? 'source-map' : 'eval-cheap-module-source-map',
@@ -38,6 +39,10 @@ module.exports = {
       {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader', 'postcss-loader'],
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
       },
     ],
   },
