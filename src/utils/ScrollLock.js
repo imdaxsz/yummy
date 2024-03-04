@@ -1,4 +1,7 @@
 const scrollLock = (display) => {
+  if (window.innerWidth - document.body.clientWidth <= 0) return;
+
+  // 스크롤이 있는 경우 document 스타일 수정
   if (display === 'block') {
     document.body.style.cssText = `
       position: fixed; 
