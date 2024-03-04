@@ -15,9 +15,9 @@ export default class ImageSlider extends Component {
 
   template() {
     return `
-      <div class="swiper">
-        <div class="swiper-wrapper"></div>
-        <div class="swiper-scrollbar"></div>
+      <div class='swiper'>
+        <div class='swiper-wrapper'></div>
+        <div class='swiper-scrollbar'></div>
       </div>
     `;
   }

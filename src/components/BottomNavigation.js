@@ -17,7 +17,7 @@ export default class BottomNavigation extends Component {
         </li>
         <li>
           <a href='/archive?category=my' data-key='archive'>
-            <i class="ph ph-archive"></i>보관함
+            <i class='ph ph-archive'></i>보관함
           </a>
         </li>
       </ul>
