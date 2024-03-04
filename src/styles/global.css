@@ -77,14 +77,6 @@ textarea::placeholder {
   font-size: 24px;
 }
 
-.gray-1 {
-  color: #c5c5c5;
-}
-
-.active {
-  color: #ffcd00;
-}
-
 #drawer {
   box-shadow: -5px 0px 15px 0px rgba(0, 0, 0, 0.1);
 }
@@ -125,8 +117,16 @@ textarea::placeholder {
   background: #ff7272;
 }
 
+.text-primary {
+  color: #ffcd00;
+}
+
 .text-secondary {
   color: #ff7272;
+}
+
+.gray-1 {
+  color: #c5c5c5;
 }
 
 .slider {

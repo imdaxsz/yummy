@@ -5,7 +5,7 @@ export default class Tabs extends Component {
     const { items } = this.props;
     return `
       <ul class='flex border-b text-center text-14 font-medium cursor-pointer'>
-        <li id=${items[0].id} class='w-full relative py-8 active font-bold'>
+        <li id=${items[0].id} class='w-full relative py-8 text-primary font-bold'>
           ${items[0].label}
           <div class='line absolute w-full h-2 bg-primary -bottom-1' />
         </li>
@@ -22,11 +22,11 @@ export default class Tabs extends Component {
     if (!els) return;
     els.forEach((el) => {
       if (currentId === el.id) {
-        el.classList.add('active');
+        el.classList.add('text-primary');
         el.classList.add('font-bold');
         if (el.lastChild) el.lastChild.classList.add('bg-primary');
       } else {
-        el.classList.remove('active');
+        el.classList.remove('text-primary');
         el.classList.remove('font-bold');
         if (el.lastChild) el.lastChild.classList.remove('bg-primary');
       }

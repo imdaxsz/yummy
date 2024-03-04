@@ -6,7 +6,7 @@ export default class BottomNavigation extends Component {
     return `
       <ul class='w-full flex flex-1 gray-1'>
         <li>
-          <a href='/' data-key='home' class='active'>
+          <a href='/' data-key='home' class='text-primary'>
             <i class="ph-fill ph-house"></i>홈
           </a>
         </li>
@@ -51,8 +51,8 @@ export default class BottomNavigation extends Component {
     const items = this.$target.querySelectorAll('a');
     items.forEach((item) =>
       item.href === window.location.href
-        ? item.classList.add('active')
-        : item.classList.remove('active'),
+        ? item.classList.add('text-primary')
+        : item.classList.remove('text-primary'),
     );
   }
 }

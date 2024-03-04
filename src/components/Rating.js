@@ -16,7 +16,7 @@ export default class Rating extends Component {
         <div
           id='color-star' 
           class='w-0 flex gap-4 text-36 absolute top-0 
-            overflow-hidden active cursor-pointer'
+            overflow-hidden text-primary cursor-pointer'
         >
           ${[1, 2, 3, 4, 5]
             .map((i) => `<i data-value=${i} class="ph-fill ph-star"></i>`)
