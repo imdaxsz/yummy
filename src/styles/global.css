@@ -117,8 +117,16 @@ textarea::placeholder {
   background: #ffcd00;
 }
 
+.bg-primary-30 {
+  background: #fbf1c5;
+}
+
 .bg-secondary {
   background: #ff7272;
+}
+
+.text-secondary {
+  color: #ff7272;
 }
 
 .slider {
