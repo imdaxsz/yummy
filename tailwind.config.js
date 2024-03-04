@@ -16,6 +16,9 @@ module.exports = {
       minHeight: px0_300,
       spacing: px0_300,
     },
+    aspectRatio: {
+      '4/3': '4 / 3',
+    },
   },
   plugins: [],
 };
