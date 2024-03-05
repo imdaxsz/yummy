@@ -3,6 +3,7 @@ import Header from '@components/Header';
 import SearchModal from '@components/SearchModal';
 import AbstractView from './AbstractView';
 import Card from '@components/Card';
+// import Modal from '@components/Modal';
 
 export default class Home extends AbstractView {
   $searchModal;
@@ -18,11 +19,11 @@ export default class Home extends AbstractView {
   template() {
     return `
       <div id='header' class='bg-white flex max-w-screen-sm w-full fixed top-0 h-60 z-10'></div>
-      <div id='content' class='px-16 pb-100'>
+      <div id='content' class='px-16 pb-90'>
         <div id='searchbar'></div>
-        <button id='sort' class='py-24 block ml-auto'>
+        <button id='sort' aria-label='정렬하기' class='py-24 block ml-auto'>
           <p class='text-14 flex items-center text-zinc-500'>
-            <i class="ph ph-arrows-down-up mr-4 text-16"></i>
+            <i class='ph ph-arrows-down-up mr-4 text-16'></i>
             업데이트순
           </p>
         </button>
@@ -31,6 +32,12 @@ export default class Home extends AbstractView {
       <div id='search-modal' class='absolute top-0 z-30 w-full bg-white hidden'></div>
     `;
   }
+
+  // setEvent() {
+  //   this.addEvent('click', '#test', () => {
+  //     new Modal({message: '하하하하', backdrop: false});
+  //   })
+  // }
 
   openSearchModal() {
     const display = this.$searchModal.style.display;
@@ -53,7 +60,7 @@ export default class Home extends AbstractView {
   didMount() {
     const $header = this.$target.querySelector('#header');
     const $searchbar = this.$target.querySelector('#searchbar');
-    const list = this.$target.querySelector('#list');
+    const $list = this.$target.querySelector('#list');
     this.$searchModal = this.$target.querySelector('#search-modal');
 
     new Header($header, { left: '', center: 'yummy', right: 'menu' });
@@ -68,12 +75,12 @@ export default class Home extends AbstractView {
     
     [1, 2].forEach((i) => {
       const el = document.createElement('div');
-      list.appendChild(el);
+      $list.appendChild(el);
       new Card(el, {
         id: i,
         title: '빵떠기의 맛집 리스트',
         userId: 'bbangddeock',
-        likes: 120,
+        likeCount: 120,
         thumnail: 'https://i.ibb.co/Xs9dyX8/Kakao-Talk-20240204-210852878.jpg',
       });
     });

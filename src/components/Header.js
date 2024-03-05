@@ -7,7 +7,7 @@ export default class Header extends Component {
     const { left, center, right } = this.props;
     return `
       <div>
-        <button id='back' class='-ml-2'>
+        <button id='back' aria-label='뒤로가기' class='-ml-2'>
           ${left !== '' ? `<i class='ph ph-caret-left'></i >` : ''}
         </button>
       </div>
@@ -15,7 +15,7 @@ export default class Header extends Component {
         <a href='/' data-key='logo'>${center}</a>
       </div>
       <div class='justify-end'>
-        <button id='menu' class='-mr-2' >
+        <button id='menu' aria-label='메뉴' class='-mr-2' >
           ${right === 'menu' ? `<i class='ph ph-list'></i>` : right ?? ''}
         </button>
       </div>
