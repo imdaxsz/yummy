@@ -23,7 +23,7 @@ export default class Home extends AbstractView {
         <div id='searchbar'></div>
         <button id='sort' aria-label='정렬하기' class='py-24 block ml-auto'>
           <p class='text-14 flex items-center text-zinc-500'>
-            <i class='ph ph-arrows-down-up mr-4 text-16'></i>
+            <i class='ph ph-arrows-down-up mr-4 text-16 block'></i>
             업데이트순
           </p>
         </button>
