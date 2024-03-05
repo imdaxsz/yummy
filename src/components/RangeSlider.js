@@ -10,7 +10,7 @@ export default class RangeSlider extends Component {
         </span>
         &nbsp;~&nbsp;
         <span id='max-value' class='inline-flex items-center'>
-          <i class="ph-fill ph-star mr-2"></i>5
+          <i class='ph-fill ph-star mr-2'></i>5
         </span>
       </p>
       <div class='py-12'>
@@ -61,6 +61,6 @@ export default class RangeSlider extends Component {
       element.innerHTML = '방문 전';
       return;
     }
-    element.innerHTML = `<i class="ph-fill ph-star mr-2"></i>${value}`;
+    element.innerHTML = `<i class='ph-fill ph-star mr-2'></i>${value}`;
   }
 }

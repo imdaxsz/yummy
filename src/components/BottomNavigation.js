@@ -7,12 +7,12 @@ export default class BottomNavigation extends Component {
       <ul class='w-full flex flex-1 gray-1'>
         <li>
           <a href='/' data-key='home' class='text-primary'>
-            <i class="ph-fill ph-house"></i>홈
+            <i class='ph-fill ph-house'></i>홈
           </a>
         </li>
         <li>
           <a href='/write' data-key='write'>
-            <i class="ph ph-pencil-line"></i>글쓰기
+            <i class='ph ph-pencil-line'></i>글쓰기
           </a>
         </li>
         <li>

@@ -4,7 +4,7 @@ import Component from './components';
 export default class App extends Component {
   template() {
     return `
-        <div id='wrapper' class='max-w-screen-sm h-full mx-auto'></div>
+      <div id='wrapper' class='max-w-screen-sm h-full mx-auto'></div>
     `;
   }
 

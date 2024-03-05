@@ -10,7 +10,7 @@ export default class Rating extends Component {
           class='flex-center text-36 text-neutral-200 gap-4 cursor-pointer'
         >
           ${[1, 2, 3, 4, 5]
-            .map((i) => `<i data-value=${i} class="ph-fill ph-star"></i>`)
+            .map((i) => `<i data-value=${i} class='ph-fill ph-star'></i>`)
             .join('')}
         </div>
         <div
@@ -19,7 +19,7 @@ export default class Rating extends Component {
             overflow-hidden text-primary cursor-pointer'
         >
           ${[1, 2, 3, 4, 5]
-            .map((i) => `<i data-value=${i} class="ph-fill ph-star"></i>`)
+            .map((i) => `<i data-value=${i} class='ph-fill ph-star'></i>`)
             .join('')}
         </div>
         <p class='text-12 text-neutral-300 text-center pt-4'>
