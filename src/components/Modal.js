@@ -4,17 +4,17 @@ import scrollLock from '@utils/ScrollLock';
 export default class Modal extends Component {
   $modal;
 
-  constructor(props) {
+  constructor({ type = '', backdrop = true, ...rest }) {
     const modal = document.createElement('div');
     modal.id = 'modal';
     modal.className = 'fixed inset-0 z-30';
     document.body.appendChild(modal);
-    super(modal, props);
+    super(modal, { type, backdrop, ...rest });
     this.$modal = modal;
   }
 
   template() {
-    const { type, message } = this.props;
+    const { type, backdrop, message } = this.props;
     const buttonStyle = () => {
       const common = 'w-110 py-4 rounded text-white';
       if (type === 'alert') return `bg-primary ${common}`;
@@ -22,13 +22,13 @@ export default class Modal extends Component {
     };
 
     return `
-      <div id='backdrop' class='w-full h-full bg-black/30 flex-center'></div>
+      ${backdrop ? `<div id='backdrop' class='w-full h-full bg-black/30 flex-center'></div>` : ``}
       <div
         id='modal-container'
         class='bg-white p-16 absolute z-31 item-center rounded-xl'
       >
         <div class='text-20 flex justify-end'>
-          <button id='close' class='block'>
+          <button id='close' aria-label='닫기' class='block'>
             <i class='ph ph-x block'></i>
           </button>
         </div>
@@ -38,12 +38,12 @@ export default class Modal extends Component {
         <div class='flex-center gap-12 pt-8 px-8 font-medium'>
           ${
             type === 'confirm'
-              ? `<button id='cancel' class='w-110 py-4 bg-zinc-100 rounded '>
+              ? `<button id='cancel' aria-label='취소' class='w-110 py-4 bg-zinc-100 rounded '>
                   취소
                 </button>`
               : ``
           }
-          <button id='ok' class='${buttonStyle()}'>확인</button>
+          <button id='ok' aria-label='확인' class='${buttonStyle()}'>확인</button>
         </div>
       </div>
     `;
