@@ -4,7 +4,7 @@ import Component from '@components';
 export default class RangeSlider extends Component {
   template() {
     return `
-      <p id='range-value' class='mb-4 flex'>
+      <p id='range-value' class='mb-4 flex text-14'>
         <span id='min-value' class='inline-flex items-center'>
           방문 전
         </span>
@@ -13,7 +13,7 @@ export default class RangeSlider extends Component {
           <i class='ph-fill ph-star mr-2'></i>5
         </span>
       </p>
-      <div class='py-12'>
+      <div class='px-2 py-12'>
         <div class='slider'>
           <div class='progress'></div>
         </div>
