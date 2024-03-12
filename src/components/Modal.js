@@ -1,5 +1,5 @@
 import Component from '@components';
-import scrollLock from '@utils/ScrollLock';
+import scrollLock from '@utils/scrollLock';
 
 export default class Modal extends Component {
   $modal;

@@ -1,5 +1,5 @@
-import navigate from '@utils/Navigate';
-import toggleSidebar from '@utils/ToggleSidebar';
+import navigate from '@utils/navigate';
+import toggleSidebar from '@utils/toggleSidebar';
 import Component from '.';
 
 export default class Header extends Component {

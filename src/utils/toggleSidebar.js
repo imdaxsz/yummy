@@ -1,4 +1,4 @@
-import scrollLock from './ScrollLock';
+import scrollLock from './scrollLock';
 
 const toggleSidebar = () => {
   const sidebar = document.querySelector('#sidebar');

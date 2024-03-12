@@ -1,4 +1,4 @@
-import navigate from '@utils/Navigate';
+import navigate from '@utils/navigate';
 import Component from '.';
 
 export default class BottomNavigation extends Component {
@@ -46,7 +46,7 @@ export default class BottomNavigation extends Component {
       this.$target.style.display = 'none';
       return;
     }
-    
+
     this.$target.style.display = 'flex';
     const items = this.$target.querySelectorAll('a');
     items.forEach((item) =>

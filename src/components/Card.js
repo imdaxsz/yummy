@@ -1,5 +1,5 @@
 import Component from '@components';
-import navigate from '@utils/Navigate';
+import navigate from '@utils/navigate';
 
 export default class Card extends Component {
   constructor(
@@ -13,7 +13,14 @@ export default class Card extends Component {
       ...rest
     },
   ) {
-    super($target, { cardType, likeCount, rating, placeLocation, isMine, ...rest });
+    super($target, {
+      cardType,
+      likeCount,
+      rating,
+      placeLocation,
+      isMine,
+      ...rest,
+    });
   }
 
   template() {
