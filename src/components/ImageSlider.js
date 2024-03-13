@@ -33,6 +33,12 @@ export default class ImageSlider extends Component {
     });
   }
 
+  removeAttachments(idx) {
+    const { imageUrl: prev, updateAttachments } = this.props;
+    const attachments = prev.filter((_, i) => i !== idx);
+    updateAttachments(attachments);
+  }
+
   addItems() {
     const { imageUrl } = this.props;
 
@@ -40,12 +46,20 @@ export default class ImageSlider extends Component {
       const slideWrapper = this.$target.querySelector('.swiper-wrapper');
       if (!slideWrapper) return;
 
-      imageUrl.forEach((url) => {
+      imageUrl.forEach((url, i) => {
         const el = document.createElement('div');
         el.className = 'swiper-slide';
         const img = document.createElement('img');
         img.src = url;
+        const btn = document.createElement('button');
+        btn.setAttribute('aria-label', '이미지 삭제');
+        btn.id = 'remove';
+        btn.type = 'button';
+        btn.className = 'bg-black absolute top-10 right-10 p-4 rounded-full';
+        btn.innerHTML = `<i class='ph ph-x text-20 text-white block'></i>`;
+        btn.addEventListener('click', () => this.removeAttachments(i));
         el.appendChild(img);
+        el.appendChild(btn);
         slideWrapper.appendChild(el);
       });
     }
