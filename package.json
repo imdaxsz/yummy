@@ -42,6 +42,7 @@
     "@babel/runtime": "^7.23.9",
     "@babel/runtime-corejs3": "^7.23.9",
     "@phosphor-icons/web": "^2.0.3",
+    "compressorjs": "^1.2.1",
     "firebase": "^10.8.1",
     "swiper": "^11.0.7"
   }
