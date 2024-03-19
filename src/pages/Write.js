@@ -5,8 +5,11 @@ import AbstractView from './AbstractView';
 import Evaluation from '@components/Write/Evaluation';
 import Categories from '@components/Write/Categories';
 import FileInput from '@components/Write/FileInput';
+import Map from '@components/Write/Map';
+import scrollLock from '@utils/scrollLock';
 
 export default class Write extends AbstractView {
+  scrollY; // 지도 modal 렌더링 여부에 따라 스크롤 위치 변경하기 위한 속성
   constructor($target, props) {
     super($target, props, '글쓰기 | yummy');
   }
@@ -20,17 +23,25 @@ export default class Write extends AbstractView {
       attachments: [],
       recommendMenu: '',
       memo: '',
-      locationInfo: '',
+      locationInfo: { id: '', address: '', placeName: '' },
+      modalisVisible: false,
     };
   }
 
   template() {
-    const { name, ratingValue, recommendMenu, memo, attachments } = this.state;
+    const {
+      name,
+      ratingValue,
+      recommendMenu,
+      memo,
+      attachments,
+      locationInfo: { id, address, placeName },
+      isMapModalVisible,
+    } = this.state;
 
     return `
       <div id='header' class='bg-white flex max-w-screen-sm w-full fixed top-0 h-60 z-10'></div>
-      <div class='px-24 pt-8 py-50'>
-      <form>
+      <div id='editor' class='px-24 pt-8 py-100 tracking-tight'>
         <input
           id='name'
           type='text'
@@ -60,16 +71,112 @@ export default class Write extends AbstractView {
           class='w-full min-h-150 resize-none'
           placeholder='이 맛집에 대한 메모를 남겨보세요.'
         >${memo}</textarea>
-        <button
-          aria-label='위치 정보 추가'
-          class='flex-center gap-4 text-zinc-500 font-medium p-4'
-        >
-          <i class='ph ph-map-pin text-24 block'></i>
-          위치 정보 추가
-        </button>
-        </form>
+
+        ${
+          id
+            ? `
+              <div class='flex items-center justify-between'>
+                <div class='flex-1 min-w-0 flex items-center gap-4'>
+                  <i class='ph-fill ph-map-pin text-28 block text-primary'></i>
+                  <div class='flex-1 min-w-0 pr-8'>
+                    <p class='font-medium truncate'>${placeName}</p>
+                    <p class='text-14 text-zinc-400 truncate'>${address}</p>
+                  </div>
+                </div>
+                <button id='removeLocation' aria-label='위치 정보 삭제' class='shrink-0'>
+                  <i class='ph ph-x text-20 block'></i>
+                </button>
+              </div>
+            `
+            : `<button
+                id='addLocation'
+                aria-label='위치 정보 추가'
+                class='flex-center gap-4 text-zinc-500 font-medium p-4'
+              >
+                <i class='ph ph-map-pin text-24 block'></i>
+                위치 정보 추가
+              </button>`
+        }
+
       </div>
+      ${
+        isMapModalVisible
+          ? `<div id="map-modal" class='w-full h-full absolute top-0 left-0 z-50 bg-white'></div>`
+          : ``
+      }
     `;
+  }
+
+  didMount() {
+    const $header = this.$target.querySelector('#header');
+    const $categories = this.$target.querySelector('#categories');
+    const $attachments = this.$target.querySelector('#attachments');
+    const $rating = this.$target.querySelector('#rating');
+    const $evaluation = this.$target.querySelector('#evaluation');
+    const $fileInputContainer = this.$target.querySelector(
+      '#fileInput-container',
+    );
+    const {
+      categories,
+      evaluation,
+      ratingValue,
+      attachments,
+      isMapModalVisible,
+    } = this.state;
+
+    new Header($header, { left: 'prev', center: '', right: '완료' });
+
+    new Categories($categories, {
+      categories,
+      onClick: this.onChangeCategories.bind(this),
+    });
+
+    if ($fileInputContainer)
+      new FileInput($fileInputContainer, {
+        updateAttachments: this.updateAttachments.bind(this),
+      });
+
+    if (attachments.length > 0) {
+      new ImageSlider($attachments, {
+        imageUrl: [...attachments],
+        updateAttachments: this.updateAttachments.bind(this),
+      });
+    }
+
+    new Rating($rating, {
+      value: ratingValue,
+      readonly: false,
+      onChangeRating: this.onChangeRating.bind(this),
+    });
+
+    if (ratingValue !== 0)
+      new Evaluation($evaluation, {
+        evaluation,
+        onClick: this.onChangeEvaluation.bind(this),
+      });
+
+    const $mapModal = document.querySelector('#map-modal');
+    if (isMapModalVisible)
+      new Map($mapModal, {
+        toggleMapModal: this.toggleMapModal.bind(this),
+        setLocation: this.setLocation.bind(this),
+      });
+  }
+
+  setEvent() {
+    this.addEvent(
+      'change',
+      '#name, #recommendMenu, #memo',
+      this.onChangeText.bind(this),
+    );
+    this.addEvent('click', '#addLocation', this.toggleMapModal.bind(this));
+    this.addEvent('click', '#removeLocation', () =>
+      this.setLocation('', '', ''),
+    );
+  }
+
+  setLocation(id, address, placeName) {
+    this.setState({ ...this.state, locationInfo: { id, address, placeName } });
   }
 
   onChangeRating(value) {
@@ -102,54 +209,11 @@ export default class Write extends AbstractView {
     this.setState({ ...this.state, [id]: value });
   }
 
-  setEvent() {
-    this.addEvent(
-      'change',
-      'input[type="text"], #memo',
-      this.onChangeText.bind(this),
-    );
-  }
-
-  didMount() {
-    const $header = this.$target.querySelector('#header');
-    const $categories = this.$target.querySelector('#categories');
-    const $attachments = this.$target.querySelector('#attachments');
-    const $rating = this.$target.querySelector('#rating');
-    const $evaluation = this.$target.querySelector('#evaluation');
-    const $fileInputContainer = this.$target.querySelector(
-      '#fileInput-container',
-    );
-    const { categories, evaluation, ratingValue, attachments } = this.state;
-
-    new Header($header, { left: 'prev', center: '', right: '완료' });
-
-    new Categories($categories, {
-      categories,
-      onClick: this.onChangeCategories.bind(this),
-    });
-
-    if ($fileInputContainer)
-      new FileInput($fileInputContainer, {
-        updateAttachments: this.updateAttachments.bind(this),
-      });
-
-    if (attachments.length > 0) {
-      new ImageSlider($attachments, {
-        imageUrl: [...attachments],
-        updateAttachments: this.updateAttachments.bind(this),
-      });
-    }
-
-    new Rating($rating, {
-      value: ratingValue,
-      readonly: false,
-      onChangeRating: this.onChangeRating.bind(this),
-    });
-
-    if (ratingValue !== 0)
-      new Evaluation($evaluation, {
-        evaluation,
-        onClick: this.onChangeEvaluation.bind(this),
-      });
+  toggleMapModal() {
+    const { isMapModalVisible: prev } = this.state;
+    const display = prev ? 'none' : 'block';
+    if (!prev) this.scrollY = window.scrollY;
+    this.setState({ ...this.state, isMapModalVisible: !prev });
+    scrollLock(display, this.scrollY);
   }
 }
