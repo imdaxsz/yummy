@@ -22,9 +22,9 @@ export default class Map extends Component {
     const { id } = this.state.locationInfo;
     return `
         <div class='map_wrap'>
-          <div class='flex items-center justify-between h-60 px-16'>
-            <button id='cancel' aria-label='취소'>취소</button>
-            <button id='add' aria-label='추가'>추가</button>
+          <div class='flex items-center justify-between h-60 px-8'>
+            <button id='cancel' class='px-8' aria-label='취소'>취소</button>
+            <button id='add' class='px-8' aria-label='추가'>추가</button>
           </div>
           <form id='search'>
             <input type='text' placeholder='장소명을 입력하세요.' value='' id='keyword'>
@@ -50,10 +50,11 @@ export default class Map extends Component {
       };
       this.map = new kakao.maps.Map(mapContainer, mapOption);
       this.geocoder = new kakao.maps.services.Geocoder();
-    }
+    } else {
+      this.$input = document.getElementById('keyword');
+      this.$input.focus({ preventScroll: true });
+    } 
     this.ps = new kakao.maps.services.Places();
-    this.$input = document.getElementById('keyword');
-    this.$locationInfo = document.getElementById('location_info');
     this.getUserLocation();
   }
 
@@ -103,8 +104,8 @@ export default class Map extends Component {
   addLocation() {
     const { id, placeName, address } = this.state.locationInfo;
     const { setLocation, toggleMapModal } = this.props;
-    setLocation(id, address, placeName);
     toggleMapModal();
+    setTimeout(() => setLocation(id, address, placeName), 150);
   }
 
   // 키워드 검색 요청

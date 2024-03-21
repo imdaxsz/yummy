@@ -7,6 +7,7 @@ import Categories from '@components/Write/Categories';
 import FileInput from '@components/Write/FileInput';
 import Map from '@components/Write/Map';
 import scrollLock from '@utils/scrollLock';
+import animate from '@utils/verticalAnimation';
 
 export default class Write extends AbstractView {
   scrollY; // 지도 modal 렌더링 여부에 따라 스크롤 위치 변경하기 위한 속성
@@ -45,7 +46,7 @@ export default class Write extends AbstractView {
         <input
           id='name'
           type='text'
-          class='h-34 text-24 mb-32'
+          class='w-full h-34 text-24 mb-32'
           value='${name}' 
           placeholder='맛집 이름을 입력하세요.' 
         />
@@ -71,7 +72,6 @@ export default class Write extends AbstractView {
           class='w-full min-h-150 resize-none'
           placeholder='이 맛집에 대한 메모를 남겨보세요.'
         >${memo}</textarea>
-
         ${
           id
             ? `
@@ -91,7 +91,7 @@ export default class Write extends AbstractView {
             : `<button
                 id='addLocation'
                 aria-label='위치 정보 추가'
-                class='flex-center gap-4 text-zinc-500 font-medium p-4'
+                class='flex-center gap-4 text-zinc-600 p-4'
               >
                 <i class='ph ph-map-pin text-24 block'></i>
                 위치 정보 추가
@@ -99,11 +99,7 @@ export default class Write extends AbstractView {
         }
 
       </div>
-      ${
-        isMapModalVisible
-          ? `<div id="map-modal" class='w-full h-full absolute top-0 left-0 z-50 bg-white'></div>`
-          : ``
-      }
+      ${isMapModalVisible ? `<div id="map-modal" ></div>` : ``}
     `;
   }
 
@@ -212,8 +208,14 @@ export default class Write extends AbstractView {
   toggleMapModal() {
     const { isMapModalVisible: prev } = this.state;
     const display = prev ? 'none' : 'block';
-    if (!prev) this.scrollY = window.scrollY;
-    this.setState({ ...this.state, isMapModalVisible: !prev });
+    if (!prev) {
+      this.scrollY = window.scrollY;
+      this.setState({ ...this.state, isMapModalVisible: !prev });
+    } 
+    const el = animate('#map-modal', 200, prev, () => {
+      this.setState({ ...this.state, isMapModalVisible: !prev });
+    });
     scrollLock(display, this.scrollY);
+    el.play();
   }
 }
