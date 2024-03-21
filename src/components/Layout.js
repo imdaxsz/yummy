@@ -8,7 +8,7 @@ export default class Layout extends Component {
     return `
       <div id='page' class='relative'></div>
       <nav id='navbar' class='flex max-w-screen-sm w-full z-10 fixed bottom-0 h-60'></nav>
-      <div id='sidebar' class='w-full h-dvh z-20 fixed inset-0 hidden'></div>
+      <div id='sidebar' class='w-full h-dvh z-20 fixed inset-0 opacity-0 hidden'></div>
     `;
   }
 
