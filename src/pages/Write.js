@@ -1,13 +1,13 @@
 import Rating from '@components/Rating';
 import Header from '@components/Header';
 import ImageSlider from '@components/ImageSlider';
-import AbstractView from './AbstractView';
 import Evaluation from '@components/Write/Evaluation';
 import Categories from '@components/Write/Categories';
 import FileInput from '@components/Write/FileInput';
 import Map from '@components/Write/Map';
 import scrollLock from '@utils/scrollLock';
 import animate from '@utils/verticalAnimation';
+import AbstractView from './AbstractView';
 
 export default class Write extends AbstractView {
   scrollY; // 지도 modal 렌더링 여부에 따라 스크롤 위치 변경하기 위한 속성
@@ -25,7 +25,7 @@ export default class Write extends AbstractView {
       recommendMenu: '',
       memo: '',
       locationInfo: { id: '', address: '', placeName: '' },
-      modalisVisible: false,
+      isMapModalVisible: false,
     };
   }
 
@@ -211,11 +211,11 @@ export default class Write extends AbstractView {
     if (!prev) {
       this.scrollY = window.scrollY;
       this.setState({ ...this.state, isMapModalVisible: !prev });
-    } 
+    }
     const el = animate('#map-modal', 200, prev, () => {
       this.setState({ ...this.state, isMapModalVisible: !prev });
     });
-    scrollLock(display, this.scrollY);
     el.play();
+    setTimeout(() => scrollLock(display, this.scrollY), prev ? 0 : 150);
   }
 }
