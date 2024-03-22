@@ -2,9 +2,11 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   signOut as request,
+  deleteUser,
 } from 'firebase/auth';
 import { auth } from '@libs/firebase';
 import store from '@stores';
+import Modal from '@components/Modal';
 
 export const signIn = async () => {
   try {
@@ -23,5 +25,21 @@ export const signOut = async () => {
     window.location.href = '/';
   } catch (error) {
     console.log('Error with sign out: ', error);
+  }
+};
+
+export const leave = async () => {
+  try {
+    await deleteUser(store.state.user);
+    new Modal({
+      type: 'alert',
+      backdrop: true,
+      message: '탈퇴가 완료되었어요.',
+      onClose: () => {
+        window.location.href = '/';
+      },
+    });
+  } catch (error) {
+    console.log('Error with deleting User: ', error);
   }
 };
