@@ -11,6 +11,7 @@ const navigate = (to, isReplace = false) => {
   });
 
   dispatchEvent(historyChangeEvent);
+  window.scrollTo(0, 0);
 };
 
 export default navigate;
