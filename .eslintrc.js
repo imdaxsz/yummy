@@ -34,13 +34,17 @@ module.exports = {
     'no-alert': 0,
     'no-console': 0,
     'prefer-destructuring': 0,
+    'lines-between-class-members': 0,
+    'no-plusplus': 0,
+    'no-continue': 0,
+    'import/extensions': [
+      'error',
+      'always',
+      {
+        js: 'never',
+        mjs: 'never',
+        css: 'never',
+      },
+    ],
   },
-  'import/extensions': [
-    'error',
-    'always',
-    {
-      js: 'never',
-      mjs: 'never',
-    },
-  ],
 };
