@@ -1,7 +1,6 @@
 import Compressor from 'compressorjs';
 
-const optimizeImageFile = (file) => {
-  return new Promise((resolve, reject) => {
+const optimizeImageFile = (file) => new Promise((resolve, reject) => {
     new Compressor(file, {
       quality: 0.8,
       convertSize: 1000000,
@@ -15,7 +14,6 @@ const optimizeImageFile = (file) => {
         reject(err);
       },
     });
-  })
-};
+  });
 
 export default optimizeImageFile;

@@ -29,20 +29,6 @@ export default class Rating extends Component {
     `;
   }
 
-  setEvent() {
-    const { value: prev, readonly, onChangeRating } = this.props;
-    if (!readonly)
-      this.addEvent('click', 'i', (e) => {
-        const { target } = e;
-        const { value } = target.dataset;
-        if (prev === value) {
-          onChangeRating(0);
-          return;
-        }
-        onChangeRating(value);
-      });
-  }
-
   didMount() {
     const colorStar = this.$target.querySelector('#color-star');
     const { readonly, value } = this.props;
@@ -55,5 +41,19 @@ export default class Rating extends Component {
     if (value > 0) {
       valueText.classList.replace('text-neutral-300', 'text-neutral-500');
     }
+  }
+
+  setEvent() {
+    const { value: prev, readonly, onChangeRating } = this.props;
+    if (!readonly)
+      this.addEvent('click', 'i', (e) => {
+        const { target } = e;
+        const { value } = target.dataset;
+        if (prev === value) {
+          onChangeRating(0);
+          return;
+        }
+        onChangeRating(value);
+      });
   }
 }

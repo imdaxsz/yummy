@@ -1,8 +1,8 @@
 import Component from '@components';
+import { FOOD_CATEGORY } from '@constants';
 import RangeSlider from './RangeSlider';
 import Searchbar from './Searchbar';
 import Chip from './Chip';
-import { FOOD_CATEGORY } from '@constants';
 
 
 
@@ -10,6 +10,7 @@ export default class SearchModal extends Component {
   setup() {
     this.state = { filter: [] };
   }
+
   template() {
     return `
       <div id='search-header'
@@ -32,14 +33,6 @@ export default class SearchModal extends Component {
         <div class='h-300'></div>
       </div>
     `;
-  }
-
-  onChipClick(id) {
-    const { filter: prev } = this.state;
-    const filter = prev.includes(id)
-      ? prev.filter((i) => i !== id)
-      : [...prev, id];
-    this.setState({ ...this.state, filter });
   }
 
   didMount() {
@@ -69,5 +62,13 @@ export default class SearchModal extends Component {
   setEvent() {
     const { onClick } = this.props;
     if (onClick) this.addEvent('click', '#back', onClick);
+  }
+
+  onChipClick(id) {
+    const { filter: prev } = this.state;
+    const filter = prev.includes(id)
+      ? prev.filter((i) => i !== id)
+      : [...prev, id];
+    this.setState({ ...this.state, filter });
   }
 }

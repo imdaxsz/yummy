@@ -1,4 +1,4 @@
-import anime from 'animejs';
+import anime from 'animejs/lib/anime.es';
 
 /**
  * @description 수직으로 움직이는 애니메이션
@@ -18,7 +18,7 @@ const animate = (
     targets: selector,
     translateY: reverse ? 0 : '-100%',
     opacity: reverse ? 0.2 : 1,
-    duration: duration,
+    duration,
     autoplay: false,
     easing: 'easeInOutQuad',
     complete: reverse && callback,

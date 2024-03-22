@@ -1,3 +1,6 @@
+/* eslint-disable func-names */
+/* eslint-disable camelcase */
+/* eslint-disable no-undef */
 import Component from '@components';
 import LocationInfo from './LocationInfo';
 
@@ -53,7 +56,7 @@ export default class Map extends Component {
     } else {
       this.$input = document.getElementById('keyword');
       this.$input.focus({ preventScroll: true });
-    } 
+    }
     this.ps = new kakao.maps.services.Places();
     this.getUserLocation();
   }
@@ -120,6 +123,7 @@ export default class Map extends Component {
     this.ps.keywordSearch(keyword, this.placesSearchCB.bind(this), {
       location: this.userLocation,
     });
+    return true;
   }
 
   // 장소 검색이 완료됐을 때 호출되는 콜백함수
@@ -129,12 +133,14 @@ export default class Map extends Component {
       this.displayPlaces(data);
       // 페이지 번호 렌더링
       this.displayPagination(pagination);
-    } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+      return;
+    }
+    if (status === kakao.maps.services.Status.ZERO_RESULT) {
       alert('검색 결과가 존재하지 않습니다.');
       return;
-    } else if (status === kakao.maps.services.Status.ERROR) {
+    }
+    if (status === kakao.maps.services.Status.ERROR) {
       alert('검색 결과 중 오류가 발생했습니다.');
-      return;
     }
   }
 
@@ -147,16 +153,16 @@ export default class Map extends Component {
     // 검색 결과 목록에 추가된 항목들을 제거
     this.removeAllChildNods(listEl);
 
-    for (var i = 0; i < places.length; i++) {
+    for (let i = 0; i < places.length; i++) {
       const itemEl = this.getListItem(places[i]); // 검색 결과 항목 Element 생성
       const { id, road_address_name, place_name } = places[i];
 
       // 검색 결과 항목 클릭 시 지도 및 장소 정보 출력
-      ((address, place_name) => {
+      ((address, placeName) => {
         itemEl.onclick = () => {
           this.setState({
             ...this.state,
-            locationInfo: { id, address, placeName: place_name },
+            locationInfo: { id, address, placeName },
           });
           this.geocoder.addressSearch(address, this.addressSearchCB.bind(this));
         };
@@ -173,22 +179,17 @@ export default class Map extends Component {
   // 검색 결과 항목을 Element로 반환하는 함수
   getListItem(places) {
     const el = document.createElement('li');
-    let itemStr =
-      '<div class="info">' + '   <h5>' + places.place_name + '</h5>';
+    let itemStr = `<div class="info">     <h5>${places.place_name}</h5>`;
 
     if (places.road_address_name) {
       itemStr +=
-        '    <span>' +
-        places.road_address_name +
-        '</span>' +
-        '   <span class="jibun gray">' +
-        places.address_name +
-        '</span>';
+        `    <span>${places.road_address_name}</span>` +
+        `   <span class="jibun gray">${places.address_name}</span>`;
     } else {
-      itemStr += '    <span>' + places.address_name + '</span>';
+      itemStr += `    <span>${places.address_name}</span>`;
     }
 
-    itemStr += '  <span class="tel">' + places.phone + '</span>' + '</div>';
+    itemStr += `  <span class="tel">${places.phone}</span>  </div>`;
 
     el.innerHTML = itemStr;
     el.className = 'item';
@@ -206,7 +207,7 @@ export default class Map extends Component {
       paginationEl.removeChild(paginationEl.lastChild);
     }
 
-    for (var i = 1; i <= pagination.last; i++) {
+    for (let i = 1; i <= pagination.last; i++) {
       const el = document.createElement('a');
       el.href = '#';
       el.innerHTML = i;
@@ -216,10 +217,10 @@ export default class Map extends Component {
       } else {
         el.addEventListener(
           'click',
-          (function (i) {
+          (function (num) {
             return function (e) {
               e.preventDefault();
-              pagination.gotoPage(i);
+              pagination.gotoPage(num);
             };
           })(i),
         );

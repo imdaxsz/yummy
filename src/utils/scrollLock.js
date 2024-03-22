@@ -26,7 +26,7 @@ const scrollLock = (display, to = null) => {
     document.body.style.cssText = '';
     if (isMobile) return;
     const scrollY = to ? `-${to}` : document.body.style.top;
-    window.scrollTo(0, parseInt(scrollY || '0') * -1);
+    window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
   }
   if (navigator.userAgentData.mobile) document.body.style.background = 'black';
 };

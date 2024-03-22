@@ -1,5 +1,7 @@
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-param-reassign */
+import anime from 'animejs/lib/anime.es';
 import scrollLock from './scrollLock';
-import anime from 'animejs/lib/anime.es.js';
 
 const toggleSidebar = () => {
   const sidebar = document.querySelector('#sidebar');

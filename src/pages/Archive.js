@@ -1,8 +1,8 @@
 import Header from '@components/Header';
-import AbstractView from './AbstractView';
 import Tabs from '@components/Tabs';
-import navigate from '@utils/Navigate';
+import navigate from '@utils/navigate';
 import Card from '@components/Card';
+import AbstractView from './AbstractView';
 
 export default class Archive extends AbstractView {
   $listHeader;
@@ -70,10 +70,6 @@ export default class Archive extends AbstractView {
     `;
   }
 
-  onTabClick(id) {
-    navigate(`/archive?category=${id}`);
-  }
-
   didMount() {
     const { items } = this.state;
     const $header = this.$target.querySelector('#header');
@@ -99,5 +95,9 @@ export default class Archive extends AbstractView {
         thumnail: 'https://i.ibb.co/Xs9dyX8/Kakao-Talk-20240204-210852878.jpg',
       });
     });
+  }
+
+  onTabClick(id) {
+    navigate(`/archive?category=${id}`);
   }
 }

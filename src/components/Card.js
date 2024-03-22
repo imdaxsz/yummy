@@ -40,7 +40,7 @@ export default class Card extends Component {
     const value = isListCard ? likeCount : rating;
     const icon = isListCard ? 'ph-heart' : 'ph-star';
     const iconColor = isListCard ? 'text-secondary' : 'text-primary';
-    const isLiked = !isMine && location.pathname === '/archive';
+    const isLiked = !isMine && window.location.pathname === '/archive';
 
     return `
       <a class='block relative' href=${url}>
@@ -93,7 +93,7 @@ export default class Card extends Component {
       navigate(target.href);
     });
 
-    this.addEvent('click', 'button', (e) => {
+    this.addEvent('click', 'button', () => {
       console.log('like button clicked');
     });
   }

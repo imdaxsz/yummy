@@ -22,7 +22,7 @@ export default class Evaluation extends Component {
 
   didMount() {
     const { evaluation, onClick } = this.props;
-    for (const key of Object.keys(EVALUATION)) {
+    Object.keys(EVALUATION).forEach((key) => {
       const container = this.$target.querySelector(`#${key}`);
       container.className = 'flex-center gap-8 pt-8 pb-24 text-zinc-500';
       EVALUATION[key].forEach((item) => {
@@ -32,11 +32,12 @@ export default class Evaluation extends Component {
           id: `${key}-${item.score}`,
           text: item.text,
           active:
-            evaluation.hasOwnProperty(key) && evaluation[key] === item.score,
+            Object.prototype.hasOwnProperty.call(evaluation, key) &&
+            evaluation[key] === item.score,
           onClick,
         });
         container.appendChild(el);
       });
-    }
+    });
   }
 }

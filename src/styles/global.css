@@ -1,5 +1,5 @@
-@import url("./font.css");
-@import url("./map.css");
+@import url('./font.css');
+@import url('./map.css');
 
 body {
   font-family:
@@ -238,5 +238,3 @@ input[type='checkbox']:checked::before {
   font-size: 12px;
   color: #ddd;
 }
-
-/* MAP */

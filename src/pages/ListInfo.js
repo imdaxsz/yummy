@@ -1,6 +1,6 @@
 import Header from '@components/Header';
-import AbstractView from './AbstractView';
 import Card from '@components/Card';
+import AbstractView from './AbstractView';
 
 export default class ListInfo extends AbstractView {
   constructor($target, props) {
@@ -44,7 +44,7 @@ export default class ListInfo extends AbstractView {
     const $list = this.$target.querySelector('#list');
     new Header($header, { left: 'prev', center: '', right: 'menu' });
 
-    [1, 2,3,4].forEach((i) => {
+    [1, 2, 3, 4].forEach((i) => {
       const el = document.createElement('div');
       $list.appendChild(el);
       new Card(el, {

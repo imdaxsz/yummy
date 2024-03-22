@@ -33,6 +33,11 @@ export default class Tabs extends Component {
     });
   }
 
+  didMount() {
+    const category = window.location.search.split('=')[1];
+    this.setActiveStyle(category);
+  }
+
   setEvent() {
     const { onClick } = this.props;
 
@@ -44,10 +49,5 @@ export default class Tabs extends Component {
       this.setActiveStyle(currentId);
       if (onClick) onClick(currentId);
     });
-  }
-
-  didMount() {
-    const category = window.location.search.split('=')[1];
-    this.setActiveStyle(category);
   }
 }
