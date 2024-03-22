@@ -1,3 +1,5 @@
+import { setCurrentObserver } from '@stores/observer';
+
 export default class Component {
   $target;
 
@@ -22,10 +24,12 @@ export default class Component {
   }
 
   render() {
+    setCurrentObserver(this);
     const template = this.template();
     if (template) {
       this.$target.innerHTML = template;
       this.didMount();
+      setCurrentObserver(null);
     }
   }
 
