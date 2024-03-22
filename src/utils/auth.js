@@ -4,14 +4,57 @@ import {
   signOut as request,
   deleteUser,
 } from 'firebase/auth';
-import { auth } from '@libs/firebase';
+import { auth, db } from '@libs/firebase';
 import store from '@stores';
 import Modal from '@components/Modal';
+import { collection, deleteDoc, doc, getDoc, setDoc } from 'firebase/firestore';
+
+const userExists = async (uid) => {
+  try {
+    const docRef = doc(db, 'list', uid);
+    const docSnap = await getDoc(docRef);
+    return !docSnap.exists();
+  } catch (error) {
+    console.log('Error with finding user: ', error);
+    throw error;
+  }
+};
+
+const createList = async (uid, email) => {
+  try {
+    const listRef = collection(db, 'list');
+    await setDoc(doc(listRef, uid), {
+      createdAt: Date.now(),
+      email,
+      title: `${email.split('@')[0]}님의 리스트`,
+    });
+  } catch (error) {
+    console.log('Error with creating list: ', error);
+  }
+};
+
+const deleteList = async (uid) => {
+  try {
+    const docRef = doc(db, 'list', uid);
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) {
+      console.log('no such list');
+      return;
+    }
+    await deleteDoc(docRef);
+    // TODO: 리스트 내 맛집 게시글 삭제
+  } catch (error) {
+    console.log('Error with deleting list: ', error);
+  }
+};
 
 export const signIn = async () => {
   try {
     const provider = new GoogleAuthProvider();
     await signInWithPopup(auth, provider);
+    const { uid, email } = auth.currentUser;
+    const isNewMember = await userExists(uid);
+    if (isNewMember) await createList(uid, email);
     store.setState({ user: auth.currentUser });
   } catch (error) {
     console.log('Error with sign in: ', error);
@@ -30,7 +73,9 @@ export const signOut = async () => {
 
 export const leave = async () => {
   try {
-    await deleteUser(store.state.user);
+    const { user } = store.state;
+    await deleteList(user.uid);
+    await deleteUser(user);
     new Modal({
       type: 'alert',
       backdrop: true,
