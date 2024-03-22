@@ -4,12 +4,12 @@ import scrollLock from '@utils/scrollLock';
 export default class Modal extends Component {
   $modal;
 
-  constructor({ type = '', backdrop = true, ...rest }) {
+  constructor({ type = '', backdrop = true, message = '', onClose = null }) {
     const modal = document.createElement('div');
     modal.id = 'modal';
     modal.className = 'fixed inset-0 z-30';
     document.body.appendChild(modal);
-    super(modal, { type, backdrop, ...rest });
+    super(modal, { type, backdrop, message, onClose });
     this.$modal = modal;
   }
 
