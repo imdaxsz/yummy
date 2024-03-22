@@ -3,7 +3,7 @@ import toggleSidebar from '@utils/toggleSidebar';
 import navigate from '@utils/navigate';
 import GoogleIcon from '@assets/google-icon.svg';
 import store from '@stores';
-import signIn from '@utils/signIn';
+import { signIn, signOut } from '@utils/auth';
 import Component from '.';
 
 export default class Sidebar extends Component {
@@ -36,10 +36,12 @@ export default class Sidebar extends Component {
   }
 
   setEvent() {
-    this.addEvent('click', 'a', (e) => {
+    this.addEvent('click', 'a', async (e) => {
       e.preventDefault();
       const target = e.target.tagName === 'I' ? e.target.parentNode : e.target;
-      navigate(target.href);
+      if (target.dataset.key === 'signout')
+        await signOut();
+      else navigate(target.href);
       toggleSidebar();
     });
 
