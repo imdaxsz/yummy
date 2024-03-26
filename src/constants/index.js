@@ -45,3 +45,5 @@ export const EVALUATION = {
     { score: 3, text: '길어요' },
   ],
 };
+
+export const EVALUATION_LABEL = {taste: '맛', price: '가격', service: '서비스', clean: '위생', hall: '매장', waiting: '웨이팅'}
