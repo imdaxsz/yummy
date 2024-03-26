@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 import Rating from '@components/Rating';
 import Header from '@components/Header';
 import ImageSlider from '@components/ImageSlider';
@@ -7,6 +8,10 @@ import FileInput from '@components/Write/FileInput';
 import Map from '@components/Write/Map';
 import scrollLock from '@utils/scrollLock';
 import animate from '@utils/verticalAnimation';
+import { addPost, updatePost } from '@utils/post';
+import getImageUrl from '@utils/getImageUrl';
+import store from '@stores';
+import navigate from '@utils/navigate';
 import AbstractView from './AbstractView';
 
 export default class Write extends AbstractView {
@@ -42,7 +47,7 @@ export default class Write extends AbstractView {
 
     return `
       <div id='header' class='bg-white flex max-w-screen-sm w-full fixed top-0 h-60 z-10'></div>
-      <div id='editor' class='px-24 pt-8 py-100 tracking-tight'>
+      <form id='editor' class='px-24 pt-8 py-100 tracking-tight'>
         <input
           id='name'
           type='text'
@@ -53,9 +58,10 @@ export default class Write extends AbstractView {
         <p class ='text-14 font-medium mb-12 '>카테고리</p>
         <div id='categories' class='flex-center gap-7 mb-40 flex-wrap text-zinc-500'></div>
         ${
-          attachments.length === 0 ? `<div id='fileInput-container'></div>` : ``
+          attachments.length === 0
+            ? `<div id='fileInput-container'></div>`
+            : `<div id='attachments'></div>`
         }
-        <div id='attachments'></div>
         <div id='rating' class='p-8 my-16'></div>
         ${ratingValue !== 0 ? `<div id='evaluation' class='mb-48 text-14'></div>` : ``}
         <p class ='text-14 font-medium mb-6'>추천 메뉴</p>
@@ -98,7 +104,7 @@ export default class Write extends AbstractView {
               </button>`
         }
 
-      </div>
+      </form>
       ${isMapModalVisible ? `<div id="map-modal" ></div>` : ``}
     `;
   }
@@ -120,7 +126,11 @@ export default class Write extends AbstractView {
       isMapModalVisible,
     } = this.state;
 
-    new Header($header, { left: 'prev', center: '', right: '완료' });
+    new Header($header, {
+      left: 'prev',
+      center: '',
+      right: FormButton(this.validateForm()),
+    });
 
     new Categories($categories, {
       categories,
@@ -169,6 +179,7 @@ export default class Write extends AbstractView {
     this.addEvent('click', '#removeLocation', () =>
       this.setLocation('', '', ''),
     );
+    this.addEvent('submit', '#editor', this.onSubmit.bind(this));
   }
 
   setLocation(id, address, placeName) {
@@ -205,6 +216,38 @@ export default class Write extends AbstractView {
     this.setState({ ...this.state, [id]: value });
   }
 
+  validateForm() {
+    const { name, categories, locationInfo } = this.state;
+    return (
+      name.trim().length === 0 ||
+      categories.length === 0 ||
+      locationInfo.id === ''
+    );
+  }
+
+  async onSubmit(e) {
+    e.preventDefault();
+    const { isMapModalVisible, attachments, ...post } = this.state;
+    const doc = await addPost({
+      attachments: [],
+      ...post,
+      username: store.state.user.email,
+      createdAt: Date.now(),
+    });
+
+    if (doc && attachments.length > 0) {
+      const imageUrls = await Promise.all(
+        attachments.map(
+          async (attachment) =>
+            // eslint-disable-next-line no-return-await
+            await getImageUrl(store.state.user.uid, doc.id, attachment),
+        ),
+      );
+      updatePost(doc, { attachments: [...imageUrls] });
+    }
+    navigate(`/post/${doc.id}`);
+  }
+
   toggleMapModal() {
     const { isMapModalVisible: prev } = this.state;
     const display = prev ? 'none' : 'block';
@@ -218,4 +261,17 @@ export default class Write extends AbstractView {
     el.play();
     setTimeout(() => scrollLock(display, this.scrollY), prev ? 0 : 150);
   }
+}
+
+function FormButton(disabled) {
+  return `
+    <button
+      form='editor'
+      ${disabled && 'disabled'} 
+      type='submit' 
+      class='btn-primary px-12 py-2 bg-primary rounded-full text-white font-medium'
+    >
+      완료
+    </button>
+  `;
 }
