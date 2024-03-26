@@ -3,6 +3,10 @@ import toggleSidebar from '@utils/toggleSidebar';
 import Component from '.';
 
 export default class Header extends Component {
+  constructor($target, { left, center, right, onClickRight = null }) {
+    super($target, { left, center, right, onClickRight });
+  }
+
   template() {
     const { left, center, right } = this.props;
     return `
@@ -15,9 +19,13 @@ export default class Header extends Component {
         <a href='/' data-key='logo'>${center}</a>
       </div>
       <div class='justify-end'>
-        <button id=${right} aria-label=${right === 'menu' ? '메뉴' : right} class='-mr-2' >
-          ${right === 'menu' ? `<i class='ph ph-list block'></i>` : right ?? ''}
-        </button>
+      ${
+        right === 'menu'
+          ? `<button id='menu' aria-label='메뉴' class='-mr-2' >
+              <i class='ph ph-list block'></i>
+             </button>`
+          : right ?? ''
+      }
       </div>
     `;
   }
@@ -32,8 +40,9 @@ export default class Header extends Component {
       window.history.back();
     });
 
-    this.addEvent('click', '#menu', () => {
-      toggleSidebar();
-    });
+    const { right } = this.props;
+    if (right === 'menu') {
+      this.addEvent('click', '#menu', toggleSidebar);
+    }
   }
 }
