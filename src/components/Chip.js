@@ -21,9 +21,11 @@ export default class Chip extends Component {
 
     const getChipStyle = () => {
       const minWidth = type === 'explain' ? 'min-w-98' : 'min-w-79';
-      const cursor = ['explain', 'action'].includes(type) ? 'cursor-default' : 'cursor-pointer';
+      const cursor = ['explain', 'action'].includes(type)
+        ? 'cursor-default'
+        : 'cursor-pointer';
       const weight = active ? 'font-medium' : '';
-      const common = `${minWidth} ${cursor} ${weight} w-fit text-14 text-center py-4 px-10 rounded-full border `;
+      const common = `${minWidth} ${cursor} ${weight} w-fit text-14 text-center py-4 px-10 rounded-full border tracking-normal `;
       let className = common;
 
       switch (type) {
@@ -46,7 +48,7 @@ export default class Chip extends Component {
 
     return `
       <div id=${id} class='${getChipStyle()}'>
-        ${type === 'explain' ? `<span class='text-secondary font-medium'>${label}&nbsp;</span>` : ``}
+        ${type === 'explain' ? `<span class='text-zinc-400 font-medium'>${label}&nbsp;</span>` : ``}
         <span>${text}</span>
         ${type === 'filtered' ? `<i class='ph ph-x cursor-pointer text-15 pl-2'></i>` : ``}
       </div>

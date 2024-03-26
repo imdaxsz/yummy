@@ -60,7 +60,7 @@ function memberMenu(email) {
   return `
     <div id='member-menu' class=''>
       <div id='profile' class='flex items-center px-14 py-20 gap-8'>
-        <i class='ph ph-user-circle'></i>
+        <i class='ph ph-user-circle text-38 text-primary'></i>
         <h3 class='font-medium'>${email}</h3>
       </div>
       <ul class='mt-40 flex flex-col gap-[0.8rem]'>

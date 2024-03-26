@@ -4,7 +4,7 @@ import Component from '.';
 export default class BottomNavigation extends Component {
   template() {
     return `
-      <ul class='w-full flex flex-1 gray-1'>
+      <ul class='w-full flex flex-1 text-[#c5c5c5]'>
         <li>
           <a href='/' data-key='home' class='text-primary'>
             <i class='ph-fill ph-house'></i>홈

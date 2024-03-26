@@ -28,6 +28,14 @@ body,
   height: 100%;
 }
 
+.shadow-sm {
+  box-shadow: 0 0 4px 0px rgba(0, 0, 0, 0.08);
+}
+
+.h-content {
+  height: calc(100% - 120px);
+}
+
 input,
 textarea {
   outline: none;
@@ -36,6 +44,26 @@ textarea {
 input::placeholder,
 textarea::placeholder {
   color: #acb2bb;
+}
+
+button:disabled {
+  background: #d4d4d8;
+}
+
+.btn-primary:disabled {
+  background: rgb(255, 205, 0, 0.3);
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.item-center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 #page {
@@ -58,7 +86,7 @@ textarea::placeholder {
 
 #navbar {
   background-color: white;
-  box-shadow: 0px -4px 6px 0px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 -0.1rem 6px 0px rgba(0, 0, 0, 0.06);
 }
 
 #navbar a {
@@ -83,23 +111,6 @@ textarea::placeholder {
 
 #drawer {
   box-shadow: -5px 0px 15px 0px rgba(0, 0, 0, 0.1);
-}
-
-#profile .ph {
-  font-size: 38px;
-  color: #ffcd00;
-}
-
-.flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.item-center {
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 
 #modal-container {
@@ -135,10 +146,6 @@ textarea::placeholder {
 
 .border-secondary {
   border-color: #ff7272;
-}
-
-.gray-1 {
-  color: #c5c5c5;
 }
 
 .slider {
@@ -237,4 +244,9 @@ input[type='checkbox']:checked::before {
   padding-right: 4px;
   font-size: 12px;
   color: #ddd;
+}
+
+.dot::before {
+  content: '·';
+  padding-right: 5px;
 }
