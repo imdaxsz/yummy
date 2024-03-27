@@ -28,16 +28,28 @@ export default class FileInput extends Component {
     const { updateAttachments } = this.props;
     const attachments = [];
     const { files } = e.target;
+
     if (files.length === 0) {
       return;
     }
+
+    if (files.length > 4) {
+      alert('이미지는 최대 4장까지 첨부할 수 있어요!');
+      return;
+    }
+
+    const limitsize = 1024 ** 2 * 5;
+
     Array.from(files).forEach(async (file, i) => {
+      if (limitsize < file.size) {
+        alert('5MB 이하의 이미지만 첨부할 수 있어요!');
+        return;
+      }
       const optimizedFile = await optimizeImageFile(file);
       const reader = new FileReader();
       reader.onload = (readerEvent) => {
         attachments.push(readerEvent.target.result);
         if (i === files.length - 1) {
-          console.log(attachments);
           updateAttachments(attachments);
         }
       };
