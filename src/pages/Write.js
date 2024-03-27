@@ -12,6 +12,7 @@ import { addPost, updatePost } from '@utils/post';
 import getImageUrl from '@utils/getImageUrl';
 import store from '@stores';
 import navigate from '@utils/navigate';
+import Snackbar from '@components/Snackbar';
 import AbstractView from './AbstractView';
 
 export default class Write extends AbstractView {
@@ -31,6 +32,7 @@ export default class Write extends AbstractView {
       memo: '',
       locationInfo: { id: '', address: '', placeName: '' },
       isMapModalVisible: false,
+      isLoading: false,
     };
   }
 
@@ -124,12 +126,13 @@ export default class Write extends AbstractView {
       ratingValue,
       attachments,
       isMapModalVisible,
+      isLoading,
     } = this.state;
 
     new Header($header, {
       left: 'prev',
       center: '',
-      right: FormButton(this.validateForm()),
+      right: FormButton(isLoading),
     });
 
     new Categories($categories, {
@@ -216,23 +219,56 @@ export default class Write extends AbstractView {
     this.setState({ ...this.state, [id]: value });
   }
 
-  validateForm() {
+  isFormValid() {
     const { name, categories, locationInfo } = this.state;
-    return (
-      name.trim().length === 0 ||
-      categories.length === 0 ||
-      locationInfo.id === ''
-    );
+    const checkName = name.trim().length === 0;
+    const checkCategories = categories.length === 0;
+    const checkLocation = locationInfo.id === '';
+    const result =
+      name.trim().length !== 0 &&
+      categories.length !== 0 &&
+      locationInfo.id !== '';
+
+    if (!result) {
+      const arr = [
+        checkName && '맛집 이름',
+        checkCategories && '카테고리',
+        checkLocation && '위치',
+      ].filter(Boolean);
+
+      const charCode = arr[arr.length - 1].charCodeAt(
+        arr[arr.length - 1].length - 1,
+      );
+      const consonantCode = (charCode - 44032) % 28;
+      const message = `${arr.join(', ')}${consonantCode ? '을' : '를'} 입력해 주세요.`;
+      new Snackbar({ message });
+    }
+
+    return result;
   }
 
   async onSubmit(e) {
     e.preventDefault();
+    this.setState({ ...this.state, isLoading: true });
+    const { user } = store.state;
+    if (!user) {
+      alert('로그인 후 이용 가능해요!');
+      navigate('/'); // TODO: 로그인 페이지로 변경
+      return;
+    }
+
+    if (!this.isFormValid()) {
+      this.setState({ ...this.state, isLoading: false });
+      return;
+    }
+
     const { isMapModalVisible, attachments, ...post } = this.state;
     const doc = await addPost({
       attachments: [],
       ...post,
-      username: store.state.user.email,
+      username: user.email,
       createdAt: Date.now(),
+      likes: [],
     });
 
     if (doc && attachments.length > 0) {
@@ -240,11 +276,12 @@ export default class Write extends AbstractView {
         attachments.map(
           async (attachment) =>
             // eslint-disable-next-line no-return-await
-            await getImageUrl(store.state.user.uid, doc.id, attachment),
+            await getImageUrl(user.uid, doc.id, attachment),
         ),
       );
       updatePost(doc, { attachments: [...imageUrls] });
     }
+    this.setState({ ...this.state, isLoading: false });
     navigate(`/post/${doc.id}`);
   }
 
@@ -267,8 +304,8 @@ function FormButton(disabled) {
   return `
     <button
       form='editor'
-      ${disabled && 'disabled'} 
-      type='submit' 
+      type='submit'
+      ${disabled && 'disabled'}
       class='btn-primary px-12 py-2 bg-primary rounded-full text-white font-medium'
     >
       완료
