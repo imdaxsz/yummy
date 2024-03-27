@@ -1,14 +1,15 @@
 import Component from '@components';
+import { deletePost } from '@utils/post';
 import Modal from './Modal';
 
 export default class MoreModal extends Component {
-  constructor() {
+  constructor(props) {
     const modal = document.createElement('div');
     modal.id = 'modal';
     modal.className =
       'w-full m-auto max-w-screen-sm fixed inset-0 z-10';
     document.body.appendChild(modal);
-    super(modal, {});
+    super(modal, props);
     this.$modal = modal;
   }
   template() {
@@ -32,12 +33,13 @@ export default class MoreModal extends Component {
   }
 
   setEvent() {
+    const { docId } = this.props;
     this.addEvent('click', '#backdrop', () => this.$modal.remove());
     this.addEvent('click', '#delete', () => {
       new Modal({
         type: 'confirm',
         message: `삭제된 글은 복구할 수 없어요.<br/>글을 삭제할까요?`,
-        onClose: () => console.log('삭제완료'),
+        onClose: () => deletePost(docId),
       });
       this.$modal.remove();
     });

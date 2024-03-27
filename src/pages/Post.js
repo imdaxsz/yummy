@@ -114,6 +114,7 @@ export default class Post extends AbstractView {
     if (!$modal) {
       new MoreModal({
         toggleMoreModal: this.toggleMoreModal.bind(this),
+        docId: window.location.pathname.split('/')[2],
       });
       return;
     }
