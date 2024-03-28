@@ -1,4 +1,5 @@
 import Component from '@components';
+import sharePage from '@utils/share';
 
 export default class PostAction extends Component {
   template() {
@@ -13,5 +14,9 @@ export default class PostAction extends Component {
         <i class="block ph ph-share-network"></i>
       </button>
     `;
+  }
+
+  setEvent() {
+    this.addEvent('click', '#share', sharePage);
   }
 }

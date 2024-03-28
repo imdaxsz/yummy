@@ -1,4 +1,5 @@
 import Component from '@components';
+import sharePage from '@utils/share';
 
 export default class ListAction extends Component {
   template() {
@@ -28,5 +29,9 @@ export default class ListAction extends Component {
         }
       </div>
     `;
+  }
+
+  setEvent() {
+    this.addEvent('click', '#share', sharePage);
   }
 }
