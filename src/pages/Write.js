@@ -262,10 +262,11 @@ export default class Write extends AbstractView {
       return;
     }
 
-    const { isMapModalVisible, attachments, ...post } = this.state;
+    const { isMapModalVisible, attachments, isLoading, ...post } = this.state;
     const doc = await addPost({
       attachments: [],
       ...post,
+      uid: user.uid,
       username: user.email,
       createdAt: Date.now(),
       likes: [],
@@ -279,7 +280,7 @@ export default class Write extends AbstractView {
             await getImageUrl(user.uid, doc.id, attachment),
         ),
       );
-      updatePost(doc, { attachments: [...imageUrls] });
+      await updatePost(doc, { attachments: [...imageUrls] });
     }
     this.setState({ ...this.state, isLoading: false });
     navigate(`/post/${doc.id}`);
