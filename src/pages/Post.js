@@ -7,8 +7,9 @@ import PostHeader from '@components/Post/PostHeader';
 import PostAction from '@components/Post/PostAction';
 import LocationInfo from '@components/Post/LocationInfo';
 import store from '@stores';
-import { db } from '@libs/firebase';
+import navigate from '@utils/navigate';
 import { doc, onSnapshot } from 'firebase/firestore';
+import { db } from '@libs/firebase';
 import AbstractView from './AbstractView';
 
 export default class Post extends AbstractView {
@@ -31,6 +32,7 @@ export default class Post extends AbstractView {
         locationInfo: { id: '', address: '', placeName: '' },
         createdAt: '',
         username: '',
+        likes: [],
       },
       isLiked: false,
     };
@@ -80,15 +82,15 @@ export default class Post extends AbstractView {
       likes,
     } = post;
 
-    if (!post.id) {
+    if (!post.createdAt) {
       await this.fetchData();
       return;
     }
 
     const isMine = store.state.user
-    ? username === store.state.user.email
+      ? username === store.state.user.email
       : false;
-    
+
     const $postHeader = this.$target.querySelector('#post-header');
     new PostHeader($postHeader, {
       id,
@@ -134,8 +136,15 @@ export default class Post extends AbstractView {
     const id = window.location.pathname.split('/')[2];
     const docRef = doc(db, 'posts', id);
 
-    onSnapshot(docRef, (item) => {
-      this.setState({ ...this.state, post: { id: item.id, ...item.data() } });
+    onSnapshot(docRef, (res) => {
+      if (!res.exists()) {
+        const to = sessionStorage.getItem('redirect');
+        if (!to) alert('존재하지 않는 페이지예요!');
+        else sessionStorage.removeItem('redirect');
+        navigate(to || '/');
+        return;
+      }
+      this.setState({ ...this.state, post: { id: res.id, ...res.data() } });
       if (store.state.user) {
         const {
           post: { likes },
