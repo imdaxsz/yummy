@@ -5,7 +5,7 @@ import getFormattedDate from '@utils/getFormattedDate';
 
 export default class PostHeader extends Component {
   template() {
-    const { name, categories, username, createdAt } = this.props;
+    const { name, categories, username, createdAt, isMine } = this.props;
     const categoriesLabel = categories.map(
       (item) => FOOD_CATEGORY.find((i) => i.id === item).text,
     );
@@ -21,9 +21,14 @@ export default class PostHeader extends Component {
           <span class='text-zinc-300 dot'>${getFormattedDate(createdAt)}</span>
         </div>
       </div>
-      <div>
-        <button id='more' aria-label='더보기' class='text-24 text-zinc-400 -mx-7'>
-          <i class="block ph-bold ph-dots-three-vertical"></i>
+      ${
+        isMine
+          ? `<button id='more' aria-label='더보기' class='text-24 text-zinc-400 -mx-7'>
+              <i class="block ph-bold ph-dots-three-vertical"></i>
+            </button>
+            `
+          : ``
+      }
       </div>
     `;
   }
