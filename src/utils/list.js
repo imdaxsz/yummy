@@ -11,7 +11,7 @@ export const getAllList = async () => {
   }
 };
 
-// 회원의 uid를 통해 회원의 리스트 정보 조회
+// 회원의 uid를 통해 회원의 리스트 정보 조회 (실시간 업데이트 X)
 export const getListInfo = async (uid) => {
   try {
     const docRef = doc(db, 'list', uid);
@@ -36,7 +36,7 @@ export const getListItems = async (uid) => {
 // 리스트 좋아요
 export const toggleLikeList = async (uid, docId, listLikes) => {
   try {
-    const docRef = doc(db, 'lists', docId);
+    const docRef = doc(db, 'list', docId);
     if (listLikes.includes(uid)) {
       await updateDoc(docRef, {
         likes: [...listLikes.filter((id) => id !== uid)],
