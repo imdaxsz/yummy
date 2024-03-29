@@ -8,7 +8,6 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import store from '@stores';
-import navigate from './navigate';
 
 export const addPost = async (post) => {
   try {
@@ -40,8 +39,8 @@ export const updatePost = async (ref, obj) => {
 
 export const deletePost = async (id) => {
   try {
+    sessionStorage.setItem('redirect', `/list/${store.state.user.uid}`);
     await deleteDoc(doc(db, 'posts', id));
-    navigate(`/list/${store.state.user.uid}`);
   } catch (error) {
     console.log('Error with deleting post: ', error);
   }
