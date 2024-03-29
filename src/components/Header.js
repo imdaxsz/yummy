@@ -3,8 +3,8 @@ import toggleSidebar from '@utils/toggleSidebar';
 import Component from '.';
 
 export default class Header extends Component {
-  constructor($target, { left, center, right, onClickRight = null }) {
-    super($target, { left, center, right, onClickRight });
+  constructor($target, { left, center, right }) {
+    super($target, { left, center, right });
   }
 
   template() {

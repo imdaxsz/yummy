@@ -4,13 +4,13 @@ import anime from 'animejs';
 export default class Snackbar extends Component {
   $portal;
 
-  constructor(props) {
+  constructor({ message }) {
     const portal = document.createElement('div');
     portal.id = 'snackbar';
     portal.className =
       'fixed inset-0 z-[40] flex flex-col justify-end py-20 pointer-events-none';
     document.body.appendChild(portal);
-    super(portal, props);
+    super(portal, { message });
     this.$portal = portal;
   }
 

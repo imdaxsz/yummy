@@ -82,7 +82,7 @@ export default class Archive extends AbstractView {
         rating: item.ratingValue,
         placeLocation: item.locationInfo.address,
         isLiked: item.likes.includes(store.state.user.uid),
-        thumnail: item.attachments.length > 0 ? item.attachments[0] : '',
+        thumbnail: item.attachments.length > 0 ? item.attachments[0] : '',
       });
     });
   }

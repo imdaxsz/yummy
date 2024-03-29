@@ -71,7 +71,7 @@ export default class ListInfo extends AbstractView {
         userId: item.username.split('@')[0],
         rating: item.ratingValue,
         placeLocation: item.locationInfo.address,
-        thumnail: item.attachments.length > 0 ? item.attachments[0] : '',
+        thumbnail: item.attachments.length > 0 ? item.attachments[0] : '',
       });
     });
   }
