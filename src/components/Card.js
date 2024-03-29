@@ -31,21 +31,28 @@ export default class Card extends Component {
       likeCount,
       rating,
       placeLocation,
-      isMine,
-      thumnail,
+      isLiked,
+      thumbnail,
       cardType,
     } = this.props;
     const isListCard = cardType === 'list';
     const url = isListCard ? `/list/${id}` : `/post/${id}`;
-    const value = isListCard ? likeCount : rating;
-    const icon = isListCard ? 'ph-heart' : 'ph-star';
-    const iconColor = isListCard ? 'text-secondary' : 'text-primary';
-    const isLiked = !isMine && window.location.pathname === '/archive';
+    let icon = isListCard ? 'ph ph-heart' : 'ph-fill ph-star';
+    if (isLiked) icon = 'ph-fill ph-heart';
+    let iconColor = isListCard ? 'text-zinc-400' : 'text-primary';
+    let value = isListCard ? likeCount : rating;
+    if (rating === 0) {
+      iconColor = 'text-neutral-300';
+      value = '방문 전';
+    }
+    const isLikeListPage =
+      isLiked && window.location.pathname === '/archive';
+    const location = placeLocation.split(' ').slice(0, 2).join(' ');
 
     return `
       <a class='block relative' href=${url}>
       ${
-        isLiked
+        isLikeListPage
           ? `<button aria-label='좋아요' class='absolute top-0 right-0 p-2'>
               <i class='block ph-fill ph-heart text-28 text-secondary-100'></i>
             </button>`
@@ -56,25 +63,25 @@ export default class Card extends Component {
           rounded-lg overflow-hidden text-14'
         >
         ${
-          thumnail !== ''
+          thumbnail !== ''
             ? `<img
-            src=${thumnail}
-            alt='${userId}님의 리스트'
+            src=${thumbnail}
+            alt='${userId}님의 맛집'
             class='w-full h-full object-cover bg-zinc-200' 
           />`
             : `<i class='ph ph-fork-knife text-[2.5rem] text-white'></i>`
         }
         </div>
-        <h3 class='mt-4 mb-2 font-medium truncate tracking-tight'>${title}</h3>
-        <div class='flex justify-between items-center text-14  w-full'>
-          <span class='text-zinc-400 shrink-0'>${isListCard ? userId : placeLocation}</span>
+        <h3 class='mt-6 leading-tight text-15 font-medium truncate tracking-tight'>${title}</h3>
+        <div class='flex justify-between items-center text-13  w-full'>
+          <span class='text-zinc-400 shrink-0'>${isListCard ? userId : location}</span>
           <div class='flex items-center justify-end gap-4 w-[70%]'>
             <span class='${`flex-center shrink-0 ${iconColor} gap-2`}'>
-              <i class='${`block ph-fill ${icon} text-16`}'></i>
+              <i class='${`block ${icon} text-15`}'></i>
               ${value}
             </span>
             ${
-              !isListCard && isLiked
+              !isListCard && isLikeListPage
                 ? `<p class='text-zinc-400 author truncate'>${userId}</p>`
                 : ``
             }
