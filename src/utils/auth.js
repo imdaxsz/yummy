@@ -3,12 +3,16 @@ import {
   signInWithPopup,
   signOut as request,
   deleteUser,
+  onAuthStateChanged,
 } from 'firebase/auth';
 import { auth, db } from '@libs/firebase';
 import store from '@stores';
 import Modal from '@components/Modal';
 import { collection, deleteDoc, doc, getDoc, setDoc } from 'firebase/firestore';
 
+/**
+ * @description 로그인 시 사용자 존재 여부 확인
+ */
 const userExists = async (uid) => {
   try {
     const docRef = doc(db, 'list', uid);
@@ -20,19 +24,26 @@ const userExists = async (uid) => {
   }
 };
 
+/**
+ * @description 회원가입 시 사용자 맛집 목록 생성 및 초기화
+ */
 const createList = async (uid, email) => {
   try {
     const listRef = collection(db, 'list');
     await setDoc(doc(listRef, uid), {
       createdAt: Date.now(),
       email,
-      title: `${email.split('@')[0]}님의 리스트`,
+      title: `${email.split('@')[0]}님의 맛집`,
+      likes: [],
     });
   } catch (error) {
     console.log('Error with creating list: ', error);
   }
 };
 
+/**
+ * @description 회원탈퇴 시 사용자 맛집 목록 삭제
+ */
 const deleteList = async (uid) => {
   try {
     const docRef = doc(db, 'list', uid);
@@ -55,7 +66,6 @@ export const signIn = async () => {
     const { uid, email } = auth.currentUser;
     const isNewMember = await userExists(uid);
     if (isNewMember) await createList(uid, email);
-    store.setState({ user: auth.currentUser });
   } catch (error) {
     console.log('Error with sign in: ', error);
   }
@@ -64,13 +74,15 @@ export const signIn = async () => {
 export const signOut = async () => {
   try {
     await request(auth);
-    store.setState({ user: null });
     window.location.href = '/';
   } catch (error) {
     console.log('Error with sign out: ', error);
   }
 };
 
+/**
+ * @description 회원탈퇴
+ */
 export const leave = async () => {
   try {
     const { user } = store.state;
@@ -87,4 +99,19 @@ export const leave = async () => {
   } catch (error) {
     console.log('Error with deleting User: ', error);
   }
+};
+
+/**
+ * @description 현재 사용자 정보를 가져오는 함수
+ */
+export const authorize = async () => {
+  const fetchUser = () => {
+    onAuthStateChanged(auth, (user) => {
+      // user: User | NULL
+      store.setState({ user, isLoggedIn: !!user });
+    });
+  };
+  fetchUser();
+  window.addEventListener('historychange', fetchUser);
+  window.addEventListener('popstate', fetchUser);
 };

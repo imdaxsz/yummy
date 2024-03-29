@@ -1,4 +1,5 @@
 import router from '@/Router';
+import { authorize } from '@utils/auth';
 import Component from '.';
 import BottomNavigation from './BottomNavigation';
 import Sidebar from './Sidebar';
@@ -12,10 +13,11 @@ export default class Layout extends Component {
     `;
   }
 
-  didMount() {
+  async didMount() {
     const $page = this.$target.querySelector('#page');
     const $navbar = document.querySelector('#navbar');
     const $sidebar = document.querySelector('#sidebar');
+    await authorize();
     router($page);
     new BottomNavigation($navbar);
     new Sidebar($sidebar);
