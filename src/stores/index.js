@@ -1,7 +1,7 @@
 import { observable } from './observer';
 
 const store = {
-  state: observable({ user: null }),
+  state: observable({ user: null, isLoggedIn: false }),
 
   setState(newState) {
     Object.entries(newState).forEach(([key, value]) => {
