@@ -21,9 +21,11 @@ export const observable = (obj) => {
       if (JSON.stringify(target[key]) === JSON.stringify(value)) return true;
       target[key] = value;
       // state가 포함된 컴포넌트 리렌더링
-      Object.values(observers[key]).forEach((component) => {
-        component.render();
-      });
+      if (typeof observers[key] === 'object') {
+        Object.values(observers[key]).forEach((component) => {
+          component.render();
+        });
+      }
       return true; // 성공 표시
     },
   });
