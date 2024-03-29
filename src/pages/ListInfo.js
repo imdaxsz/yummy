@@ -1,8 +1,10 @@
 import Header from '@components/Header';
 import Card from '@components/Card';
-import { getListInfo, getListItems } from '@utils/list';
+import { getListItems } from '@utils/list';
 import store from '@stores';
 import ListAction from '@components/List/ListAction';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { db } from '@libs/firebase';
 import AbstractView from './AbstractView';
 
 export default class ListInfo extends AbstractView {
@@ -46,17 +48,17 @@ export default class ListInfo extends AbstractView {
       info: { email, likes, createdAt },
       isLiked,
     } = this.state;
-    const uid = window.location.pathname.split('/')[2];
+    const id = window.location.pathname.split('/')[2];
 
     if (!createdAt) {
-      await this.fetchListInfo(uid);
-      await this.fetchData(uid);
+      await this.fetchListInfo(id);
+      await this.fetchData(id);
       return;
     }
 
     const $action = this.$target.querySelector('#action');
-    const isMine = store.state.user ? uid === store.state.user.uid : false;
-    new ListAction($action, { email, likes, isLiked, isMine });
+    const isMine = store.state.user ? id === store.state.user.uid : false;
+    new ListAction($action, { id, email, likes, isLiked, isMine });
 
     const $list = this.$target.querySelector('#list');
     items.forEach((item) => {
@@ -74,26 +76,29 @@ export default class ListInfo extends AbstractView {
     });
   }
 
-  async fetchListInfo(uid) {
-    const result = await getListInfo(uid);
-    this.setState({ ...this.state, info: { ...result.data() } });
-    if (store.state.user) {
-      const {
-        info: { likes },
-      } = this.state;
-      this.setState({
-        ...this.state,
-        isLiked: likes.includes(store.state.user.uid),
-      });
-    }
+  async fetchListInfo(id) {
+    const docRef = doc(db, 'list', id);
+    onSnapshot(docRef, (item) => {
+      this.setState({ ...this.state, info: { ...item.data() } });
+      if (store.state.user) {
+        const {
+          info: { likes },
+        } = this.state;
+        this.setState({
+          ...this.state,
+          isLiked: likes.includes(store.state.user.uid),
+        });
+      }
+    });
   }
 
-  async fetchData(uid) {
-    const result = await getListItems(uid);
+  async fetchData(id) {
+    const result = await getListItems(id);
     const temp = [];
     result.forEach((item) => {
       temp.push({ id: item.id, ...item.data() });
     });
     this.setState({ ...this.state, items: temp });
+    document.title = `${this.state.info.title} | yummy`;
   }
 }

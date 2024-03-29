@@ -1,4 +1,7 @@
 import Component from '@components';
+import Snackbar from '@components/Snackbar';
+import store from '@stores';
+import { toggleLikeList } from '@utils/list';
 import sharePage from '@utils/share';
 
 export default class ListAction extends Component {
@@ -12,7 +15,7 @@ export default class ListAction extends Component {
     return `
       <span class='text-16'>${email.split('@')[0]}</span>
       <div class='flex-center gap-12'>
-        <button aria-label='좋아요' id='like' class='${`flex-center gap-3 ${likeIcon.color}`} '>
+        <button id='like' aria-label='좋아요' class='${`flex-center gap-3 ${likeIcon.color}`} '>
           <i class='${`block ${likeIcon.type} ph-heart text-22`}'></i>
           <span class='text-16'>${likes.length}</span>
         </button>
@@ -32,6 +35,23 @@ export default class ListAction extends Component {
   }
 
   setEvent() {
+    const { id: docId, likes, isMine } = this.props;
+    const { user, isLoggedIn } = store.state;
+    
+    this.addEvent('click', '#like', () => {
+      if (!isLoggedIn) {
+        new Snackbar({ message: '로그인이 필요해요.' });
+        return;
+      }
+      if (isMine) {
+        new Snackbar({
+          message: '나의 맛집 목록에는 "좋아요"를 할 수 없어요.',
+        });
+        return;
+      }
+      toggleLikeList(user.uid, docId, likes);
+    });
+
     this.addEvent('click', '#share', sharePage);
   }
 }

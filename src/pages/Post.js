@@ -3,10 +3,12 @@ import Rating from '@components/Rating';
 import Chip from '@components/Chip';
 import { EVALUATION, EVALUATION_LABEL } from '@constants';
 import ImageSlider from '@components/ImageSlider';
-import { getPost } from '@utils/post';
 import PostHeader from '@components/Post/PostHeader';
 import PostAction from '@components/Post/PostAction';
 import LocationInfo from '@components/Post/LocationInfo';
+import store from '@stores';
+import { db } from '@libs/firebase';
+import { doc, onSnapshot } from 'firebase/firestore';
 import AbstractView from './AbstractView';
 
 export default class Post extends AbstractView {
@@ -30,6 +32,7 @@ export default class Post extends AbstractView {
         createdAt: '',
         username: '',
       },
+      isLiked: false,
     };
   }
 
@@ -65,13 +68,7 @@ export default class Post extends AbstractView {
     const $header = this.$target.querySelector('#header');
     new Header($header, { left: 'prev', center: '', right: 'menu' });
 
-    const { post } = this.state;
-
-    if (!post.id) {
-      await this.fetchData();
-      return;
-    }
-
+    const { post, isLiked } = this.state;
     const {
       id,
       name,
@@ -82,6 +79,16 @@ export default class Post extends AbstractView {
       locationInfo,
       likes,
     } = post;
+
+    if (!post.id) {
+      await this.fetchData();
+      return;
+    }
+
+    const isMine = store.state.user
+    ? username === store.state.user.email
+      : false;
+    
     const $postHeader = this.$target.querySelector('#post-header');
     new PostHeader($postHeader, {
       id,
@@ -89,10 +96,11 @@ export default class Post extends AbstractView {
       categories,
       username,
       createdAt,
+      isMine,
     });
 
     const $action = this.$target.querySelector('#action');
-    new PostAction($action, { id, likes });
+    new PostAction($action, { id, likes, isLiked, isMine });
 
     const $location = this.$target.querySelector('#location');
     new LocationInfo($location, { locationInfo });
@@ -123,12 +131,21 @@ export default class Post extends AbstractView {
   }
 
   async fetchData() {
-    const docId = window.location.pathname.split('/')[2];
-    const result = await getPost(docId);
-    this.setState({
-      ...this.state,
-      post: { id: result.id, ...result.data() },
+    const id = window.location.pathname.split('/')[2];
+    const docRef = doc(db, 'posts', id);
+
+    onSnapshot(docRef, (item) => {
+      this.setState({ ...this.state, post: { id: item.id, ...item.data() } });
+      if (store.state.user) {
+        const {
+          post: { likes },
+        } = this.state;
+        this.setState({
+          ...this.state,
+          isLiked: likes.includes(store.state.user.uid),
+        });
+      }
+      document.title = `${this.state.post.name} | yummy`;
     });
-    document.title = `${this.state.post.name} | yummy`
   }
 }
