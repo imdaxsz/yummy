@@ -33,13 +33,13 @@ export default class MoreModal extends Component {
   }
 
   setEvent() {
-    const { docId } = this.props;
+    const { docId, hasImage } = this.props;
     this.addEvent('click', '#backdrop', () => this.$modal.remove());
     this.addEvent('click', '#delete', () => {
       new Modal({
         type: 'confirm',
         message: `삭제된 글은 복구할 수 없어요.<br/>글을 삭제할까요?`,
-        onClose: () => deletePost(docId),
+        onClose: () => deletePost(docId, hasImage),
       });
       this.$modal.remove();
     });

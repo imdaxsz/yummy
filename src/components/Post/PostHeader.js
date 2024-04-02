@@ -38,12 +38,13 @@ export default class PostHeader extends Component {
   }
 
   toggleMoreModal() {
-    const { id } = this.props;
+    const { id,  hasImage } = this.props;
     const $modal = document.querySelector('#modal');
     if (!$modal) {
       new MoreModal({
         toggleMoreModal: this.toggleMoreModal.bind(this),
         docId: id,
+        hasImage,
       });
       return;
     }

@@ -8,6 +8,7 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import store from '@stores';
+import { deleteImageFiles } from './image';
 
 export const addPost = async (post) => {
   try {
@@ -29,17 +30,19 @@ export const getPost = async (id) => {
   }
 };
 
-export const updatePost = async (ref, obj) => {
+export const updatePost = async (docRef, obj) => {
   try {
-    await updateDoc(ref, obj);
+    await updateDoc(docRef, obj);
   } catch (error) {
     console.log('Error with updating post: ', error);
   }
 };
 
-export const deletePost = async (id) => {
+export const deletePost = async (id, hasImage) => {
   try {
-    sessionStorage.setItem('redirect', `/list/${store.state.user.uid}`);
+    const { user } = store.state;
+    if (hasImage) await deleteImageFiles(user.uid, id);
+    sessionStorage.setItem('redirect', `/list/${user.uid}`);
     await deleteDoc(doc(db, 'posts', id));
   } catch (error) {
     console.log('Error with deleting post: ', error);

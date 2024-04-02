@@ -99,6 +99,7 @@ export default class Post extends AbstractView {
       username,
       createdAt,
       isMine,
+      hasImage: attachments.length > 0,
     });
 
     const $action = this.$target.querySelector('#action');
