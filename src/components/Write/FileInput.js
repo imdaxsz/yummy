@@ -24,7 +24,7 @@ export default class FileInput extends Component {
     `;
   }
 
-  onChangeAttachments(e) {
+  async onChangeAttachments(e) {
     const { updateAttachments } = this.props;
     const attachments = [];
     const { files } = e.target;
@@ -32,29 +32,34 @@ export default class FileInput extends Component {
     if (files.length === 0) {
       return;
     }
-
+    
     if (files.length > 4) {
       alert('이미지는 최대 4장까지 첨부할 수 있어요!');
       return;
     }
 
     const limitsize = 1024 ** 2 * 5;
-
-    Array.from(files).forEach(async (file, i) => {
-      if (limitsize < file.size) {
-        alert('5MB 이하의 이미지만 첨부할 수 있어요!');
-        return;
-      }
-      const optimizedFile = await optimizeImageFile(file);
-      const reader = new FileReader();
-      reader.onload = (readerEvent) => {
-        attachments.push(readerEvent.target.result);
-        if (i === files.length - 1) {
-          updateAttachments(attachments);
+    await Promise.all(
+      Array.from(files).map(async (file) => {
+        if (limitsize < file.size) {
+          alert('5MB 이하의 이미지만 첨부할 수 있어요!');
+          return;
         }
-      };
-      reader.readAsDataURL(optimizedFile);
-    });
+        const optimizedFile = await optimizeImageFile(file);
+        const reader = new FileReader();
+        reader.readAsDataURL(optimizedFile);
+
+        await new Promise((resolve, reject) => {
+          reader.onload = (readerEvent) => {
+            attachments.push(readerEvent.target.result);
+            resolve();
+          };
+          reader.onerror = reject;
+        });
+      }),
+    );
+
+    updateAttachments(attachments);
   }
 
   setEvent() {
