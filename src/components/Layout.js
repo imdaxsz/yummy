@@ -1,5 +1,5 @@
 import router from '@/Router';
-import { authorize } from '@utils/auth';
+import { authorize } from '@apis/auth';
 import Component from '.';
 import BottomNavigation from './BottomNavigation';
 import Sidebar from './Sidebar';

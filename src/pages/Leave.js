@@ -1,5 +1,5 @@
 import Header from '@components/Header';
-import { leave } from '@utils/auth';
+import { leave } from '@apis/auth';
 import AbstractView from './AbstractView';
 
 export default class Leave extends AbstractView {

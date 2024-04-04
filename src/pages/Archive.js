@@ -3,7 +3,7 @@ import Tabs from '@components/Tabs';
 import navigate from '@utils/navigate';
 import Card from '@components/Card';
 import store from '@stores';
-import { getListInfo, getListItems } from '@utils/list';
+import { getListInfo, getListItems } from '@apis/list';
 import LikeListHeader from '@components/Archive/LikeListHeader';
 import MyListHeader from '@components/Archive/MyListHeader';
 import AbstractView from './AbstractView';

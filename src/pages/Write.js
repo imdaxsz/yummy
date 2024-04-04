@@ -8,8 +8,8 @@ import FileInput from '@components/Write/FileInput';
 import Map from '@components/Write/Map';
 import scrollLock from '@utils/scrollLock';
 import animate from '@utils/verticalAnimation';
-import { addPost, updatePost } from '@utils/post';
-import getImageUrl from '@utils/getImageUrl';
+import { addPost, updatePost } from '@apis/post';
+import { getImageUrl } from '@apis/image';
 import store from '@stores';
 import navigate from '@utils/navigate';
 import Snackbar from '@components/Snackbar';
@@ -282,8 +282,8 @@ export default class Write extends AbstractView {
       );
       await updatePost(doc, { attachments: [...imageUrls] });
     }
+    window.location.href = `/post/${doc.id}`;
     this.setState({ ...this.state, isLoading: false });
-    navigate(`/post/${doc.id}`);
   }
 
   toggleMapModal() {

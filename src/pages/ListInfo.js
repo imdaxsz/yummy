@@ -1,6 +1,6 @@
 import Header from '@components/Header';
 import Card from '@components/Card';
-import { getListItems } from '@utils/list';
+import { getListItems } from '@apis/list';
 import store from '@stores';
 import ListAction from '@components/List/ListAction';
 import { doc, onSnapshot } from 'firebase/firestore';

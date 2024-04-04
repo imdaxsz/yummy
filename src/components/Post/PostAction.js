@@ -1,7 +1,7 @@
 import Component from '@components';
 import Snackbar from '@components/Snackbar';
 import store from '@stores';
-import { toggleLikePost } from '@utils/post';
+import { toggleLikePost } from '@apis/post';
 import sharePage from '@utils/share';
 
 export default class PostAction extends Component {
@@ -23,7 +23,7 @@ export default class PostAction extends Component {
   setEvent() {
     const { id: docId, likes, isMine } = this.props;
     const { user, isLoggedIn } = store.state;
-    
+
     this.addEvent('click', '#like', () => {
       if (!isLoggedIn) {
         new Snackbar({ message: '로그인이 필요해요.' });

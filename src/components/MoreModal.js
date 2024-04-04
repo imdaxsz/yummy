@@ -1,28 +1,29 @@
 import Component from '@components';
-import { deletePost } from '@utils/post';
+import { deletePost } from '@apis/post';
 import Modal from './Modal';
 
 export default class MoreModal extends Component {
   constructor(props) {
     const modal = document.createElement('div');
     modal.id = 'modal';
-    modal.className =
-      'w-full m-auto max-w-screen-sm fixed inset-0 z-10';
+    modal.className = 'w-full m-auto max-w-screen-sm fixed inset-0 z-10';
     document.body.appendChild(modal);
     super(modal, props);
     this.$modal = modal;
   }
   template() {
+    const { docId } = this.props;
+    const editHref = `/write?mode=edit&id=${docId}`;
     return `
     <div id='backdrop' class='fixed inset-0 m-auto w-full h-content'></div>
       <div
         class='absolute top-100 right-24 z-30 flex flex-col
           bg-white shadow-sm border border-zinc-200 rounded-md font-medium'
         >
-        <button id='edit' class='px-12 py-8 flex-center gap-6 text-zinc-500'>
+        <a id='edit' href=${editHref} class='px-12 py-8 flex-center gap-6 text-zinc-500'>
           <i class="block ph ph-pencil-simple text-24 pt-2"></i>
           <span>수정하기</span>
-        </button>
+        </a>
         <hr/>
         <button id='delete' class='px-12 py-8 flex-center gap-6 text-red-500'>
           <i class="block ph ph-trash text-24 pt-2"></i>
