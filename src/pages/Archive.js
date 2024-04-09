@@ -3,9 +3,11 @@ import Tabs from '@components/Tabs';
 import navigate from '@utils/navigate';
 import Card from '@components/Card';
 import store from '@stores';
-import { getListInfo, getListItems } from '@apis/list';
+import { getListItems } from '@apis/list';
 import LikeListHeader from '@components/Archive/LikeListHeader';
 import MyListHeader from '@components/Archive/MyListHeader';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { db } from '@libs/firebase';
 import AbstractView from './AbstractView';
 
 export default class Archive extends AbstractView {
@@ -95,10 +97,12 @@ export default class Archive extends AbstractView {
     });
     this.setState({ ...this.state, items: temp });
   }
-
+  
   async fetchListInfo() {
-    const result = await getListInfo(store.state.user.uid);
-    this.setState({ ...this.state, info: { ...result.data() } });
+    const docRef = doc(db, 'list', store.state.user.uid);
+    onSnapshot(docRef, (item) => {
+      this.setState({ ...this.state, info: { ...item.data() } });
+    });
   }
 
   onTabClick(id) {
