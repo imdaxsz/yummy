@@ -4,15 +4,19 @@ import {
   doc,
   getDoc,
   getDocs,
+  orderBy,
   query,
   updateDoc,
   where,
 } from 'firebase/firestore';
 
 // 존재하는 모든 리스트 조회
-export const getAllList = async () => {
+export const getAllList = async (sort) => {
   try {
-    return await getDocs(collection(db, 'list'));
+    let q = collection(db, 'list');
+    if (sort === 'likes')
+      q = query(collection(db, 'list'), orderBy('likeCount', 'desc'));
+    return await getDocs(q);
   } catch (error) {
     console.log('Error with getting list: ', error);
     throw error;
@@ -33,7 +37,11 @@ export const getListInfo = async (uid) => {
 // 회원의 uid를 통해 회원의 리스트 내 맛집들을 조회
 export const getListItems = async (uid) => {
   try {
-    const q = query(collection(db, 'posts'), where('uid', '==', uid));
+    const q = query(
+      collection(db, 'posts'),
+      where('uid', '==', uid),
+      orderBy('createdAt', 'desc'),
+    );
     return await getDocs(q);
   } catch (error) {
     console.log('Error with getting list items: ', error);
@@ -57,10 +65,14 @@ export const toggleLikeList = async (uid, docId, listLikes) => {
     if (listLikes.includes(uid)) {
       await updateDoc(docRef, {
         likes: [...listLikes.filter((id) => id !== uid)],
+        likeCount: listLikes.length - 1,
       });
       return;
     }
-    await updateDoc(docRef, { likes: [...listLikes, uid] });
+    await updateDoc(docRef, {
+      likes: [...listLikes, uid],
+      likeCount: listLikes.length + 1,
+    });
   } catch (error) {
     console.log('Error with like list: ', error);
   }
@@ -77,3 +89,4 @@ export const handleListThumbnail = async (uid, thumbnail) => {
     await updateList(list.id, { thumbnail });
   }
 };
+
