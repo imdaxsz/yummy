@@ -2,7 +2,18 @@
 import Component from '@components';
 
 export default class RangeSlider extends Component {
+  $progress;
+  $rangeInput;
+
+  constructor($target, props) {
+    super($target, props);
+    this.$progress = this.$target.querySelector('.slider .progress');
+    this.$rangeInput = this.$target.querySelectorAll('.range-input input');
+  }
+
   template() {
+    const { minVal, maxVal } = this.props;
+
     return `
       <p id='range-value' class='mb-4 flex text-14'>
         <span id='min-value' class='inline-flex items-center'>
@@ -18,8 +29,8 @@ export default class RangeSlider extends Component {
           <div class='progress'></div>
         </div>
         <div class='range-input'>
-          <input type='range' class='range-min' min='0' max='5' value='0' />
-          <input type='range' class='range-max' min='0' max='5' value='5' />
+          <input type='range' class='range-min' min='0' max='5' value=${minVal} />
+          <input type='range' class='range-max' min='0' max='5' value=${maxVal} />
         </div>
       </div>
 
@@ -27,32 +38,46 @@ export default class RangeSlider extends Component {
   }
 
   setEvent() {
-    const rangeInput = this.$target.querySelectorAll('.range-input input');
-    const progress = this.$target.querySelector('.slider .progress');
-    const [minEl, maxEl] = this.$target.querySelectorAll('span');
-    if (!rangeInput || !progress) return;
+    const { $progress, $rangeInput } = this;
+    if (!$rangeInput || !$progress) return;
 
     this.addEvent('input', 'input', (e) => {
-      let minVal = Number(rangeInput[0].value);
-      let maxVal = Number(rangeInput[1].value);
-      if (maxVal < minVal && e.target.className === 'range-min') {
-        [rangeInput[0].value, minVal] = [maxVal, maxVal];
-        return;
-      } 
-      if (maxVal < minVal && e.target.className === 'range-max') {
-        [rangeInput[1].value, maxVal] = [minVal, minVal];
-        return;
-      } 
+      const { minVal, maxVal } = this.props;
+      const {
+        target: { className, value },
+      } = e;
 
-      progress.style.left = `${(minVal / rangeInput[0].max) * 100}%`;
-      progress.style.right = `${100 - (maxVal / rangeInput[1].max) * 100}%`;
-      const [idx1, idx2] = minVal + maxVal === 10 ? [2, 1] : [1, 2];
-      rangeInput[0].style.zIndex = idx1;
-      rangeInput[1].style.zIndex = idx2;
+      if (className === 'range-min' && maxVal < value) {
+        e.target.value = maxVal;
+        return;
+      }
+      if (className === 'range-max' && minVal > value) {
+        e.target.value = minVal;
+        return;
+      }
 
-      this.setValueText(minEl, minVal);
-      this.setValueText(maxEl, maxVal);
+      if (className === 'range-min') {
+        this.setStyle(value, maxVal);
+        return;
+      }
+      this.setStyle(minVal, value);
     });
+
+    this.addEvent('change', 'input', (e) => {
+      const { onRangeChange } = this.props;
+      const target =
+        e.target.className === 'range-min' ? 'minScore' : 'maxScore';
+      onRangeChange(target, Number(e.target.value));
+    });
+  }
+
+  setStyle(minVal, maxVal) {
+    const { $progress, $rangeInput } = this;
+    $progress.style.left = `${(minVal / $rangeInput[0].max) * 100}%`;
+    $progress.style.right = `${100 - (maxVal / $rangeInput[1].max) * 100}%`;
+    const [idx1, idx2] = minVal + maxVal === 10 ? [2, 1] : [1, 2];
+    $rangeInput[0].style.zIndex = idx1;
+    $rangeInput[1].style.zIndex = idx2;
   }
 
   setValueText(element, value) {
@@ -62,5 +87,15 @@ export default class RangeSlider extends Component {
       return;
     }
     element.innerHTML = `<i class='ph-fill ph-star mr-2'></i>${value}`;
+  }
+
+  didMount() {
+    this.$progress = this.$target.querySelector('.slider .progress');
+    this.$rangeInput = this.$target.querySelectorAll('.range-input input');
+    const [minEl, maxEl] = this.$target.querySelectorAll('span');
+    const { minVal, maxVal } = this.props;
+    this.setStyle(minVal, maxVal);
+    this.setValueText(minEl, minVal);
+    this.setValueText(maxEl, maxVal);
   }
 }
