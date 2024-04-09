@@ -79,6 +79,7 @@ export default class Post extends AbstractView {
       createdAt,
       attachments,
       locationInfo,
+      evaluation,
       likes,
     } = post;
 
@@ -122,12 +123,12 @@ export default class Post extends AbstractView {
       });
 
     const $evaluation = this.$target.querySelector('#evaluation');
-    Object.entries(EVALUATION_LABEL).forEach(([key, value]) => {
+    Object.entries(evaluation).forEach(([key, value]) => {
       const el = document.createElement('div');
       $evaluation.appendChild(el);
       new Chip(el, {
-        label: value,
-        text: EVALUATION[key][2].text,
+        label: EVALUATION_LABEL[key],
+        text: EVALUATION[key][value - 1].text,
         type: 'explain',
       });
     });
