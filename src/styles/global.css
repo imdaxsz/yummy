@@ -136,6 +136,10 @@ button:disabled {
   color: #ffcd00;
 }
 
+.text-primary-30 {
+  color: #f1ce40;
+}
+
 .text-secondary {
   color: #ff7272;
 }

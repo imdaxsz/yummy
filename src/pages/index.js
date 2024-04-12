@@ -4,14 +4,16 @@ import Write from '@pages/Write';
 import Post from '@/pages/Post';
 import ListInfo from '@/pages/ListInfo';
 import Leave from '@/pages/Leave';
+import SignIn from './SignIn';
 
 const routes = [
   { path: /^\/$/, view: Home },
-  { path: /^\/write$/, view: Write },
+  { path: /^\/signin$/, view: SignIn },
+  { path: /^\/write(\?mode=edit&id=[^&\s]+)?$/, view: Write, private: true },
   { path: /^\/post\/[\w]+$/, view: Post },
   { path: /^\/list\/[\w]+$/, view: ListInfo },
-  { path: /^\/archive\?category=(my|likes)$/, view: Archive },
-  { path: /^\/leave$/, view: Leave },
+  { path: /^\/archive\?category=(my|likes)$/, view: Archive, private: true },
+  { path: /^\/leave$/, view: Leave, private: true },
 ];
 
 export default routes;
