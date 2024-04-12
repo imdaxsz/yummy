@@ -3,7 +3,6 @@ import {
   signInWithPopup,
   signOut as request,
   deleteUser,
-  onAuthStateChanged,
 } from 'firebase/auth';
 import { auth, db } from '@libs/firebase';
 import store from '@stores';
@@ -99,19 +98,4 @@ export const leave = async () => {
   } catch (error) {
     console.log('Error with deleting User: ', error);
   }
-};
-
-/**
- * @description 현재 사용자 정보를 가져오는 함수
- */
-export const authorize = async () => {
-  const fetchUser = () => {
-    onAuthStateChanged(auth, (user) => {
-      // user: User | NULL
-      store.setState({ user, isLoggedIn: !!user });
-    });
-  };
-  fetchUser();
-  window.addEventListener('historychange', fetchUser);
-  window.addEventListener('popstate', fetchUser);
 };
