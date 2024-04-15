@@ -3,8 +3,8 @@ import toggleSidebar from '@utils/toggleSidebar';
 import Component from '.';
 
 export default class Header extends Component {
-  constructor($target, { left, center, right }) {
-    super($target, { left, center, right });
+  constructor($target, { left, center, right, to = null }) {
+    super($target, { left, center, right, to });
   }
 
   template() {
@@ -37,6 +37,11 @@ export default class Header extends Component {
     });
 
     this.addEvent('click', '#back', () => {
+      const { to } = this.props;
+      if (to) {
+        navigate(to);
+        return;
+      } 
       window.history.back();
     });
 
