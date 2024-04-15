@@ -8,6 +8,7 @@ import { auth, db } from '@libs/firebase';
 import store from '@stores';
 import Modal from '@components/Modal';
 import { collection, deleteDoc, doc, getDoc, setDoc } from 'firebase/firestore';
+import navigate from '@utils/navigate';
 
 /**
  * @description 로그인 시 사용자 존재 여부 확인
@@ -65,6 +66,12 @@ export const signIn = async () => {
     const { uid, email } = auth.currentUser;
     const isNewMember = await userExists(uid);
     if (isNewMember) await createList(uid, email);
+    
+    const redirect = sessionStorage.getItem('redirect');
+    if (redirect) {
+      navigate(redirect);
+      sessionStorage.removeItem('redirect');
+    }
   } catch (error) {
     console.log('Error with sign in: ', error);
   }

@@ -1,7 +1,6 @@
 import Header from '@components/Header';
 import { signIn } from '@apis/auth';
 import GoogleIcon from '@assets/google-icon.svg';
-import navigate from '@utils/navigate';
 import AbstractView from './AbstractView';
 
 export default class SignIn extends AbstractView {
@@ -39,11 +38,6 @@ export default class SignIn extends AbstractView {
   setEvent() {
     this.addEvent('click', '#signin', async () => {
       await signIn();
-      const redirect = sessionStorage.getItem('redirect');
-      if (redirect) {
-        navigate(redirect);
-        sessionStorage.removeItem('redirect');
-      }
     });
   }
 }
