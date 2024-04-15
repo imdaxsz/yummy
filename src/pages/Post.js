@@ -143,7 +143,7 @@ export default class Post extends AbstractView {
         const to = sessionStorage.getItem('redirect');
         if (!to) alert('존재하지 않는 페이지예요!');
         else sessionStorage.removeItem('redirect');
-        navigate(to || '/');
+        if (window.location.pathname.split("/")[1] === 'post') navigate(to || '/');
         return;
       }
       this.setState({ ...this.state, post: { id: res.id, ...res.data() } });
