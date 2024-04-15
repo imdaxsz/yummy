@@ -8,6 +8,7 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import store from '@stores';
+import Modal from '@components/Modal';
 import { deleteImageFiles } from './image';
 
 export const addPost = async (post) => {
@@ -62,4 +63,16 @@ export const toggleLikePost = async (uid, docId, postLikes) => {
   } catch (error) {
     console.log('Error with like post: ', error);
   }
+};
+
+export const deleteAllPosts = async (items) => {
+  await Promise.all(
+    items.map(async (item) => deletePost(item.id, item.attachments.length > 0)),
+  );
+  sessionStorage.removeItem('redirect');
+  new Modal({
+    type: 'alert',
+    message: '삭제가 완료되었어요.',
+    onClose: () => window.location.reload(),
+  });
 };

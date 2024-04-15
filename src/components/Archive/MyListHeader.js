@@ -1,6 +1,8 @@
 import { updateList } from '@apis/list';
 import Component from '@components';
+import Modal from '@components/Modal';
 import store from '@stores';
+import sharePage from '@utils/share';
 
 export default class MyListHeader extends Component {
   $input;
@@ -33,13 +35,13 @@ export default class MyListHeader extends Component {
               <span class='text-14'>${likes.length}</span>
             </div>
             <button id='share' aria-label='공유하기'>
-              <i class='block ph ph-upload-simple text-20'></i>
+              <i class='block ph ph-share-network text-20'></i>
             </button>
           </div>
-          <button aria-label='전체삭제' class='text-13'>전체삭제</button>
+          <button id='deleteAll' aria-label='전체삭제' class='text-13'>전체삭제</button>
         </div>
       </div>
-      <p class='text-zinc-400 text-end pt-16 pb-14 text-13'>
+      <p class='text-zinc-400 text-end pt-16 text-13'>
         ${count}곳의 맛집이 있어요!
       </p>
     `;
@@ -63,6 +65,21 @@ export default class MyListHeader extends Component {
       if (!store.state.user) return;
       await updateList(store.state.user.uid, { title: this.$input.value });
       this.setState({ ...this.state, edit: false });
+    });
+
+    this.addEvent('click', '#share', sharePage);
+
+    const { count, onClickDelete } = this.props;
+    this.addEvent('click', '#deleteAll', async () => {
+      if (count === 0) {
+        new Modal({ type: 'alert', message: '삭제할 맛집이 없어요.' });
+        return;
+      }
+      new Modal({
+        type: 'confirm',
+        message: '모든 나의 맛집을 삭제할까요?',
+        onClose: onClickDelete,
+      });
     });
   }
 }
