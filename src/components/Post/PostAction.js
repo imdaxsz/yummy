@@ -1,7 +1,7 @@
 import Component from '@components';
 import Snackbar from '@components/Snackbar';
 import store from '@stores';
-import { toggleLikePost } from '@apis/post';
+import { toggleLikePost } from '@apis/likes';
 import sharePage from '@utils/share';
 
 export default class PostAction extends Component {
@@ -21,7 +21,7 @@ export default class PostAction extends Component {
   }
 
   setEvent() {
-    const { id: docId, likes, isMine } = this.props;
+    const { id: docId, isLiked, isMine } = this.props;
     const { user, isLoggedIn } = store.state;
 
     this.addEvent('click', '#like', () => {
@@ -31,11 +31,11 @@ export default class PostAction extends Component {
       }
       if (isMine) {
         new Snackbar({
-          message: '나의 맛집 목록에는 "좋아요"를 할 수 없어요.',
+          message: '나의 맛집 포스트에는 "좋아요"를 할 수 없어요.',
         });
         return;
       }
-      toggleLikePost(user.uid, docId, likes);
+      toggleLikePost(user.uid, docId, isLiked);
     });
 
     this.addEvent('click', '#share', sharePage);

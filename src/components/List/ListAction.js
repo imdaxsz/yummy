@@ -1,7 +1,7 @@
 import Component from '@components';
 import Snackbar from '@components/Snackbar';
 import store from '@stores';
-import { toggleLikeList } from '@apis/list';
+import { toggleLikeList } from '@apis/likes';
 import sharePage from '@utils/share';
 
 export default class ListAction extends Component {
@@ -35,7 +35,7 @@ export default class ListAction extends Component {
   }
 
   setEvent() {
-    const { id: docId, likes, isMine } = this.props;
+    const { id: docId, isLiked, isMine } = this.props;
     const { user, isLoggedIn } = store.state;
 
     this.addEvent('click', '#like', () => {
@@ -49,7 +49,7 @@ export default class ListAction extends Component {
         });
         return;
       }
-      toggleLikeList(user.uid, docId, likes);
+      toggleLikeList(user.uid, docId, isLiked);
     });
 
     this.addEvent('click', '#share', sharePage);
