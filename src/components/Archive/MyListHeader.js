@@ -16,34 +16,30 @@ export default class MyListHeader extends Component {
     const { title: listTitle, likes, count } = this.props;
     const { edit, title } = this.state;
     return `
-      <div id='list-header' class='pb-24'>
-        <div class='flex items-center gap-16 pt-28 pb-12 tracking-tight'>
-          ${
-            edit
-              ? `<input id='title' value='${title}' type='text' class='w-[60%] rounded-none border-b-1 px-4 py-2 border-zinc-300 text-zinc-500'/><button id='save' class='btn-primary px-12 py-2 bg-primary rounded-full text-white font-medium text-14'>저장</button>`
-              : `<h1 class='w-fit font-medium leading-none text-18'>
-            ${listTitle}
-          </h1><button id='edit'><i class="block ph ph-pencil-simple-line pt-3 text-zinc-400"></i></button>`
-          }
-          
-          
-        </div>
-        <div id='action' class='flex justify-between items-center text-zinc-500'>
-          <div class='flex-center gap-24'>
-            <div id='like' aria-label='좋아요' class='flex-center gap-2'>
-              <i class='block ph ph-heart text-20'></i>
-              <span class='text-14'>${likes.length}</span>
-            </div>
-            <button id='share' aria-label='공유하기'>
-              <i class='block ph ph-share-network text-20'></i>
-            </button>
-          </div>
-          <button id='deleteAll' aria-label='전체삭제' class='text-13'>전체삭제</button>
-        </div>
+      <div class='flex items-center gap-16 pt-28 pb-12 tracking-tight'>
+        ${
+          edit
+            ? `<input id='title' value='${title}' type='text' class='w-[60%] rounded-none border-b-1 px-4 py-2 border-zinc-300 text-zinc-500'/><button id='save' class='btn-primary px-12 py-2 bg-primary rounded-full text-white font-medium text-14'>저장</button>`
+            : `<h1 class='w-fit font-medium leading-none text-18'>
+          ${listTitle}
+        </h1><button id='edit'><i class="block ph ph-pencil-simple-line pt-3 text-zinc-400"></i></button>`
+        }
       </div>
-      <p class='text-zinc-400 text-end pt-16 text-13'>
-        ${count}곳의 맛집이 있어요!
-      </p>
+      <div id='action' class='flex justify-between items-center text-zinc-500'>
+        <div class='flex-center gap-24'>
+          <div id='like' aria-label='좋아요' class='flex-center gap-2'>
+            <i class='block ph ph-heart text-20'></i>
+            <span class='text-14'>${likes.length}</span>
+          </div>
+          <button id='share' aria-label='공유하기'>
+            <i class='block ph ph-share-network text-20'></i>
+          </button>
+        </div>
+        <button id='deleteAll' aria-label='전체삭제' class='text-13'>전체삭제</button>
+      </div>
+    <p class='text-zinc-400 text-end pt-24 text-13'>
+      ${count}곳의 맛집이 있어요!
+    </p>
     `;
   }
 
