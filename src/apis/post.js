@@ -11,6 +11,9 @@ import store from '@stores';
 import Modal from '@components/Modal';
 import { deleteImageFiles } from './image';
 
+/**
+ * @description 포스트 작성
+ */
 export const addPost = async (post) => {
   try {
     const docRef = await addDoc(collection(db, 'posts'), post);
@@ -21,6 +24,9 @@ export const addPost = async (post) => {
   }
 };
 
+/**
+ * @description 포스트 조회
+ */
 export const getPost = async (id) => {
   try {
     const docRef = await getDoc(doc(db, 'posts', id));
@@ -31,6 +37,9 @@ export const getPost = async (id) => {
   }
 };
 
+/**
+ * @description 포스트 수정
+ */
 export const updatePost = async (docRef, obj) => {
   try {
     await updateDoc(docRef, obj);
@@ -39,6 +48,9 @@ export const updatePost = async (docRef, obj) => {
   }
 };
 
+/**
+ * @description 포스트 삭제
+ */
 export const deletePost = async (id, hasImage) => {
   try {
     const { user } = store.state;
@@ -50,26 +62,13 @@ export const deletePost = async (id, hasImage) => {
   }
 };
 
-export const toggleLikePost = async (uid, docId, postLikes) => {
-  try {
-    const docRef = doc(db, 'posts', docId);
-    if (postLikes.includes(uid)) {
-      await updateDoc(docRef, {
-        likes: [...postLikes.filter((id) => id !== uid)],
-      });
-      return;
-    }
-    await updateDoc(docRef, { likes: [...postLikes, uid] });
-  } catch (error) {
-    console.log('Error with like post: ', error);
-  }
-};
-
+/**
+ * @description 포스트 전체 삭제
+ */
 export const deleteAllPosts = async (items) => {
   await Promise.all(
     items.map(async (item) => deletePost(item.id, item.attachments.length > 0)),
   );
-  sessionStorage.removeItem('redirect');
   new Modal({
     type: 'alert',
     message: '삭제가 완료되었어요.',

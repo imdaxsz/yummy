@@ -9,6 +9,9 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { getListInfo, updateList } from './list';
 
+/**
+ * @description storage에 이미지 저장 후 url을 반환하는 함수
+ */
 export const getImageUrl = async (uid, docId, attachment) => {
   try {
     const locationRef = ref(storage, `${uid}/${docId}/${uuidv4()}`);
@@ -21,6 +24,9 @@ export const getImageUrl = async (uid, docId, attachment) => {
   }
 };
 
+/**
+ * @description storage에서 이미지 삭제
+ */
 export const deleteImageFiles = async (uid, postId) => {
   const locationRef = ref(storage, `${uid}/${postId}`);
   try {
