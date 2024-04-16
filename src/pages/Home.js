@@ -18,7 +18,7 @@ export default class Home extends AbstractView {
   }
 
   setup() {
-    this.state = { list: [], sort: 'updated' };
+    this.state = { list: null, sort: 'updated' };
   }
 
   template() {
@@ -43,7 +43,7 @@ export default class Home extends AbstractView {
     this.addEvent('click', '#sort', () => {
       const { sort: prev } = this.state;
       const sort = prev === 'updated' ? 'likes' : 'updated';
-      this.setState({ ...this.state, list: [], sort });
+      this.setState({ ...this.state, list: null, sort });
     });
   }
 
@@ -63,7 +63,7 @@ export default class Home extends AbstractView {
     });
 
     const { list } = this.state;
-    if (list.length === 0) {
+    if (!list) {
       await this.fetchData();
       return;
     }
@@ -78,7 +78,7 @@ export default class Home extends AbstractView {
         id: item.id,
         title: item.title,
         userId: item.email.split('@')[0],
-        likeCount: item.likes.length,
+        likeCount: item.likeCount,
         isLiked,
         thumbnail: item.thumbnail,
       });
@@ -87,12 +87,9 @@ export default class Home extends AbstractView {
 
   async fetchData() {
     const { sort } = this.state;
-    const result = await getAllList(sort);
-    const temp = [];
-    result.forEach((doc) => {
-      temp.push({ id: doc.id, ...doc.data() });
-    });
-    this.setState({ ...this.state, list: temp });
+    const res = await getAllList(sort);
+    const list = res.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    this.setState({ ...this.state, list });
   }
 
   toggleSearchModal() {

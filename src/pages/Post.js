@@ -31,7 +31,7 @@ export default class Post extends AbstractView {
         memo: '',
         locationInfo: { id: '', address: '', placeName: '' },
         createdAt: '',
-        username: '',
+        email: '',
         likes: [],
       },
       isLiked: false,
@@ -75,7 +75,7 @@ export default class Post extends AbstractView {
       id,
       name,
       categories,
-      username,
+      email,
       createdAt,
       attachments,
       locationInfo,
@@ -88,16 +88,14 @@ export default class Post extends AbstractView {
       return;
     }
 
-    const isMine = store.state.user
-      ? username === store.state.user.email
-      : false;
+    const isMine = store.state.user ? email === store.state.user.email : false;
 
     const $postHeader = this.$target.querySelector('#post-header');
     new PostHeader($postHeader, {
       id,
       name,
       categories,
-      username,
+      email,
       createdAt,
       isMine,
       hasImage: attachments.length > 0,
@@ -139,13 +137,16 @@ export default class Post extends AbstractView {
     const docRef = doc(db, 'posts', id);
 
     onSnapshot(docRef, (res) => {
+      if (window.location.pathname.split('/')[1] !== 'post') return;
+
       if (!res.exists()) {
         const to = sessionStorage.getItem('redirect');
         if (!to) alert('존재하지 않는 페이지예요!');
         else sessionStorage.removeItem('redirect');
-        if (window.location.pathname.split("/")[1] === 'post') navigate(to || '/');
+        navigate(to || '/');
         return;
       }
+      
       this.setState({ ...this.state, post: { id: res.id, ...res.data() } });
       if (store.state.user) {
         const {

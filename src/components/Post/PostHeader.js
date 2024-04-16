@@ -5,7 +5,7 @@ import getFormattedDate from '@utils/getFormattedDate';
 
 export default class PostHeader extends Component {
   template() {
-    const { name, categories, username, createdAt, isMine } = this.props;
+    const { name, categories, email, createdAt, isMine } = this.props;
     const categoriesLabel = categories.map(
       (item) => FOOD_CATEGORY.find((i) => i.id === item).text,
     );
@@ -17,7 +17,7 @@ export default class PostHeader extends Component {
           <p class='text-14 pb-3 text-secondary font-semibold'>${categoriesLabel.join(', ')}</p>
         </div>
         <div id='info' class='flex-center gap-6 text-14'>
-          <p class='text-gray-500'>${username.split('@')[0]}</p>
+          <p class='text-gray-500'>${email.split('@')[0]}</p>
           <span class='text-zinc-300 dot'>${getFormattedDate(createdAt)}</span>
         </div>
       </div>

@@ -14,7 +14,7 @@ export default class ListInfo extends AbstractView {
 
   setup() {
     this.state = {
-      items: [],
+      items: null,
       info: { title: '', email: '', likes: [], createdAt: '' },
       isLiked: false,
     };
@@ -33,7 +33,7 @@ export default class ListInfo extends AbstractView {
           ${title}
         </h1>
         <div id='action' class='flex justify-between items-center text-zinc-500'></div>
-        <p class='pt-40 pb-14 text-end text-13 text-zinc-400'>${items.length}곳의 맛집이 있어요!</p>
+        <p class='pt-40 pb-14 text-end text-13 text-zinc-400'>${items ? items.length : 0}곳의 맛집이 있어요!</p>
         <div id='list' class='grid grid-cols-2 gap-16 gap-y-24'></div>
       </div>
     `;
@@ -52,6 +52,9 @@ export default class ListInfo extends AbstractView {
 
     if (!createdAt) {
       await this.fetchListInfo(id);
+    }
+
+    if (!items) {
       await this.fetchData(id);
       return;
     }
@@ -68,7 +71,7 @@ export default class ListInfo extends AbstractView {
         cardType: 'place',
         id: item.id,
         title: item.name,
-        userId: item.username.split('@')[0],
+        userId: item.email.split('@')[0],
         rating: item.ratingValue,
         placeLocation: item.locationInfo.address,
         thumbnail: item.attachments.length > 0 ? item.attachments[0] : '',
@@ -79,6 +82,9 @@ export default class ListInfo extends AbstractView {
   async fetchListInfo(id) {
     const docRef = doc(db, 'list', id);
     onSnapshot(docRef, (item) => {
+      const page = window.location.pathname.split('/')[1];
+      if (page !== 'list') return;
+      
       this.setState({ ...this.state, info: { ...item.data() } });
       if (store.state.user) {
         const {
@@ -93,12 +99,9 @@ export default class ListInfo extends AbstractView {
   }
 
   async fetchData(id) {
-    const result = await getListItems(id);
-    const temp = [];
-    result.forEach((item) => {
-      temp.push({ id: item.id, ...item.data() });
-    });
-    this.setState({ ...this.state, items: temp });
+    const res = await getListItems(id);
+    const items = res.docs.map((item) => ({ id: item.id, ...item.data() }));
+    this.setState({ ...this.state, items });
     document.title = `${this.state.info.title} | yummy`;
   }
 }
