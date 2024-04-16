@@ -1,13 +1,15 @@
 import Header from '@components/Header';
 import Tabs from '@components/Tabs';
 import navigate from '@utils/navigate';
-import Card from '@components/Card';
 import store from '@stores';
 import { getListItems } from '@apis/list';
-import LikeListHeader from '@components/Archive/LikeListHeader';
 import MyListHeader from '@components/Archive/MyListHeader';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '@libs/firebase';
+import { deleteAllPosts } from '@apis/post';
+import LikesPreview from '@components/Archive/LikePreview';
+import MyList from '@components/Archive/MyList';
+import { getLikeItems } from '@apis/likes';
 import AbstractView from './AbstractView';
 
 export default class Archive extends AbstractView {
@@ -22,18 +24,26 @@ export default class Archive extends AbstractView {
         { id: 'likes', label: '좋아요' },
       ],
       isMyList: window.location.search.split('=')[1] === 'my',
-      items: [],
+      myList: null,
+      likeList: null,
+      likePosts: [],
       info: { title: '', email: '', likes: [], createdAt: '' },
     };
   }
 
   template() {
+    const { isMyList } = this.state;
     return `
       <div id='header' class='bg-white flex max-w-screen-sm w-full fixed top-0 h-60 z-10'></div>
       <div class='px-16 pb-90'>
         <div id='tabs'></div>
-        <div id='list-header'></div>
-        <div id='list' class='grid grid-cols-2 gap-16 gap-y-24'></div>
+        ${
+          isMyList
+            ? `<div id='list-header' class='pb-16'></div>
+              <div id='my-list'></div>`
+            : `<div id='like-list' class='mb-24'></div>
+              <div id='like-posts'></div>`
+        }
       </div>
     `;
   }
@@ -43,7 +53,9 @@ export default class Archive extends AbstractView {
     const {
       tabs,
       isMyList,
-      items,
+      myList,
+      likeList,
+      likePosts,
       info: { title, likes, createdAt },
     } = this.state;
 
@@ -56,53 +68,61 @@ export default class Archive extends AbstractView {
       onClick: (currentId) => this.onTabClick(currentId),
     });
 
-    const $listHeader = this.$target.querySelector('#list-header');
-
     if (isMyList) {
+      const $listHeader = this.$target.querySelector('#list-header');
       if (!createdAt) {
-        await this.fetchListInfo();
+        await this.fetchMyListInfo();
         return;
       }
-      new MyListHeader($listHeader, { title, likes, count: items.length });
-    } else new LikeListHeader($listHeader, { count: items.length });
+      new MyListHeader($listHeader, {
+        title,
+        likes,
+        count: myList ? myList.length : 0,
+        onClickDelete: () => deleteAllPosts(myList),
+      });
 
-    const $list = this.$target.querySelector('#list');
+      if (!myList) {
+        await this.fetchMyListItems();
+        return;
+      }
 
-    if (items.length === 0) {
-      await this.fetchData();
+      const $myList = this.$target.querySelector('#my-list');
+      new MyList($myList, { items: myList });
       return;
     }
 
-    items.forEach((item) => {
-      const el = document.createElement('div');
-      $list.appendChild(el);
-      new Card(el, {
-        cardType: 'place',
-        id: item.id,
-        title: item.name,
-        userId: item.username.split('@')[0],
-        rating: item.ratingValue,
-        placeLocation: item.locationInfo.address,
-        isLiked: item.likes.includes(store.state.user.uid),
-        thumbnail: item.attachments.length > 0 ? item.attachments[0] : '',
-      });
+    // 북마크 리스트
+    if (!likeList) {
+      await this.fetchLikeItems();
+      return;
+    }
+
+    const $likeList = this.$target.querySelector('#like-list');
+    const $likePosts = this.$target.querySelector('#like-posts');
+    new LikesPreview($likeList, { type: 'list', items: likeList });
+    new LikesPreview($likePosts, { type: 'posts', items: likePosts });
+  }
+
+  async fetchMyListItems() {
+    const res = await getListItems(store.state.user.uid);
+    const myList = res.docs.map((item) => ({ id: item.id, ...item.data() }));
+    this.setState({ ...this.state, myList });
+  }
+
+  async fetchMyListInfo() {
+    const docRef = doc(db, 'list', store.state.user.uid);
+    onSnapshot(docRef, (item) => {
+      this.setState({ ...this.state, info: { id: item.id, ...item.data() } });
     });
   }
 
-  async fetchData() {
-    const result = await getListItems(store.state.user.uid);
-    const temp = [];
-    result.forEach((item) => {
-      temp.push({ id: item.id, ...item.data() });
-    });
-    this.setState({ ...this.state, items: temp });
-  }
-  
-  async fetchListInfo() {
-    const docRef = doc(db, 'list', store.state.user.uid);
-    onSnapshot(docRef, (item) => {
-      this.setState({ ...this.state, info: { ...item.data() } });
-    });
+  async fetchLikeItems() {
+    await getLikeItems('list', (likeList) =>
+      this.setState({ ...this.state, likeList }),
+    );
+    await getLikeItems('posts', (likePosts) =>
+      this.setState({ ...this.state, likePosts }),
+    );
   }
 
   onTabClick(id) {

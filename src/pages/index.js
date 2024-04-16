@@ -5,6 +5,7 @@ import Post from '@/pages/Post';
 import ListInfo from '@/pages/ListInfo';
 import Leave from '@/pages/Leave';
 import SignIn from './SignIn';
+import LikeList from './LikeList';
 
 const routes = [
   { path: /^\/$/, view: Home },
@@ -13,6 +14,7 @@ const routes = [
   { path: /^\/post\/[\w]+$/, view: Post },
   { path: /^\/list\/[\w]+$/, view: ListInfo },
   { path: /^\/archive\?category=(my|likes)$/, view: Archive, private: true },
+  { path: /^\/archive\?category=likes&filter=(list|posts)$/, view: LikeList, private: true },
   { path: /^\/leave$/, view: Leave, private: true },
 ];
 

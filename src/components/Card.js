@@ -1,4 +1,6 @@
+import { toggleLikeList, toggleLikePost } from '@apis/likes';
 import Component from '@components';
+import store from '@stores';
 import navigate from '@utils/navigate';
 
 export default class Card extends Component {
@@ -37,16 +39,15 @@ export default class Card extends Component {
     } = this.props;
     const isListCard = cardType === 'list';
     const url = isListCard ? `/list/${id}` : `/post/${id}`;
-    let icon = isListCard ? 'ph ph-heart' : 'ph-fill ph-star';
-    if (isLiked) icon = 'ph-fill ph-heart';
+    const icon = isListCard ? 'ph ph-heart' : 'ph-fill ph-star';
     let iconColor = isListCard ? 'text-zinc-400' : 'text-primary';
     let value = isListCard ? likeCount : rating;
     if (rating === 0) {
       iconColor = 'text-neutral-300';
       value = '방문 전';
     }
-    const isLikeListPage =
-      isLiked && window.location.pathname === '/archive';
+
+    const isLikeListPage = isLiked && window.location.search.split('filter')[1];
     const location = placeLocation.split(' ').slice(0, 2).join(' ');
 
     return `
@@ -81,7 +82,7 @@ export default class Card extends Component {
               ${value}
             </span>
             ${
-              !isListCard && isLikeListPage
+              !isListCard && window.location.pathname.split("/")[1] !== 'list'
                 ? `<p class='text-zinc-400 author truncate'>${userId}</p>`
                 : ``
             }
@@ -94,14 +95,29 @@ export default class Card extends Component {
   setEvent() {
     this.addEvent('click', 'a', (e) => {
       e.preventDefault();
-      if (e.target.nodeName === 'BUTTON') return;
+      const { nodeName, classList } = e.target;
+      if (nodeName === 'I' && classList.contains('ph-heart')) return;
+      if (nodeName === 'BUTTON') return;
       if (!e.currentTarget.childNodes) return;
       const target = e.currentTarget.childNodes[1];
       navigate(target.href);
     });
 
     this.addEvent('click', 'button', () => {
-      console.log('like button clicked');
+      const { id, cardType, isLiked } = this.props;
+      const { user, isLoggedIn } = store.state;
+
+      if (!isLoggedIn) {
+        alert('로그인이 필요해요.');
+        window.location.reload();
+        return;
+      }
+
+      if (cardType !== 'list') {
+        toggleLikePost(user.uid, id, isLiked);
+        return;
+      }
+      toggleLikeList(user.uid, id, isLiked);
     });
   }
 }
