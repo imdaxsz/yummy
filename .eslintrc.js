@@ -37,6 +37,7 @@ module.exports = {
     'lines-between-class-members': 0,
     'no-plusplus': 0,
     'no-continue': 0,
+    'import/no-extraneous-dependencies': 0,
     'import/extensions': [
       'error',
       'always',
