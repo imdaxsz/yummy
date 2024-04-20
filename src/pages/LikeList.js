@@ -4,6 +4,7 @@ import store from '@stores';
 import Empty from '@components/Empty';
 import isEndWithConsonant from '@utils/isEndWithConsonant';
 import { getLikeItems } from '@apis/likes';
+import Loader from '@components/Loader';
 import AbstractView from './AbstractView';
 
 export default class LikeList extends AbstractView {
@@ -74,31 +75,31 @@ export default class LikeList extends AbstractView {
     items.forEach((item) => {
       const el = document.createElement('div');
       $list.appendChild(el);
-        const commonProps = { id: item.id, userId: item.email.split('@')[0] };
-        const props =
-          filter === 'list'
-            ? {
-                ...commonProps,
-                title: item.title,
-                isLiked: item.likes.includes(user.uid),
-                likeCount: item.likeCount,
-                thumbnail: item.thumbnail,
-              }
-            : {
-                ...commonProps,
-                cardType: 'place',
-                title: item.name,
-                isLiked: item.likes.includes(user.uid),
-                rating: item.ratingValue,
-                placeLocation: item.locationInfo.address,
-                thumbnail:
-                  item.attachments.length > 0 ? item.attachments[0] : '',
-              };
-        new Card(el, props);
+      const commonProps = { id: item.id, userId: item.email.split('@')[0] };
+      const props =
+        filter === 'list'
+          ? {
+              ...commonProps,
+              title: item.title,
+              isLiked: item.likes.includes(user.uid),
+              likeCount: item.likeCount,
+              thumbnail: item.thumbnail,
+            }
+          : {
+              ...commonProps,
+              cardType: 'place',
+              title: item.name,
+              isLiked: item.likes.includes(user.uid),
+              rating: item.ratingValue,
+              placeLocation: item.locationInfo.address,
+              thumbnail: item.attachments.length > 0 ? item.attachments[0] : '',
+            };
+      new Card(el, props);
     });
   }
 
   async fetchLikeItems(filter) {
+    const loader = new Loader({});
     await getLikeItems(
       filter,
       (items) => {
@@ -108,5 +109,6 @@ export default class LikeList extends AbstractView {
       },
       true,
     );
+    loader.unmount();
   }
 }

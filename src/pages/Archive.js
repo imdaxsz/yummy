@@ -10,6 +10,7 @@ import { deleteAllPosts } from '@apis/post';
 import LikesPreview from '@components/Archive/LikePreview';
 import MyList from '@components/Archive/MyList';
 import { getLikeItems } from '@apis/likes';
+import Loader from '@components/Loader';
 import AbstractView from './AbstractView';
 
 export default class Archive extends AbstractView {
@@ -104,9 +105,11 @@ export default class Archive extends AbstractView {
   }
 
   async fetchMyListItems() {
+    const loader = new Loader({});
     const res = await getListItems(store.state.user.uid);
     const myList = res.docs.map((item) => ({ id: item.id, ...item.data() }));
     this.setState({ ...this.state, myList });
+    loader.unmount();
   }
 
   async fetchMyListInfo() {
@@ -117,12 +120,14 @@ export default class Archive extends AbstractView {
   }
 
   async fetchLikeItems() {
+    const loader = new Loader({});
     await getLikeItems('list', (likeList) =>
       this.setState({ ...this.state, likeList }),
     );
     await getLikeItems('posts', (likePosts) =>
       this.setState({ ...this.state, likePosts }),
     );
+    loader.unmount();
   }
 
   onTabClick(id) {
