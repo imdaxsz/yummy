@@ -1,6 +1,7 @@
 import { updateList } from '@apis/list';
 import Component from '@components';
 import Modal from '@components/Modal';
+import Snackbar from '@components/Snackbar';
 import store from '@stores';
 import sharePage from '@utils/share';
 
@@ -59,7 +60,12 @@ export default class MyListHeader extends Component {
 
     this.addEvent('click', '#save', async () => {
       if (!store.state.user) return;
-      await updateList(store.state.user.uid, { title: this.$input.value });
+      const { value } = this.$input;
+      if (value.length > 20) {
+        new Snackbar({ message: '목록 이름은 20자 이하로 가능해요.' });
+        return;
+      }
+      await updateList(store.state.user.uid, { title: value });
       this.setState({ ...this.state, edit: false });
     });
 
