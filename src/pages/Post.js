@@ -7,9 +7,8 @@ import PostHeader from '@components/Post/PostHeader';
 import PostAction from '@components/Post/PostAction';
 import LocationInfo from '@components/Post/LocationInfo';
 import store from '@stores';
-import navigate from '@utils/navigate';
-import { doc, onSnapshot } from 'firebase/firestore';
-import { db } from '@libs/firebase';
+import Loader from '@components/Loader';
+import { getPost } from '@apis/post';
 import AbstractView from './AbstractView';
 
 export default class Post extends AbstractView {
@@ -121,43 +120,37 @@ export default class Post extends AbstractView {
       });
 
     const $evaluation = this.$target.querySelector('#evaluation');
-    Object.entries(evaluation).forEach(([key, value]) => {
-      const el = document.createElement('div');
-      $evaluation.appendChild(el);
-      new Chip(el, {
-        label: EVALUATION_LABEL[key],
-        text: EVALUATION[key][value - 1].text,
-        type: 'explain',
-      });
+    Object.keys(EVALUATION_LABEL).forEach((key) => {
+      if (Object.keys(evaluation).includes(key)) {
+        const el = document.createElement('div');
+        $evaluation.appendChild(el);
+        new Chip(el, {
+          label: EVALUATION_LABEL[key],
+          text: EVALUATION[key][evaluation[key] - 1].text,
+          type: 'explain',
+        });
+      }
     });
   }
 
   async fetchData() {
     const id = window.location.pathname.split('/')[2];
-    const docRef = doc(db, 'posts', id);
+    const loader = new Loader({});
+    await getPost(id, true, this.setPost.bind(this));
+    loader.unmount();
+  }
 
-    onSnapshot(docRef, (res) => {
-      if (window.location.pathname.split('/')[1] !== 'post') return;
-
-      if (!res.exists()) {
-        const to = sessionStorage.getItem('redirect');
-        if (!to) alert('존재하지 않는 페이지예요!');
-        else sessionStorage.removeItem('redirect');
-        navigate(to || '/');
-        return;
-      }
-      
-      this.setState({ ...this.state, post: { id: res.id, ...res.data() } });
-      if (store.state.user) {
-        const {
-          post: { likes },
-        } = this.state;
-        this.setState({
-          ...this.state,
-          isLiked: likes.includes(store.state.user.uid),
-        });
-      }
-      document.title = `${this.state.post.name} | yummy`;
-    });
+  setPost(doc) {
+    this.setState({ ...this.state, post: { id: doc.id, ...doc.data() } });
+    if (store.state.user) {
+      const {
+        post: { likes },
+      } = this.state;
+      this.setState({
+        ...this.state,
+        isLiked: likes.includes(store.state.user.uid),
+      });
+    }
+    document.title = `${this.state.post.name} | yummy`;
   }
 }
