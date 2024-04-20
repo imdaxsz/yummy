@@ -4,7 +4,7 @@ import scrollLock from '@utils/scrollLock';
 export default class Loader extends Component {
   $container;
 
-  constructor({ color = 'primary', backdrop = false, ...rest }) {
+  constructor({ color = 'zinc-300 opacity-70', backdrop = false, ...rest }) {
     const container = document.createElement('div');
     container.id = 'loader';
     container.className = 'fixed inset-0 z-30 flex-center';

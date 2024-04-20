@@ -39,7 +39,8 @@ export default class Card extends Component {
     } = this.props;
     const isListCard = cardType === 'list';
     const url = isListCard ? `/list/${id}` : `/post/${id}`;
-    const icon = isListCard ? 'ph ph-heart' : 'ph-fill ph-star';
+    let icon = isListCard ? 'ph ph-heart' : 'ph-fill ph-star';
+    if (isListCard && isLiked) icon = 'ph-fill ph-heart';
     let iconColor = isListCard ? 'text-zinc-400' : 'text-primary';
     let value = isListCard ? likeCount : rating;
     if (rating === 0) {

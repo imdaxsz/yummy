@@ -16,7 +16,7 @@ export default class PostHeader extends Component {
           <h3 class='text-20'>${name}</h3>
           <p class='text-14 pb-3 text-secondary font-semibold'>${categoriesLabel.join(', ')}</p>
         </div>
-        <div id='info' class='flex-center gap-6 text-14'>
+        <div id='info' class='flex gap-6 text-14'>
           <p class='text-gray-500'>${email.split('@')[0]}</p>
           <span class='text-zinc-300 dot'>${getFormattedDate(createdAt)}</span>
         </div>
