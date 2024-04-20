@@ -17,13 +17,17 @@ export default class LikesPreview extends Component {
         ${
           !empty
             ? `
-              <a href='/archive?category=likes&filter=${type}'>
+              <a id='more' href='/archive?category=likes&filter=${type}'>
                 <i class='block ph ph-caret-right text-24 text-gray-400'></i>
               </a>`
             : ``
         }
       </div>
-      ${empty ? `<div id='empty' class='py-16'></div>` : `<div id='list' class='grid grid-cols-2 gap-16 gap-y-24'></div>`}
+      ${
+        empty
+          ? `<div id='empty' class='py-16'></div>`
+          : `<div id='list' class='grid grid-cols-2 gap-16 gap-y-24'></div>`
+      }
       
     `;
   }
@@ -38,19 +42,21 @@ export default class LikesPreview extends Component {
         const el = document.createElement('div');
         $list.appendChild(el);
         const commonProps = { id: item.id, userId: item.email.split('@')[0] };
+        const { user, isLoggedIn } = store.state;
+        const isLiked = isLoggedIn ? item.likes.includes(user.uid) : false;
         const props =
           type === 'list'
             ? {
                 ...commonProps,
                 title: item.title,
-                isLiked: item.likes.includes(store.state.user.uid),
+                isLiked,
                 likeCount: item.likeCount,
                 thumbnail: item.thumbnail,
               }
             : {
                 ...commonProps,
                 cardType: 'place',
-                isLiked: item.likes.includes(store.state.user.uid),
+                isLiked,
                 title: item.name,
                 rating: item.ratingValue,
                 placeLocation: item.locationInfo.address,
@@ -70,7 +76,7 @@ export default class LikesPreview extends Component {
   }
 
   setEvent() {
-    this.addEvent('click', 'a', (e) => {
+    this.addEvent('click', '#more', (e) => {
       e.preventDefault();
       const target = e.target.parentNode;
       navigate(target.href);
