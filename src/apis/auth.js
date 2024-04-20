@@ -30,10 +30,11 @@ const userExists = async (uid) => {
 const createList = async (uid, email) => {
   try {
     const listRef = collection(db, 'list');
+    const username = email.split('@')[0].slice(15);
     await setDoc(doc(listRef, uid), {
       createdAt: Date.now(),
       email,
-      title: `${email.split('@')[0]}님의 맛집`,
+      title: `${username}님의 맛집`,
       likes: [],
     });
   } catch (error) {
