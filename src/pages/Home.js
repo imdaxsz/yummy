@@ -4,17 +4,13 @@ import SearchModal from '@components/SearchModal';
 import Card from '@components/Card';
 import { getAllList } from '@apis/list';
 import store from '@stores';
+import Loader from '@components/Loader';
+import toggleSearchModal from '@utils/toggleSearchModal';
 import AbstractView from './AbstractView';
 
 export default class Home extends AbstractView {
-  $searchModal;
-
-  $content;
-
   constructor($target, props) {
     super($target, props, '홈 | yummy');
-    this.$searchModal = this.$target.querySelector('#search-modal');
-    this.$content = this.$target.querySelector('#content');
   }
 
   setup() {
@@ -50,16 +46,16 @@ export default class Home extends AbstractView {
   async didMount() {
     const $header = this.$target.querySelector('#header');
     const $searchbar = this.$target.querySelector('#searchbar');
-    this.$searchModal = this.$target.querySelector('#search-modal');
+    const $searchModal = this.$target.querySelector('#search-modal');
 
     new Header($header, { left: '', center: 'yummy', right: 'menu' });
     new Searchbar($searchbar, {
       placeholder: '검색',
-      onClick: this.toggleSearchModal.bind(this),
+      onClick: () => toggleSearchModal($searchModal),
       autoFocus: false,
     });
-    new SearchModal(this.$searchModal, {
-      onClick: this.toggleSearchModal.bind(this),
+    new SearchModal($searchModal, {
+      onClick: () => toggleSearchModal($searchModal),
     });
 
     const { list } = this.state;
@@ -74,6 +70,7 @@ export default class Home extends AbstractView {
       $list.appendChild(el);
       const { user, isLoggedIn } = store.state;
       const isLiked = isLoggedIn ? item.likes.includes(user.uid) : false;
+
       new Card(el, {
         id: item.id,
         title: item.title,
@@ -87,21 +84,10 @@ export default class Home extends AbstractView {
 
   async fetchData() {
     const { sort } = this.state;
+    const loader = new Loader({});
     const res = await getAllList(sort);
     const list = res.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     this.setState({ ...this.state, list });
-  }
-
-  toggleSearchModal() {
-    const display = this.$searchModal.style.display;
-    if (display === 'block') {
-      this.$searchModal.style.display = 'none';
-      this.$content.style.display = 'block';
-      return;
-    }
-    this.$searchModal.style.display = 'block';
-    this.$content.style.display = 'none';
-    const input = this.$target.querySelector('input.auto-focus');
-    if (input) input.focus();
+    loader.unmount();
   }
 }
