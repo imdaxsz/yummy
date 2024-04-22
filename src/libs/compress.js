@@ -3,9 +3,8 @@ import Compressor from 'compressorjs';
 const optimizeImageFile = (file) => new Promise((resolve, reject) => {
     new Compressor(file, {
       quality: 0.8,
-      convertSize: 1000000,
       mimeType: 'image/webp',
-      maxWidth: 1920,
+      maxWidth: 1440,
       success(result) {
         resolve(result);
       },
