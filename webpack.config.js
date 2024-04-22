@@ -14,12 +14,12 @@ module.exports = {
   },
   devServer: {
     hot: true,
-    port: 9000,
+    port: 8080,
     open: true,
     historyApiFallback: true,
     compress: true,
     static: {
-      directory: path.join(__dirname, 'dist'),
+      directory: path.join(__dirname, 'src/assets'),
     },
   },
   devtool: IS_PRODUCTION ? 'source-map' : 'eval-cheap-module-source-map',
@@ -61,5 +61,11 @@ module.exports = {
       '@utils': path.resolve(__dirname, 'src/utils'),
     },
   },
-  plugins: [new HtmlWebpackPlugin({ template: './index.html' }), new Dotenv()],
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './index.html',
+      favicon: './src/assets/favicon.ico',
+    }),
+    new Dotenv(),
+  ],
 };
