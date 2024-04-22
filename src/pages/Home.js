@@ -6,6 +6,7 @@ import { getAllList } from '@apis/list';
 import store from '@stores';
 import Loader from '@components/Loader';
 import toggleSearchModal from '@utils/toggleSearchModal';
+import Logo from '@assets/logo.png';
 import AbstractView from './AbstractView';
 
 export default class Home extends AbstractView {
@@ -22,7 +23,7 @@ export default class Home extends AbstractView {
     return `
       <div id='header' class='bg-white flex max-w-screen-sm w-full fixed top-0 h-60 z-10'></div>
       <div id='content' class='px-16 pb-90'>
-        <div id='searchbar'></div>
+        <div id='searchbar' class='pt-12'></div>
         <button id='sort' aria-label='정렬하기' class='py-24 block ml-auto'>
           <p class='text-14 flex items-center text-zinc-500'>
             <i class='ph ph-arrows-down-up mr-4 text-16 block'></i>
@@ -48,7 +49,15 @@ export default class Home extends AbstractView {
     const $searchbar = this.$target.querySelector('#searchbar');
     const $searchModal = this.$target.querySelector('#search-modal');
 
-    new Header($header, { left: '', center: 'yummy', right: 'menu' });
+    new Header($header, {
+      left: '',
+      center: `<a href="/" aria-label="홈"><img id='logo' src='' alt='logo' class='w-40 h-40'/></a>`,
+      right: 'menu',
+    });
+
+    const logoImg = this.$target.querySelector('#logo');
+    logoImg.src = Logo;
+
     new Searchbar($searchbar, {
       placeholder: '검색',
       onClick: () => toggleSearchModal($searchModal),
@@ -91,3 +100,4 @@ export default class Home extends AbstractView {
     loader.unmount();
   }
 }
+

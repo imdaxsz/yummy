@@ -16,7 +16,7 @@ export default class Header extends Component {
         </button>
       </div>
       <div class='justify-center'>
-        <a href='/' data-key='logo'>${center}</a>
+        ${center}
       </div>
       <div class='justify-end'>
       ${
