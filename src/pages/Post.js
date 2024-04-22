@@ -41,6 +41,7 @@ export default class Post extends AbstractView {
     const {
       post: { recommendMenu, memo },
     } = this.state;
+    
     return `
       <div id='header' class='bg-white flex max-w-screen-sm w-full fixed top-0 h-60 z-10'></div>
       <div class='px-18 pt-8 py-100 tracking-tight'>
