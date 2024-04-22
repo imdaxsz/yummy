@@ -5,10 +5,12 @@ import {
   deleteDoc,
   doc,
   getDoc,
+  onSnapshot,
   updateDoc,
 } from 'firebase/firestore';
 import store from '@stores';
 import Modal from '@components/Modal';
+import navigate from '@utils/navigate';
 import { deleteImageFiles } from './image';
 
 /**
@@ -17,6 +19,7 @@ import { deleteImageFiles } from './image';
 export const addPost = async (post) => {
   try {
     const docRef = await addDoc(collection(db, 'posts'), post);
+    await updateDoc(doc(db, 'list', post.uid), { updatedAt: post.createdAt });
     return docRef;
   } catch (error) {
     console.log('Error with add post: ', error);
@@ -27,21 +30,35 @@ export const addPost = async (post) => {
 /**
  * @description 포스트 조회
  */
-export const getPost = async (id) => {
-  try {
-    const docRef = await getDoc(doc(db, 'posts', id));
-    return docRef;
-  } catch (error) {
-    console.log('Error with getting post: ', error);
-    throw error;
+export const getPost = async (id, observe = false, callback = null) => {
+  const docRef = doc(db, 'posts', id);
+
+  if (!observe) {
+    const res = await getDoc(doc(db, 'posts', id));
+    if (!res.exists()) return;
+    if (callback) callback(res);
+    return;
   }
+
+  onSnapshot(docRef, (res) => {
+    if (window.location.pathname.split('/')[1] !== 'post') return;
+    if (!res.exists()) {
+      const to = sessionStorage.getItem('redirect');
+      if (!to) alert('존재하지 않는 페이지예요!');
+      else sessionStorage.removeItem('redirect');
+      navigate(to || '/');
+      return;
+    }
+    if (callback) callback(res);
+  });
 };
 
 /**
  * @description 포스트 수정
  */
-export const updatePost = async (docRef, obj) => {
+export const updatePost = async (id, obj) => {
   try {
+    const docRef = doc(db, 'posts', id);
     await updateDoc(docRef, obj);
   } catch (error) {
     console.log('Error with updating post: ', error);

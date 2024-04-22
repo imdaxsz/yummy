@@ -31,8 +31,10 @@ const createList = async (uid, email) => {
   try {
     const listRef = collection(db, 'list');
     const username = email.split('@')[0].slice(15);
+    const time = Date.now();
     await setDoc(doc(listRef, uid), {
-      createdAt: Date.now(),
+      createdAt: time,
+      updatedAt: time,
       email,
       title: `${username}님의 맛집`,
       likes: [],

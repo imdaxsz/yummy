@@ -15,7 +15,7 @@ export default class Home extends AbstractView {
   }
 
   setup() {
-    this.state = { list: null, sort: 'updated' };
+    this.state = { list: null, sort: 'updatedAt' };
   }
 
   template() {
@@ -27,7 +27,7 @@ export default class Home extends AbstractView {
         <button id='sort' aria-label='정렬하기' class='py-24 block ml-auto'>
           <p class='text-14 flex items-center text-zinc-500'>
             <i class='ph ph-arrows-down-up mr-4 text-16 block'></i>
-            ${sort === 'updated' ? '업데이트순' : '좋아요순'}
+            ${sort === 'updatedAt' ? '업데이트순' : '좋아요순'}
           </p>
         </button>
         <div id='list' class='grid grid-cols-2 gap-16 gap-y-24'></div>
@@ -39,7 +39,7 @@ export default class Home extends AbstractView {
   setEvent() {
     this.addEvent('click', '#sort', () => {
       const { sort: prev } = this.state;
-      const sort = prev === 'updated' ? 'likes' : 'updated';
+      const sort = prev === 'updatedAt' ? 'likeCount' : 'updatedAt';
       this.setState({ ...this.state, list: null, sort });
     });
   }

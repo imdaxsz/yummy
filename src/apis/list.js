@@ -12,13 +12,11 @@ import {
 
 /**
  * @description 존재하는 모든 리스트 조회
- * @param {string} sort 정렬 옵션: list | updated
+ * @param {string} sort 정렬 옵션: likeCount | updatedAt
  */
 export const getAllList = async (sort) => {
   try {
-    let q = collection(db, 'list');
-    if (sort === 'likes')
-      q = query(collection(db, 'list'), orderBy('likeCount', 'desc'));
+    const q = query(collection(db, 'list'), orderBy(sort, 'desc'));
     return await getDocs(q);
   } catch (error) {
     console.log('Error with getting list: ', error);
