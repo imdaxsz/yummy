@@ -25,7 +25,7 @@ export const getImageUrl = async (uid, docId, attachment) => {
 };
 
 /**
- * @description storage에서 이미지 삭제
+ * @description storage에서 포스트 이미지 전체 삭제
  */
 export const deleteImageFiles = async (uid, postId) => {
   const locationRef = ref(storage, `${uid}/${postId}`);
@@ -39,9 +39,26 @@ export const deleteImageFiles = async (uid, postId) => {
       if (listThumbnail.includes(itemRef.name)) {
         await updateList(uid, { thumbnail: '' });
       }
-      deleteObject(itemRef);
+      await deleteObject(itemRef);
     });
   } catch (error) {
     console.log('Error with deleting image files: ', error);
+  }
+};
+
+/**
+ * @description storage에서 포스트 이미지 하나 삭제
+ */
+export const deleteImageFile = async (uid, image) => {
+  try {
+    const locationRef = ref(storage, image);
+    await deleteObject(locationRef);
+    const listRef = await getListInfo(uid);
+    const listThumbnail = listRef.data().thumbnail;
+    if (listThumbnail === image) {
+      await updateList(uid, { thumbnail: '' });
+    }
+  } catch (error) {
+    console.log('Error with deleting image file: ', error);
   }
 };

@@ -1,3 +1,4 @@
+/* eslint-disable no-return-await */
 /* eslint-disable no-use-before-define */
 import Rating from '@components/Rating';
 import Header from '@components/Header';
@@ -8,11 +9,14 @@ import FileInput from '@components/Write/FileInput';
 import Map from '@components/Write/Map';
 import scrollLock from '@utils/scrollLock';
 import animate from '@utils/verticalAnimation';
-import { addPost, updatePost } from '@apis/post';
-import { getImageUrl } from '@apis/image';
+import { addPost, getPost, updatePost } from '@apis/post';
+import { deleteImageFile, getImageUrl } from '@apis/image';
 import store from '@stores';
 import navigate from '@utils/navigate';
 import Snackbar from '@components/Snackbar';
+import { handleListThumbnail } from '@apis/list';
+import isEndWithConsonant from '@utils/isEndWithConsonant';
+import Loader from '@components/Loader';
 import AbstractView from './AbstractView';
 
 export default class Write extends AbstractView {
@@ -111,7 +115,7 @@ export default class Write extends AbstractView {
     `;
   }
 
-  didMount() {
+  async didMount() {
     const $header = this.$target.querySelector('#header');
     const $categories = this.$target.querySelector('#categories');
     const $attachments = this.$target.querySelector('#attachments');
@@ -128,6 +132,15 @@ export default class Write extends AbstractView {
       isMapModalVisible,
       isLoading,
     } = this.state;
+
+    // 수정일 경우 게시글 내용 fetch
+    const searchParams = new URLSearchParams(window.location.search);
+    const mode = searchParams.get('mode');
+    const id = searchParams.get('id');
+    if (mode === 'edit' && id && !this.state.createdAt) {
+      await this.fetchData(id);
+      return;
+    }
 
     new Header($header, {
       left: 'prev',
@@ -216,6 +229,7 @@ export default class Write extends AbstractView {
 
   onChangeText(e) {
     const { id, value } = e.target;
+    // TODO: 글자수 제한
     this.setState({ ...this.state, [id]: value });
   }
 
@@ -224,10 +238,7 @@ export default class Write extends AbstractView {
     const checkName = name.trim().length === 0;
     const checkCategories = categories.length === 0;
     const checkLocation = locationInfo.id === '';
-    const result =
-      name.trim().length !== 0 &&
-      categories.length !== 0 &&
-      locationInfo.id !== '';
+    const result = !checkName && !checkCategories && !checkLocation;
 
     if (!result) {
       const arr = [
@@ -236,11 +247,7 @@ export default class Write extends AbstractView {
         checkLocation && '위치',
       ].filter(Boolean);
 
-      const charCode = arr[arr.length - 1].charCodeAt(
-        arr[arr.length - 1].length - 1,
-      );
-      const consonantCode = (charCode - 44032) % 28;
-      const message = `${arr.join(', ')}${consonantCode ? '을' : '를'} 입력해 주세요.`;
+      const message = `${arr.join(', ')}${isEndWithConsonant(arr[arr.length - 1]) ? '을' : '를'} 입력해 주세요.`;
       new Snackbar({ message });
     }
 
@@ -249,11 +256,12 @@ export default class Write extends AbstractView {
 
   async onSubmit(e) {
     e.preventDefault();
+    const loader = new Loader({ color: 'primary', backdrop: true });
     this.setState({ ...this.state, isLoading: true });
     const { user } = store.state;
     if (!user) {
       alert('로그인 후 이용 가능해요!');
-      navigate('/'); // TODO: 로그인 페이지로 변경
+      window.location.href = '/signin';
       return;
     }
 
@@ -262,28 +270,65 @@ export default class Write extends AbstractView {
       return;
     }
 
-    const { isMapModalVisible, attachments, isLoading, ...post } = this.state;
-    const doc = await addPost({
-      attachments: [],
-      ...post,
-      uid: user.uid,
-      username: user.email,
-      createdAt: Date.now(),
-      likes: [],
-    });
+    const {
+      isMapModalVisible,
+      attachments,
+      isLoading,
+      edit,
+      currentAttachments,
+      id,
+      ...post
+    } = this.state;
 
-    if (doc && attachments.length > 0) {
-      const imageUrls = await Promise.all(
-        attachments.map(
-          async (attachment) =>
-            // eslint-disable-next-line no-return-await
-            await getImageUrl(user.uid, doc.id, attachment),
-        ),
-      );
-      await updatePost(doc, { attachments: [...imageUrls] });
+    let postId = '';
+
+    if (edit) {
+      await updatePost(id, { attachments, ...post });
+      postId = id;
+    } else {
+      const doc = await addPost({
+        attachments: [],
+        ...post,
+        uid: user.uid,
+        email: user.email,
+        createdAt: Date.now(),
+        likes: [],
+      });
+
+      postId = doc.id;
     }
-    window.location.href = `/post/${doc.id}`;
+
+    if (postId) {
+      await this.handleAttachments(
+        attachments,
+        currentAttachments ?? [],
+        postId,
+        user.uid,
+      );
+    }
+
+    loader.unmount();
+    window.location.href = `/post/${postId}`;
     this.setState({ ...this.state, isLoading: false });
+  }
+
+  async handleAttachments(current, prev, postId, uid) {
+    if (JSON.stringify(current) === JSON.stringify(prev)) return;
+    if (prev.length > 0) {
+      const deletedAttachments = prev.filter((i) => !current.includes(i));
+      deletedAttachments.forEach(async (img) => deleteImageFile(uid, img));
+    }
+    if (current.length === 0) return;
+
+    const imageUrls = await Promise.all(
+      current.map(async (attachment) =>
+        prev.includes(attachment)
+          ? attachment
+          : await getImageUrl(uid, postId, attachment),
+      ),
+    );
+    await updatePost(postId, { attachments: [...imageUrls] });
+    await handleListThumbnail(uid, imageUrls[0]);
   }
 
   toggleMapModal() {
@@ -299,11 +344,31 @@ export default class Write extends AbstractView {
     el.play();
     setTimeout(() => scrollLock(display, this.scrollY), prev ? 0 : 150);
   }
+
+  async fetchData(id) {
+    if (!id) {
+      alert('존재하지 않는 페이지입니다!');
+      navigate('/');
+      return;
+    }
+    const loader = new Loader({ color: 'primary', backdrop: true });
+    await getPost(id, false, (res) => {
+      this.setState({
+        ...this.state,
+        ...res.data(),
+        currentAttachments: res.data().attachments,
+        edit: true,
+        id: res.id,
+      });
+    });
+    loader.unmount();
+  }
 }
 
 function FormButton(disabled) {
   return `
     <button
+      aria-label='완료'
       form='editor'
       type='submit'
       ${disabled && 'disabled'}
