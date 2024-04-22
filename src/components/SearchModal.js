@@ -20,13 +20,14 @@ export default class SearchModal extends Component {
     } = this.state;
     const hasFilter =
       categories.length > 0 || !(minScore === 0 && maxScore === 5);
+    
     return `
       <div id='search-header'
           class='bg-white flex items-center max-w-screen-sm
           w-full h-60 fixed gap-8 top-0 z-31 px-[1rem]'
       >
         
-        <button id='back' aria-label='뒤로가기' class='-ml-2 flex-center'>
+        <button aria-label='뒤로가기' class='back -ml-2 flex-center'>
           <i class='ph ph-caret-left text-24 block'></i>
         </button>
         <div id='searchbar' class='w-full'></div>
@@ -40,11 +41,22 @@ export default class SearchModal extends Component {
         ${
           hasFilter
             ? `<div class='flex-center mt-60 gap-32'>
-                <button id='reset' class='flex-center gap-8 text-zinc-400'>
+                <button
+                  id='reset'
+                  aria-label='초기화'
+                  class='flex-center gap-8 text-zinc-400'
+                >
                   <i class="ph ph-arrow-clockwise"></i>
                   초기화
                 </button>
-                <button id='search-btn' class='block btn-primary bg-primary w-[50%] py-8 rounded-full font-bold text-white'>적용하기</button>
+                <button
+                  id='search-btn'
+                  aria-label='적용하기'
+                  class='block btn-primary bg-primary w-[50%] py-8
+                    rounded-full font-bold text-white'
+                >
+                  적용하기
+                </button>
               </div>`
             : ``
         }
@@ -100,7 +112,7 @@ export default class SearchModal extends Component {
 
   setEvent() {
     const { onClick } = this.props;
-    if (onClick) this.addEvent('click', '#back', onClick);
+    if (onClick) this.addEvent('click', '.back', onClick);
 
     this.addEvent('click', '#reset', () => {
       this.setState({

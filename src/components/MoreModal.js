@@ -15,7 +15,7 @@ export default class MoreModal extends Component {
     const { docId } = this.props;
     const editHref = `/write?mode=edit&id=${docId}`;
     return `
-    <div id='backdrop' class='fixed inset-0 m-auto w-full h-content'></div>
+      <div id='backdrop' class='fixed inset-0 m-auto w-full h-content'></div>
       <div
         class='absolute top-100 right-24 z-30 flex flex-col
           bg-white shadow-sm border border-zinc-200 rounded-md font-medium'
@@ -25,7 +25,7 @@ export default class MoreModal extends Component {
           <span>수정하기</span>
         </a>
         <hr/>
-        <button id='delete' class='px-12 py-8 flex-center gap-6 text-red-500'>
+        <button id='delete' aria-label='삭제하기' class='px-12 py-8 flex-center gap-6 text-red-500'>
           <i class="block ph ph-trash text-24 pt-2"></i>
           <span>삭제하기</span>
         </button>

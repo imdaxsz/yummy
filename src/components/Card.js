@@ -37,11 +37,14 @@ export default class Card extends Component {
       thumbnail,
       cardType,
     } = this.props;
+
     const isListCard = cardType === 'list';
     const url = isListCard ? `/list/${id}` : `/post/${id}`;
+
     let icon = isListCard ? 'ph ph-heart' : 'ph-fill ph-star';
     if (isListCard && isLiked) icon = 'ph-fill ph-heart';
     let iconColor = isListCard ? 'text-zinc-400' : 'text-primary';
+
     let value = isListCard ? likeCount : rating;
     if (rating === 0) {
       iconColor = 'text-neutral-300';
@@ -67,14 +70,14 @@ export default class Card extends Component {
         ${
           thumbnail !== ''
             ? `<img
-            src=${thumbnail}
-            alt='${userId}님의 맛집'
-            class='w-full h-full object-cover bg-zinc-200' 
-          />`
+                src=${thumbnail}
+                alt='${userId}님의 맛집'
+                class='w-full h-full object-cover bg-zinc-200' 
+              />`
             : `<i class='ph ph-fork-knife text-[2.5rem] text-white'></i>`
         }
         </div>
-        <h3 class='mt-6 leading-tight text-15 font-medium truncate tracking-tight'>${title}</h3>
+        <h2 class='mt-6 leading-tight text-15 font-medium truncate tracking-tight'>${title}</h2>
         <div class='flex justify-between items-center text-13  w-full'>
           <span class='text-zinc-400 shrink-0'>${isListCard ? userId : location}</span>
           <div class='flex items-center justify-end gap-4 w-[70%]'>

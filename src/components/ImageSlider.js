@@ -51,6 +51,7 @@ export default class ImageSlider extends Component {
         el.className = 'swiper-slide';
         const img = document.createElement('img');
         img.src = url;
+        img.alt = `image${i + 1}`;
         if (!readonly) {
           const btn = document.createElement('button');
           btn.setAttribute('aria-label', '이미지 삭제');

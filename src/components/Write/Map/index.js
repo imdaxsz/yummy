@@ -24,23 +24,23 @@ export default class Map extends Component {
   template() {
     const { id } = this.state.locationInfo;
     return `
-        <div class='map_wrap'>
-          <div class='flex items-center justify-between h-60 px-8'>
-            <button id='cancel' class='px-8' aria-label='취소'>취소</button>
-            <button id='add' class='px-8' aria-label='추가'>추가</button>
-          </div>
-          <form id='search'>
-            <input type='text' placeholder='장소명을 입력하세요.' value='' id='keyword'>
-            <button type='submit'>
-              <i class='ph ph-magnifying-glass text-zinc-400 text-24 block'></i>
-            </button>
-          </form>
-          <div id='menu_wrap'>
-            <ul id='placesList'></ul>
-            <div id='pagination' class='flex-center'></div>
-          </div>
-          ${id ? `<div id='location_info'></div>` : ``}
+      <div class='map_wrap'>
+        <div class='flex items-center justify-between h-60 px-8'>
+          <button id='cancel' class='px-8' aria-label='취소'>취소</button>
+          <button id='add' class='px-8' aria-label='추가'>추가</button>
         </div>
+        <form id='search-location'>
+          <input type='text' placeholder='장소명을 입력하세요.' value='' id='keyword'>
+          <button aria-label='검색하기' type='submit'>
+            <i class='ph ph-magnifying-glass text-zinc-400 text-24 block'></i>
+          </button>
+        </form>
+        <div id='menu_wrap'>
+          <ul id='placesList'></ul>
+          <div id='pagination' class='flex-center'></div>
+        </div>
+        ${id ? `<div id='location_info'></div>` : ``}
+      </div>
     `;
   }
 
@@ -76,7 +76,7 @@ export default class Map extends Component {
   setEvent() {
     const { toggleMapModal } = this.props;
 
-    this.addEvent('submit', '#search', (e) => {
+    this.addEvent('submit', '#search-location', (e) => {
       e.preventDefault();
       this.searchPlaces();
     });

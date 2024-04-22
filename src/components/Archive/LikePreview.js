@@ -17,7 +17,7 @@ export default class LikesPreview extends Component {
         ${
           !empty
             ? `
-              <a id='more' href='/archive?category=likes&filter=${type}'>
+              <a class='more' aria-label='더보기' href='/archive?category=likes&filter=${type}'>
                 <i class='block ph ph-caret-right text-24 text-gray-400'></i>
               </a>`
             : ``
@@ -76,7 +76,7 @@ export default class LikesPreview extends Component {
   }
 
   setEvent() {
-    this.addEvent('click', '#more', (e) => {
+    this.addEvent('click', '.more', (e) => {
       e.preventDefault();
       const target = e.target.parentNode;
       navigate(target.href);
