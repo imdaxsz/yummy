@@ -7,6 +7,7 @@ import SearchModal from '@components/SearchModal';
 import Searchbar from '@components/Searchbar';
 import navigate from '@utils/navigate';
 import toggleSearchModal from '@utils/toggleSearchModal';
+import store from '@stores';
 import AbstractView from './AbstractView';
 
 export default class SearchResult extends AbstractView {
@@ -23,12 +24,15 @@ export default class SearchResult extends AbstractView {
 
     this.state = {
       filter: { categories, minScore, maxScore, keyword },
+      list: null,
       posts: null,
     };
   }
 
   template() {
-    const { posts } = this.state;
+    const { list, posts } = this.state;
+    const completed = posts && list;
+
     return `
       <div id='search-header'
         class='bg-white flex items-center max-w-screen-sm
@@ -42,16 +46,16 @@ export default class SearchResult extends AbstractView {
       <div id='filtered' class='px-16 flex gap-7 mb-8 flex-wrap'></div>
       <div class='px-16 pb-90'>
       ${
-        posts && posts.length > 0
+        completed && Boolean(list.length || posts.length)
           ? `
             <p class='text-zinc-400 text-end py-16 text-13'>
-              ${posts.length}개의 검색 결과가 있어요!
+              ${list.length + posts.length}개의 검색 결과가 있어요!
             </p>
             <div id='list' class='grid grid-cols-2 gap-16 gap-y-24'></div>
             `
           : ``
       }
-      ${posts && posts.length === 0 ? `<div id='empty' class='h-[75dvh] flex-center'></div>` : ``}
+      ${completed && !(list.length || posts.length) ? `<div id='empty' class='h-[75dvh] flex-center'></div>` : ``}
       </div>
       <div id='search-modal' class='absolute top-0 z-30 w-full bg-white hidden touch-pan-x'></div>
     `;
@@ -64,6 +68,7 @@ export default class SearchResult extends AbstractView {
     const {
       filter: { categories, minScore, maxScore, keyword },
       posts,
+      list,
     } = this.state;
 
     new Searchbar($searchbar, {
@@ -90,12 +95,26 @@ export default class SearchResult extends AbstractView {
     if (!posts) {
       const loader = new Loader({});
       const res = await search(categories, minScore, maxScore, keyword);
-      this.setState({ ...this.state, posts: res });
+      this.setState({ ...this.state, list: res.list, posts: res.posts });
       loader.unmount();
       return;
     }
 
     const $list = this.$target.querySelector('#list');
+
+    list.forEach((item) => {
+      const el = document.createElement('div');
+      $list.appendChild(el);
+      new Card(el, {
+        id: item.id,
+        title: item.title,
+        userId: item.email.split('@')[0],
+        likeCount: item.likeCount,
+        isLiked: item.likes.includes(store.state.user.uid),
+        thumbnail: item.thumbnail,
+      });
+    });
+
     posts.forEach((item) => {
       const el = document.createElement('div');
       $list.appendChild(el);
@@ -110,7 +129,7 @@ export default class SearchResult extends AbstractView {
       });
     });
 
-    if (posts.length > 0) return;
+    if (posts.length || list.length) return;
 
     const $empty = this.$target.querySelector('#empty');
     new Empty($empty, {
