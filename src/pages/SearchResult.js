@@ -16,10 +16,11 @@ export default class SearchResult extends AbstractView {
 
   setup() {
     const searchParams = new URLSearchParams(window.location.search);
-    const keyword = searchParams.get('keyword');
+    const keyword = searchParams.get('keyword') ?? '';
     const categories = searchParams.getAll('categories');
     const minScore = Number(searchParams.get('min_score')) ?? 0;
     const maxScore = Number(searchParams.get('max_score')) ?? 5;
+
     this.state = {
       filter: { categories, minScore, maxScore, keyword },
       posts: null,
@@ -31,9 +32,9 @@ export default class SearchResult extends AbstractView {
     return `
       <div id='search-header'
         class='bg-white flex items-center max-w-screen-sm
-          w-full h-60 fixed gap-8 top-0 z-31 px-[1rem]'
+          w-full h-60 fixed gap-8 top-0 z-30 px-[1rem]'
       >
-        <button id='back' aria-label='뒤로가기' class='-ml-2 flex-center'>
+        <button aria-label='뒤로가기' class='back -ml-2 flex-center'>
           <i class='ph ph-caret-left text-24 block'></i>
         </button>
         <div id='searchbar' class='w-full'></div>
@@ -114,6 +115,12 @@ export default class SearchResult extends AbstractView {
     const $empty = this.$target.querySelector('#empty');
     new Empty($empty, {
       message: '검색 결과가 없어요.',
+    });
+  }
+
+  setEvent() {
+    this.addEvent('click', '.back', () => {
+      window.history.back();
     });
   }
 
