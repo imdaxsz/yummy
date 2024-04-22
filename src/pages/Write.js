@@ -229,18 +229,27 @@ export default class Write extends AbstractView {
 
   onChangeText(e) {
     const { id, value } = e.target;
-    // TODO: 글자수 제한
     this.setState({ ...this.state, [id]: value });
   }
 
   isFormValid() {
-    const { name, categories, locationInfo } = this.state;
+    const { name, categories, locationInfo, memo } = this.state;
     const checkName = name.trim().length === 0;
     const checkCategories = categories.length === 0;
     const checkLocation = locationInfo.id === '';
-    const result = !checkName && !checkCategories && !checkLocation;
+    const isNotBlank = !checkName && !checkCategories && !checkLocation;
 
-    if (!result) {
+    if (name.trim().length > 30) {
+      new Snackbar({ message: '맛집 이름은 최대 30자까지 입력 가능해요.' });
+      return false;
+    }
+
+    if (memo.trim().length > 1000) {
+      new Snackbar({ message: '메모는 최대 1000자까지 입력 가능해요.' });
+      return false;
+    }
+
+    if (!isNotBlank) {
       const arr = [
         checkName && '맛집 이름',
         checkCategories && '카테고리',
@@ -251,7 +260,7 @@ export default class Write extends AbstractView {
       new Snackbar({ message });
     }
 
-    return result;
+    return isNotBlank;
   }
 
   async onSubmit(e) {
@@ -267,6 +276,7 @@ export default class Write extends AbstractView {
 
     if (!this.isFormValid()) {
       this.setState({ ...this.state, isLoading: false });
+      loader.unmount();
       return;
     }
 
