@@ -162,6 +162,7 @@ export default class Write extends AbstractView {
       new ImageSlider($attachments, {
         imageUrl: [...attachments],
         updateAttachments: this.updateAttachments.bind(this),
+        croppable: true,
       });
     }
 
@@ -216,8 +217,15 @@ export default class Write extends AbstractView {
     this.setState({ ...this.state, categories });
   }
 
-  updateAttachments(attachments) {
-    this.setState({ ...this.state, attachments });
+  updateAttachments(next) {
+    if (!Array.isArray(next)) {
+      const { attachments } = this.state;
+      const temp = [...attachments];
+      temp[next.i] = next.src;
+      this.setState({ ...this.state, attachments: temp });
+      return;
+    }
+    this.setState({ ...this.state, attachments: next });
   }
 
   onChangeEvaluation(id) {
