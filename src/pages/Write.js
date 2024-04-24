@@ -17,6 +17,7 @@ import Snackbar from '@components/Snackbar';
 import { handleListThumbnail } from '@apis/list';
 import isEndWithConsonant from '@utils/isEndWithConsonant';
 import Loader from '@components/Loader';
+import PlaceLocation from '@components/Write/PlaceLocation';
 import AbstractView from './AbstractView';
 
 export default class Write extends AbstractView {
@@ -47,7 +48,7 @@ export default class Write extends AbstractView {
       recommendMenu,
       memo,
       attachments,
-      locationInfo: { id, address, placeName },
+      locationInfo: { id },
       isMapModalVisible,
     } = this.state;
 
@@ -87,18 +88,7 @@ export default class Write extends AbstractView {
         ${
           id
             ? `
-              <div class='flex items-center justify-between'>
-                <div class='flex-1 min-w-0 flex items-center gap-4'>
-                  <i class='ph-fill ph-map-pin text-28 block text-primary'></i>
-                  <div class='flex-1 min-w-0 pr-8'>
-                    <p class='font-medium truncate'>${placeName}</p>
-                    <p class='text-14 text-zinc-400 truncate'>${address}</p>
-                  </div>
-                </div>
-                <button id='removeLocation' aria-label='위치 정보 삭제' class='shrink-0'>
-                  <i class='ph ph-x text-20 block'></i>
-                </button>
-              </div>
+              <div id='placeLocation' class='flex items-center justify-between'></div>
             `
             : `<button
                 id='addLocation'
@@ -109,7 +99,6 @@ export default class Write extends AbstractView {
                 위치 정보 추가
               </button>`
         }
-
       </form>
       ${isMapModalVisible ? `<div id="map-modal" ></div>` : ``}
     `;
@@ -124,12 +113,15 @@ export default class Write extends AbstractView {
     const $fileInputContainer = this.$target.querySelector(
       '#fileInput-container',
     );
+    const $placeLocation = this.$target.querySelector('#placeLocation');
+    
     const {
       categories,
       evaluation,
       ratingValue,
       attachments,
       isMapModalVisible,
+      locationInfo,
       isLoading,
     } = this.state;
 
@@ -177,6 +169,10 @@ export default class Write extends AbstractView {
         evaluation,
         onClick: this.onChangeEvaluation.bind(this),
       });
+    
+    if (locationInfo.id) {
+      new PlaceLocation($placeLocation, locationInfo);
+    }
 
     const $mapModal = document.querySelector('#map-modal');
     if (isMapModalVisible)
