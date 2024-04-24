@@ -48,7 +48,13 @@ export default class Chip extends Component {
 
     return `
       <div id=${id} class='${getChipStyle()}'>
-        ${type === 'explain' ? `<span class='text-zinc-400 font-medium'>${label}&nbsp;</span>` : ``}
+        ${
+          type === 'explain'
+            ? `<span class='text-zinc-400 font-medium'>
+                ${label}&nbsp;
+              </span>`
+            : ``
+        }
         <span>${text}</span>
         ${type === 'filtered' ? `<i class='ph ph-x cursor-pointer text-15 pl-2'></i>` : ``}
       </div>

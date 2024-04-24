@@ -34,10 +34,12 @@ export default class Rating extends Component {
     const { readonly, value } = this.props;
     colorStar.style.width = `${value * 20}%`;
     const valueText = this.$target.querySelector('p');
+
     if (readonly) {
       valueText.style.cssText = 'display: none';
       return;
     }
+
     if (value > 0) {
       valueText.classList.replace('text-neutral-300', 'text-neutral-500');
     }
@@ -45,14 +47,17 @@ export default class Rating extends Component {
 
   setEvent() {
     const { value: prev, readonly, onChangeRating } = this.props;
+
     if (!readonly)
       this.addEvent('click', 'i', (e) => {
         const { target } = e;
         const { value } = target.dataset;
+
         if (prev === value) {
           onChangeRating(0);
           return;
         }
+        
         onChangeRating(value);
       });
   }

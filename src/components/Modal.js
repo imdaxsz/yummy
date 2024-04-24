@@ -38,7 +38,7 @@ export default class Modal extends Component {
         <div class='flex-center gap-12 pt-8 px-8 font-medium'>
           ${
             type === 'confirm'
-              ? `<button id='cancel' aria-label='취소' class='w-110 py-4 bg-zinc-100 rounded '>
+              ? `<button id='cancel' aria-label='취소' class='w-110 py-4 bg-zinc-100 rounded'>
                   취소
                 </button>`
               : ``

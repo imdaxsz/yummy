@@ -7,7 +7,7 @@ export default class LocationInfo extends Component {
       <a
         href='${`https://map.kakao.com/link/map/${id}`}' 
         class='flex items-center gap-8 mt-80 border px-8 py-12 
-              rounded-lg shadow-sm border-zinc-200 tap-highlight'
+          rounded-lg shadow-sm border-zinc-200 tap-highlight'
       >
         <i class='ph-fill ph-map-pin text-28 block text-primary'></i>
         <div class='flex-1 min-w-0'>

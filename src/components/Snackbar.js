@@ -17,8 +17,11 @@ export default class Snackbar extends Component {
   template() {
     const { message } = this.props;
     return `
-      <div class="max-w-lg w-[90%] mx-auto bg-zinc-800/80 text-sm text-white rounded-md role="alert">
-        <div class="p-16 text-16 text-center">
+      <div
+        class='max-w-lg w-[90%] mx-auto bg-zinc-800/80
+          text-sm text-white rounded-md role='alert'
+      >
+        <div class='p-16 text-16 text-center'>
           ${message}
         </div>
       </div>

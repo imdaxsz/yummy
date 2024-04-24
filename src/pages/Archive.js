@@ -50,7 +50,6 @@ export default class Archive extends AbstractView {
   }
 
   async didMount() {
-    if (!store.state.user) return;
     const {
       tabs,
       isMyList,

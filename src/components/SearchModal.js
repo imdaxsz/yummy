@@ -22,11 +22,11 @@ export default class SearchModal extends Component {
       categories.length > 0 || !(minScore === 0 && maxScore === 5);
     
     return `
-      <div id='search-header'
-          class='bg-white flex items-center max-w-screen-sm
+      <div
+        id='search-header'
+        class='bg-white flex items-center max-w-screen-sm
           w-full h-60 fixed gap-8 top-0 z-31 px-[1rem]'
       >
-        
         <button aria-label='뒤로가기' class='back -ml-2 flex-center'>
           <i class='ph ph-caret-left text-24 block'></i>
         </button>
@@ -77,6 +77,7 @@ export default class SearchModal extends Component {
       minVal: minScore,
       maxVal: maxScore,
     });
+    
     new Searchbar(searchbar, {
       placeholder: '검색어를 입력하세요.',
       autoFocus: true,

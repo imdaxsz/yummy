@@ -33,7 +33,6 @@ export default class RangeSlider extends Component {
           <input type='range' class='range-max' min='0' max='5' value=${maxVal} />
         </div>
       </div>
-
     `;
   }
 
@@ -92,8 +91,10 @@ export default class RangeSlider extends Component {
   didMount() {
     this.$progress = this.$target.querySelector('.slider .progress');
     this.$rangeInput = this.$target.querySelectorAll('.range-input input');
+
     const [minEl, maxEl] = this.$target.querySelectorAll('span');
     const { minVal, maxVal } = this.props;
+    
     this.setStyle(minVal, maxVal);
     this.setValueText(minEl, minVal);
     this.setValueText(maxEl, maxVal);

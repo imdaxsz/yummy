@@ -33,7 +33,11 @@ export default class ListHeader extends Component {
       <div class='flex justify-between items-center text-zinc-500'>
         <span class='text-16'>${email.split('@')[0]}</span>
         <div class='flex-center gap-12'>
-          <button id='like' aria-label='좋아요' class='${`flex-center gap-3 ${likeIcon.color}`} '>
+          <button
+            id='like'
+            aria-label='좋아요'
+            class='${`flex-center gap-3 ${likeIcon.color}`}'
+          >
             <i class='${`block ${likeIcon.type} ph-heart text-22`}'></i>
             <span class='text-16'>${likes.length}</span>
           </button>

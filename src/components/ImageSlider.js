@@ -4,7 +4,6 @@ import { Navigation, Scrollbar } from 'swiper/modules';
 import ImageCropperModal from './ImageCropper';
 
 import 'swiper/css';
-import 'swiper/css/navigation';
 import 'swiper/css/scrollbar';
 
 export default class ImageSlider extends Component {

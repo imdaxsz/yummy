@@ -7,7 +7,7 @@ export default class FileInput extends Component {
       <label
         for='fileInput'
         class='h-112 rounded-lg bg-neutral-200 flex-center flex-col gap-2
-                text-neutral-500 cursor-pointer'>
+          text-neutral-500 cursor-pointer'>
         <h3 class='flex-center gap-4 font-medium'>
           <i class='ph ph-image text-24'></i>
           사진 추가

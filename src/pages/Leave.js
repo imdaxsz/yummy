@@ -56,6 +56,7 @@ export default class Leave extends AbstractView {
       const { checked } = e.target;
       this.$button.disabled = !checked;
     });
+    
     this.addEvent('click', '#leave', async () => {
       await leave();
     });

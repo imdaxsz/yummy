@@ -21,6 +21,7 @@ export default class ImageCropperModal extends Component {
 
   template() {
     const { src } = this.props;
+
     return `
       <div class='max-w-screen-sm w-[100%] h-[100%] bg-white'>
         <div class='modal-content'>
@@ -36,8 +37,20 @@ export default class ImageCropperModal extends Component {
             </div>
           </div>
           <div class='flex-center gap-8 py-24'>
-            <button type='button' aria-label='취소' class='close w-110 py-4 bg-zinc-100 rounded'>취소</button>
-            <button type='button' aria-label='저장' class='save w-110 py-4 rounded text-white bg-primary'>저장</button>
+            <button 
+              type='button' 
+              aria-label='취소' 
+              class='close w-110 py-4 bg-zinc-100 rounded'
+            >
+              취소
+            </button>
+            <button 
+              type='button' 
+              aria-label='저장' 
+              class='save w-110 py-4 rounded text-white bg-primary'
+            >
+              저장
+            </button>
           </div>
         </div>
       </div>
