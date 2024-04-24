@@ -3,15 +3,28 @@ import Component from '@components';
 export default class Tabs extends Component {
   template() {
     const { items } = this.props;
+    
     return `
       <ul class='flex border-b text-center text-14 font-medium cursor-pointer'>
-        <li id=${items[0].id} class='w-full relative py-8 text-primary font-bold'>
-          ${items[0].label}
-          <div class='line absolute w-full h-2 bg-primary -bottom-1' />
+        <li id=${items[0].id} class='w-full relative text-primary font-bold'>
+          <a 
+            href='?category=${items[0].id}' 
+            aria-label='${items[0].label}' 
+            class='block py-8'
+          >
+            ${items[0].label}
+            <div class='line absolute w-full h-2 bg-primary -bottom-1' />
+          </a>
         </li>
-        <li id=${items[1].id} class='w-full relative py-8'>
-          ${items[1].label}
-          <div class='line absolute w-full h-2 -bottom-1' />
+        <li id=${items[1].id} class='w-full relative'>
+          <a 
+            href='?category=${items[1].id}' 
+            aria-label='${items[1].label}' 
+            class='block py-8'
+          >
+            ${items[1].label}
+            <div class='line absolute w-full h-2 -bottom-1' />
+          </a>
         </li>
       </ul>
     `;
@@ -41,12 +54,13 @@ export default class Tabs extends Component {
   setEvent() {
     const { onClick } = this.props;
 
-    this.addEvent('click', 'li', (e) => {
+    this.addEvent('click', 'a', (e) => {
+      e.preventDefault();
       const { target } = e;
       if (!target) return;
-      let currentId = target.id;
-      if (target.nodeName === 'DIV') currentId = target.parentNode.id;
-      this.setActiveStyle(currentId);
+      const { parentNode } = target;
+      const currentId =
+        parentNode.nodeName === 'LI' ? parentNode.id : parentNode.parentNode.id;
       if (onClick) onClick(currentId);
     });
   }
