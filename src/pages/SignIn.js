@@ -1,6 +1,6 @@
 import Header from '@components/Header';
 import { signIn } from '@apis/auth';
-import GoogleIcon from '@assets/google-icon.svg';
+import GoogleIcon from '../../public/google-icon.svg';
 import AbstractView from './AbstractView';
 
 export default class SignIn extends AbstractView {

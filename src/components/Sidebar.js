@@ -1,9 +1,9 @@
 /* eslint-disable no-use-before-define */
 import toggleSidebar from '@utils/toggleSidebar';
 import navigate from '@utils/navigate';
-import GoogleIcon from '@assets/google-icon.svg';
 import store from '@stores';
 import { signIn, signOut } from '@apis/auth';
+import GoogleIcon from '../../public/google-icon.svg';
 import Component from '.';
 
 export default class Sidebar extends Component {
@@ -20,7 +20,11 @@ export default class Sidebar extends Component {
         </div>
         ${
           !user
-            ? `<button id='signin' aria-label='로그인' class='w-full flex-center gap-8 py-8 my-32'>
+            ? `<button 
+                id='signin' 
+                aria-label='로그인' 
+                class='w-full flex-center gap-8 py-8 my-32'
+              >
                 <img class='w-24 h-24' src='' alt='google' />
                 <h3>Google 계정으로 시작하기</h3>
               </button>`
@@ -64,10 +68,14 @@ function memberMenu(email) {
       </div>
       <ul class='mt-40 flex flex-col gap-[0.8rem]'>
         <li>
-          <a class='flex items-center h-40 px-16' href='/signout' data-key='signout'>로그아웃</a>
+          <a class='flex items-center h-40 px-16' href='/signout' data-key='signout'>
+            로그아웃
+          </a>
         </li>
         <li>
-          <a class='flex items-center h-40 px-16' href='/leave' data-key='leave'>회원탈퇴</a>
+          <a class='flex items-center h-40 px-16' href='/leave' data-key='leave'>
+            회원탈퇴
+          </a>
         </li>
       </ul>
     </div>

@@ -6,8 +6,8 @@ import { getAllList } from '@apis/list';
 import store from '@stores';
 import Loader from '@components/Loader';
 import toggleSearchModal from '@utils/toggleSearchModal';
-import Logo from '@assets/logo.png';
 import AbstractView from './AbstractView';
+import Logo from '../../public/logo.png';
 
 export default class Home extends AbstractView {
   constructor($target, props) {

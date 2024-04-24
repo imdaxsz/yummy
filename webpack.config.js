@@ -19,7 +19,7 @@ module.exports = {
     historyApiFallback: true,
     compress: true,
     static: {
-      directory: path.join(__dirname, 'src/assets'),
+      directory: path.join(__dirname, 'public'),
     },
   },
   devtool: IS_PRODUCTION ? 'source-map' : 'eval-cheap-module-source-map',
@@ -51,7 +51,6 @@ module.exports = {
     alias: {
       '@': path.resolve(__dirname, 'src/'),
       '@apis': path.resolve(__dirname, 'src/apis'),
-      '@assets': path.resolve(__dirname, 'src/assets'),
       '@components': path.resolve(__dirname, 'src/components'),
       '@constants': path.resolve(__dirname, 'src/constants'),
       '@libs': path.resolve(__dirname, 'src/libs'),
@@ -64,7 +63,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './index.html',
-      favicon: './src/assets/favicon.ico',
+      favicon: './public/favicon.ico',
     }),
     new Dotenv(),
   ],
