@@ -49,10 +49,11 @@ export default class BottomNavigation extends Component {
 
     this.$target.style.display = 'flex';
     const items = this.$target.querySelectorAll('a');
-    items.forEach((item) =>
-      item.href === window.location.href
-        ? item.classList.add('text-primary')
-        : item.classList.remove('text-primary'),
+    items.forEach(
+      (item) =>
+        new URL(item.href).pathname === window.location.pathname
+          ? item.classList.add('text-primary')
+          : item.classList.remove('text-primary'),
     );
   }
 }
