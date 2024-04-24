@@ -25,6 +25,7 @@ export default class MyList extends Component {
         placeLocation: item.locationInfo.address,
         isLiked: item.likes.includes(store.state.user.uid),
         thumbnail: item.attachments.length > 0 ? item.attachments[0] : '',
+        isMine: true,
       });
     });
   }

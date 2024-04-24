@@ -36,6 +36,7 @@ export default class Card extends Component {
       isLiked,
       thumbnail,
       cardType,
+      isMine,
     } = this.props;
 
     const isListCard = cardType === 'list';
@@ -65,7 +66,7 @@ export default class Card extends Component {
       }
         <div
           class='w-full flex-center aspect-[4/3] bg-primary-30
-          rounded-lg overflow-hidden text-14'
+            rounded-lg overflow-hidden text-14'
         >
         ${
           thumbnail !== ''
@@ -77,16 +78,22 @@ export default class Card extends Component {
             : `<i class='ph ph-fork-knife text-[2.5rem] text-white'></i>`
         }
         </div>
-        <h2 class='mt-6 leading-tight text-15 font-medium truncate tracking-tight'>${title}</h2>
+        <h2 class='mt-6 leading-tight text-15 font-medium truncate tracking-tight'>
+          ${title}
+        </h2>
         <div class='flex justify-between items-center text-13  w-full'>
-          <span class='text-zinc-400 shrink-0'>${isListCard ? userId : location}</span>
+          <span class='text-zinc-400 shrink-0'>
+            ${isListCard ? userId : location}
+          </span>
           <div class='flex items-center justify-end gap-4 w-[70%]'>
             <span class='${`flex-center shrink-0 ${iconColor} gap-2`}'>
               <i class='${`block ${icon} text-15`}'></i>
               ${value}
             </span>
             ${
-              !isListCard && window.location.pathname.split("/")[1] !== 'list'
+              !isListCard &&
+              window.location.pathname.split('/')[1] !== 'list' &&
+              !isMine 
                 ? `<p class='text-zinc-400 author truncate'>${userId}</p>`
                 : ``
             }
@@ -121,6 +128,7 @@ export default class Card extends Component {
         toggleLikePost(user.uid, id, isLiked);
         return;
       }
+
       toggleLikeList(user.uid, id, isLiked);
     });
   }
