@@ -45,7 +45,7 @@ export default class Post extends AbstractView {
     return `
       <div id='header' class='bg-white flex max-w-screen-sm w-full fixed top-0 h-60 z-10'></div>
       <div class='px-18 pt-8 py-100 tracking-tight'>
-        <div id='post-header' class='flex justify-between'></div>
+        <div id='post-header' class='flex justify-between gap-8'></div>
         <div id='content' class='pt-40'>
           <div id='attachments'></div>
           <div id='rating' class='p-8 my-16'></div>

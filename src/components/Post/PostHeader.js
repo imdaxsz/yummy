@@ -12,24 +12,29 @@ export default class PostHeader extends Component {
 
     return `
       <div>
-        <div class='flex gap-12 items-end'>
-          <h3 class='text-20'>${name}</h3>
-          <p class='text-14 pb-3 text-secondary font-semibold'>${categoriesLabel.join(', ')}</p>
-        </div>
+        <span class='text-20'>${name}</span>
+        <span class='inline-block text-14 pl-12 text-secondary font-semibold'>
+          ${categoriesLabel.join(', ')}
+        </span>
         <div id='info' class='flex gap-6 text-14'>
           <p class='text-gray-500'>${email.split('@')[0]}</p>
-          <span class='text-zinc-300 dot'>${getFormattedDate(createdAt)}</span>
+          <span class='text-zinc-300 dot'>
+            ${getFormattedDate(createdAt)}
+          </span>
         </div>
       </div>
       ${
         isMine
-          ? `<button id='more' aria-label='더보기' class='text-24 text-zinc-400 -mx-7'>
+          ? `<button 
+              id='more' 
+              aria-label='더보기' 
+              class='text-24 text-zinc-400 -mx-7'
+            >
               <i class="block ph-bold ph-dots-three-vertical"></i>
             </button>
             `
           : ``
       }
-      </div>
     `;
   }
 
@@ -38,7 +43,7 @@ export default class PostHeader extends Component {
   }
 
   toggleMoreModal() {
-    const { id,  hasImage } = this.props;
+    const { id, hasImage } = this.props;
     const $modal = document.querySelector('#modal');
     if (!$modal) {
       new MoreModal({
