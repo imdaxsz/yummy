@@ -2,7 +2,6 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 
-
 module.exports = (env, argv) => {
   const IS_PRODUCTION = argv.mode === 'production';
 
@@ -12,7 +11,7 @@ module.exports = (env, argv) => {
       filename: 'bundle.js',
       path: path.resolve(__dirname, 'dist'),
       clean: true,
-      publicPath: IS_PRODUCTION ? '/dist/' : '/',
+      publicPath: '/',
     },
     devServer: {
       hot: true,
@@ -69,5 +68,5 @@ module.exports = (env, argv) => {
       }),
       new Dotenv(),
     ],
-  }
+  };
 };
