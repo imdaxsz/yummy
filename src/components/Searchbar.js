@@ -3,21 +3,13 @@ import Component from '@components';
 export default class Searchbar extends Component {
   constructor(
     $target,
-    {
-      autoFocus,
-      placeholder,
-      value = '',
-      onClick,
-      onChange = null,
-      onSearch = null,
-    },
+    { autoFocus, placeholder, value = '', onClick, onSearch = null },
   ) {
     super($target, {
       autoFocus,
       placeholder,
       value,
       onClick,
-      onChange,
       onSearch,
     });
   }
@@ -30,6 +22,7 @@ export default class Searchbar extends Component {
       <div id='container'>
         <form id='search' class='relative'>
           <input
+            type='text'
             class='${`w-full h-40 px-12 py-8 border rounded-xl ${focus}`}' 
             placeholder='${placeholder}'
             value='${value}' 
@@ -48,17 +41,13 @@ export default class Searchbar extends Component {
 
   setEvent() {
     const input = this.$target.querySelector('input');
-    const { onClick, onChange, onSearch } = this.props;
+    const { onClick, onSearch } = this.props;
     if (onClick) this.addEvent('click', '#container', onClick);
-
-    if (!onChange) return;
-    this.addEvent('change', 'input', (e) => {
-      onChange(e.target.value);
-    });
 
     if (!onSearch) return;
     this.addEvent('submit', '#search', (e) => {
       e.preventDefault();
+
       if (input.value.trim().length === 0) {
         alert('검색어를 입력하세요!');
         return;

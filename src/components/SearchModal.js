@@ -9,6 +9,13 @@ import Filtered from './Filtered';
 const initFilter = { categories: [], minScore: 0, maxScore: 5, keyword: '' };
 
 export default class SearchModal extends Component {
+  $input;
+
+  constructor($target, props) {
+    super($target, props);
+    this.$input = this.$target.querySelector('input[type="text"]');
+  }
+
   setup() {
     const { filtered } = this.props;
     this.state = { filter: filtered ?? initFilter };
@@ -20,7 +27,7 @@ export default class SearchModal extends Component {
     } = this.state;
     const hasFilter =
       categories.length > 0 || !(minScore === 0 && maxScore === 5);
-    
+
     return `
       <div
         id='search-header'
@@ -77,14 +84,14 @@ export default class SearchModal extends Component {
       minVal: minScore,
       maxVal: maxScore,
     });
-    
+
     new Searchbar(searchbar, {
       placeholder: '검색어를 입력하세요.',
       autoFocus: true,
-      onChange: this.onKeywordChange.bind(this),
       value: keyword ?? '',
       onSearch: this.onSearch.bind(this),
     });
+    this.$input = this.$target.querySelector('input[type="text"]');
 
     const chips = this.$target.querySelector('#chips');
     FOOD_CATEGORY.forEach((item) => {
@@ -127,7 +134,7 @@ export default class SearchModal extends Component {
 
   onSearch() {
     const {
-      filter: { categories, minScore, maxScore, keyword },
+      filter: { categories, minScore, maxScore },
     } = this.state;
     const { onClick } = this.props;
 
@@ -140,35 +147,39 @@ export default class SearchModal extends Component {
       });
     }
 
-    if (keyword) url += `&keyword=${keyword}`;
+    if (this.$input.value) url += `&keyword=${this.$input.value}`;
     onClick();
     navigate(url);
   }
 
+  handleKeyword() {
+    const { $input } = this;
+    return { keyword: $input.value, isBlank: $input.value.length === 0 };
+  }
+
   onChipClick(id) {
+    const { keyword, isBlank } = this.handleKeyword();
     const {
       filter: { categories: prev },
     } = this.state;
     const categories = prev.includes(id)
       ? prev.filter((i) => i !== id)
       : [...prev, id];
+    const updatedItems = isBlank ? { categories } : { categories, keyword };
     this.setState({
       ...this.state,
-      filter: { ...this.state.filter, categories },
+      filter: { ...this.state.filter, ...updatedItems },
     });
   }
 
   onRangeChange(target, value) {
+    const { keyword, isBlank } = this.handleKeyword();
+    const updatedItem = isBlank
+      ? { [target]: value }
+      : { [target]: value, keyword };
     this.setState({
       ...this.state,
-      filter: { ...this.state.filter, [target]: value },
-    });
-  }
-
-  onKeywordChange(text) {
-    this.setState({
-      ...this.state,
-      filter: { ...this.state.filter, keyword: text },
+      filter: { ...this.state.filter, ...updatedItem },
     });
   }
 }
