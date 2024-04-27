@@ -114,7 +114,7 @@ export default class Write extends AbstractView {
       '#fileInput-container',
     );
     const $placeLocation = this.$target.querySelector('#placeLocation');
-    
+
     const {
       categories,
       evaluation,
@@ -169,7 +169,7 @@ export default class Write extends AbstractView {
         evaluation,
         onClick: this.onChangeEvaluation.bind(this),
       });
-    
+
     if (locationInfo.id) {
       new PlaceLocation($placeLocation, locationInfo);
     }
@@ -197,12 +197,14 @@ export default class Write extends AbstractView {
 
   setLocation(id, address, placeName) {
     this.setState({ ...this.state, locationInfo: { id, address, placeName } });
+    this.checkContentChanged();
   }
 
   onChangeRating(value) {
     this.setState({ ...this.state, ratingValue: value });
     if (this.state.ratingValue === 0)
       this.setState({ ...this.state, evaluation: {} });
+    this.checkContentChanged();
   }
 
   onChangeCategories(id) {
@@ -211,6 +213,7 @@ export default class Write extends AbstractView {
       ? prev.filter((i) => i !== id)
       : [...prev, id];
     this.setState({ ...this.state, categories });
+    this.checkContentChanged();
   }
 
   updateAttachments(next) {
@@ -222,6 +225,7 @@ export default class Write extends AbstractView {
       return;
     }
     this.setState({ ...this.state, attachments: next });
+    this.checkContentChanged();
   }
 
   onChangeEvaluation(id) {
@@ -229,11 +233,13 @@ export default class Write extends AbstractView {
     const { evaluation: prev } = this.state;
     const evaluation = { ...prev, [label]: Number(score) };
     this.setState({ ...this.state, evaluation });
+    this.checkContentChanged();
   }
 
   onChangeText(e) {
     const { id, value } = e.target;
     this.setState({ ...this.state, [id]: value });
+    this.checkContentChanged();
   }
 
   isFormValid() {
@@ -357,6 +363,29 @@ export default class Write extends AbstractView {
     });
     el.play();
     setTimeout(() => scrollLock(display, this.scrollY), prev ? 0 : 150);
+  }
+
+  checkContentChanged() {
+    const {
+      name,
+      categories,
+      ratingValue,
+      attachments,
+      recommendMenu,
+      memo,
+      locationInfo: { id },
+    } = this.state;
+
+    const hasContentChanged = Boolean(
+      name ||
+        memo ||
+        recommendMenu ||
+        id ||
+        categories.length + ratingValue + attachments.length,
+    );
+
+    // 내용이 변경되었다면 페이지를 벗어나려고 할 경우 confirm 생성
+    window.onbeforeunload = hasContentChanged ? () => '' : null;
   }
 
   async fetchData(id) {
