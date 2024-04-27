@@ -30,7 +30,7 @@ const userExists = async (uid) => {
 const createList = async (uid, email) => {
   try {
     const listRef = collection(db, 'list');
-    const username = email.split('@')[0].slice(15);
+    const username = email.split('@')[0].slice(0, 15);
     const time = Date.now();
     await setDoc(doc(listRef, uid), {
       createdAt: time,
@@ -38,6 +38,8 @@ const createList = async (uid, email) => {
       email,
       title: `${username}님의 맛집`,
       likes: [],
+      likeCount: 0,
+      thumbnail: '',
     });
   } catch (error) {
     console.log('Error with creating list: ', error);
