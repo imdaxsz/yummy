@@ -30,7 +30,7 @@ export default class PostHeader extends Component {
               aria-label='더보기' 
               class='text-24 text-zinc-400 -mx-7'
             >
-              <i class="block ph-bold ph-dots-three-vertical"></i>
+              <i class="block ph ph-dots-three-vertical"></i>
             </button>
             `
           : ``
