@@ -275,6 +275,7 @@ export default class Write extends AbstractView {
 
   async onSubmit(e) {
     e.preventDefault();
+    onbeforeunload = null;
     const loader = new Loader({ color: 'primary', backdrop: true });
     this.setState({ ...this.state, isLoading: true });
     const { user } = store.state;
@@ -385,7 +386,7 @@ export default class Write extends AbstractView {
     );
 
     // 내용이 변경되었다면 페이지를 벗어나려고 할 경우 confirm 생성
-    window.onbeforeunload = hasContentChanged ? () => '' : null;
+    onbeforeunload = hasContentChanged ? () => '' : null;
   }
 
   async fetchData(id) {
