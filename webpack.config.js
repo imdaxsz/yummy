@@ -1,6 +1,8 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const BundleAnalyzerPlugin =
+  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = (env, argv) => {
   const IS_PRODUCTION = argv.mode === 'production';
@@ -67,6 +69,12 @@ module.exports = (env, argv) => {
         favicon: './public/favicon.ico',
       }),
       new Dotenv(),
+      new BundleAnalyzerPlugin({
+        analyzerMode: 'static',
+        openAnalyzer: IS_PRODUCTION,
+        reportFilename: 'bundle-report.html',
+        excludeAssets: [/node_modules/],
+      }),
     ],
   };
 };
