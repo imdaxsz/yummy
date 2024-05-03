@@ -1,6 +1,5 @@
 import Component from '@components';
-import Swiper from 'swiper';
-import { Navigation, Scrollbar } from 'swiper/modules';
+import importSwipper from '@libs/swipper';
 import ImageCropperModal from './ImageCropper';
 
 import 'swiper/css';
@@ -23,14 +22,16 @@ export default class ImageSlider extends Component {
   }
 
   init() {
-    new Swiper('.swiper', {
-      scrollbar: {
-        el: '.swiper-scrollbar',
-        draggable: true,
-      },
-      spaceBetween: 4,
-      modules: [Navigation, Scrollbar],
-    });
+    importSwipper().then(({ Swiper, Navigation, Scrollbar }) => {
+      new Swiper('.swiper', {
+        scrollbar: {
+          el: '.swiper-scrollbar',
+          draggable: true,
+        },
+        spaceBetween: 4,
+        modules: [Navigation, Scrollbar],
+      });
+    })
   }
 
   removeAttachments(idx) {

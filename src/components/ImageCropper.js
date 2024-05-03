@@ -1,6 +1,6 @@
 import Component from '@components';
+import importCropper from '@libs/cropper';
 import scrollLock from '@utils/scrollLock';
-import Cropper from 'cropperjs';
 import 'cropperjs/dist/cropper.min.css';
 
 export default class ImageCropperModal extends Component {
@@ -59,11 +59,13 @@ export default class ImageCropperModal extends Component {
 
   init() {
     const image = this.$target.querySelector('#image');
-    this.$cropper = new Cropper(image, {
-      viewMode: 1,
-      aspectRatio: 1,
-      autoCropArea: 1,
-    });
+    importCropper().then((Cropper) => {
+      this.$cropper = new Cropper(image, {
+        viewMode: 1,
+        aspectRatio: 1,
+        autoCropArea: 1,
+      });
+    })
   }
 
   didMount() {
