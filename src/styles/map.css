@@ -1,0 +1,125 @@
+#map-modal {
+  width: 100%;
+  max-width: 640px;
+  height: 100%;
+  position: fixed;
+  top: 100%;
+  margin: 0 auto;
+  z-index: 50;
+  background: white;
+  opacity: 0.2;
+}
+
+.map_wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.map_wrap form {
+  width: calc(100% - 24px);
+  border-radius: 8px;
+  padding: 5px 8px 5px 12px;
+  display: flex;
+  border: solid 1px #ddd;
+  margin: 0 12px 8px;
+}
+.map_wrap input {
+  font-size: 16px;
+  padding-right: 6px;
+  width: 100%;
+}
+.map_wrap form button {
+  padding: 4px;
+}
+
+#menu_wrap * {
+  font-size: 14px;
+}
+
+#menu_wrap {
+  width: 100%;
+  padding: 5px;
+  padding-left: 8px;
+  height: calc(100% - 112px);
+  overflow-y: auto;
+}
+
+#placesList .item {
+  position: relative;
+  border-bottom: 1px solid #eee;
+  overflow: hidden;
+  cursor: pointer;
+  min-height: 65px;
+  letter-spacing: -0.015em;
+}
+#placesList .item span {
+  display: block;
+  margin-top: 4px;
+}
+#placesList .item h5 {
+  font-weight: bold;
+}
+#placesList .item h5,
+#placesList .item .info {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+#placesList .item .info {
+  padding: 10px 0 10px 15px;
+}
+#placesList .info .gray {
+  color: #8a8a8a;
+}
+#placesList .info .jibun {
+  padding-left: 28px;
+  background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png)
+    no-repeat;
+  background-position: 0px 3px;
+}
+#placesList .info .tel {
+  color: #009900;
+}
+
+#pagination {
+  margin: 16px auto 16px;
+  text-align: center;
+  gap: 20px;
+}
+#pagination a {
+  font-size: 16px;
+  color: #888;
+  display: inline-block;
+  width: 28px;
+  border-bottom: solid 1px rgba(0, 0, 0, 0);
+}
+#pagination .on {
+  font-weight: bold;
+  cursor: default;
+  color: #222;
+  border-color: #222;
+}
+
+#location_info {
+  width: 100%;
+  height: calc(100% - 62px);
+  position: absolute;
+  top: 60px;
+  background: white;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.info_window__content {
+  width: 140px;
+  text-align: center;
+  font-size: 12px;
+  padding: 6px 0;
+  border-radius: 8px;
+}
