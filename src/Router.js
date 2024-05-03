@@ -1,5 +1,5 @@
 import { auth } from '@libs/firebase';
-import routes from '@pages';
+import { getView, routes } from '@pages';
 import store from '@stores';
 import navigate from '@utils/navigate';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -26,8 +26,16 @@ const router = async ($container) => {
       navigate('/signin');
       return;
     }
-    // eslint-disable-next-line new-cap
-    new page.view($container);
+
+    if (page.name === 'Home') {
+      // eslint-disable-next-line new-cap
+      new page.view($container);
+      return;
+    } 
+
+    getView(page.name).then((Page) => {
+      new Page($container);
+    });
   };
 
   const mount = () => {
