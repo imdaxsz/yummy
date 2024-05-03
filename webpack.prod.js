@@ -7,9 +7,6 @@ const commonConfig = require('./webpack.common');
 
 const prodConfig = {
   mode: 'production',
-  output: {
-    publicPath: '/dist/',
-  },
   optimization: {
     minimizer: [new CssMinimizerPlugin(), '...'],
   },
