@@ -27,11 +27,11 @@ const router = async ($container) => {
       return;
     }
 
-    if (page.name === 'Home') {
+    if (['Home', 'Write'].includes(page.name)) {
       // eslint-disable-next-line new-cap
       new page.view($container);
       return;
-    } 
+    }
 
     getView(page.name).then((Page) => {
       new Page($container);
