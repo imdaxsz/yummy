@@ -42,7 +42,7 @@ export default class BottomNavigation extends Component {
   // 현재 페이지 item에 active 스타일 적용
   setStyle() {
     const { pathname } = window.location;
-    if (pathname === '/write') {
+    if (pathname === '/write' && navigator.onLine) {
       this.$target.style.display = 'none';
       return;
     }
