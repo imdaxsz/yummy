@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>인터넷 연결 없음</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+    }
+
+    body {
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family:
+        'Pretendard Variable',
+        'Pretendard',
+        -apple-system,
+        system-ui,
+        'Roboto',
+        'Helvetica Neue',
+        'Segoe UI',
+        'Apple SD Gothic Neo',
+        'Noto Sans KR',
+        'Malgun Gothic',
+        'Apple Color Emoji',
+        'Segoe UI Emoji',
+        'Segoe UI Symbol',
+        sans-serif;
+    }
+
+    h1 {
+      font-size: 40px;
+      color: #ffcd00;
+    }
+
+    p {
+      font-size: 16px;
+      color: #555;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>⚠️</h1>
+  <p>네트워크 환경을 확인해주시거나</p>
+  <p>페이지를 새로고침 해주세요.</p>
+  <div id="navigation"></div>
+  <script>
+    import BottomNavigation from 'src/components/BottomNavigation.js'
+    const navigation = document.getElementById('navigation');
+    new BottomNavigation(navigation);
+  </script>
+</body>
+
+</html>
