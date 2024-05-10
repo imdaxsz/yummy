@@ -1,6 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const WebpackPwaManifest = require('webpack-pwa-manifest');
+const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/index.js',
@@ -54,5 +57,35 @@ module.exports = {
       favicon: './public/favicon.ico',
     }),
     new Dotenv(),
+    new CopyWebpackPlugin({
+      patterns: [{ from: './offline.html', to: 'offline.html' }],
+    }),
+    new WebpackPwaManifest({
+      name: 'yummy',
+      short_name: 'yummy',
+      description: '맛집 정보 공유 웹앱',
+      background_color: '#ffffff',
+      crossorigin: 'anonymous',
+      dir: 'ltr',
+      display: 'standalone',
+      orientation: 'any',
+      scope: '/',
+      start_url: '/',
+      theme_color: '#ffcd00',
+      icons: [
+        {
+          src: path.resolve(__dirname, 'public/logo-512x512.png'),
+          type: 'image/png',
+          sizes: [72, 96, 128, 144, 192, 384, 512],
+        },
+      ],
+      filename: 'manifest.json',
+    }),
+
+    new WorkboxWebpackPlugin.InjectManifest({
+      swSrc: './src/sw.js',
+      swDest: 'sw.js',
+      maximumFileSizeToCacheInBytes: 1024 * 1024 * 10,
+    }),
   ],
 };
