@@ -36,12 +36,13 @@ export default class BottomNavigation extends Component {
       this.setStyle();
     });
 
-    window.addEventListener('popstate', this.setStyle.bind(this));
+    window.addEventListener('historychange', this.setStyle.bind(this));
   }
 
   // 현재 페이지 item에 active 스타일 적용
   setStyle() {
     const { pathname } = window.location;
+    
     if (pathname === '/write' && navigator.onLine) {
       this.$target.style.display = 'none';
       return;
@@ -49,11 +50,10 @@ export default class BottomNavigation extends Component {
 
     this.$target.style.display = 'flex';
     const items = this.$target.querySelectorAll('a');
-    items.forEach(
-      (item) =>
-        new URL(item.href).pathname === window.location.pathname
-          ? item.classList.add('text-primary')
-          : item.classList.remove('text-primary'),
+    items.forEach((item) =>
+      new URL(item.href).pathname === window.location.pathname
+        ? item.classList.add('text-primary')
+        : item.classList.remove('text-primary'),
     );
   }
 }
