@@ -23,7 +23,7 @@ const router = async ($container) => {
         window.location.pathname + window.location.search,
       );
       // 로그인 페이지로 redirect
-      navigate('/signin');
+      navigate('/signin', true);
       return;
     }
 
