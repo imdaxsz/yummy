@@ -44,7 +44,7 @@ export default class Post extends AbstractView {
     
     return `
       <div id='header' class='bg-white flex max-w-screen-sm w-full fixed top-0 h-60 z-10'></div>
-      <div class='px-18 pt-8 py-100 tracking-tight'>
+      <div class='px-18 pt-8 ct-pb tracking-tight'>
         <div id='post-header' class='flex justify-between gap-8'></div>
         <div id='content' class='pt-40'>
           <div id='attachments'></div>
@@ -60,7 +60,7 @@ export default class Post extends AbstractView {
           }
           ${memo ? `<p class='mt-40'>${memo}</p>` : ``}
           <div id='location'></div>
-          <div id='action' class='flex-center gap-12 text-24 text-zinc-500 pt-70 pb-40'></div>
+          <div id='action' class='flex-center gap-12 text-24 text-zinc-500 pt-70 pb-50'></div>
         </div>
       </div>
     `;

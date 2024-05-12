@@ -21,7 +21,7 @@ export default class ListInfo extends AbstractView {
 
     return `
       <div id='header' class='bg-white flex max-w-screen-sm w-full fixed top-0 h-60 z-10'></div>
-      <div class='px-16 pb-90'>
+      <div class='px-16 ct-pb'>
         <div id='list-header'></div>
         <p class='pt-40 pb-14 text-end text-13 text-zinc-400'>
           ${items ? items.length : 0}곳의 맛집이 있어요!
