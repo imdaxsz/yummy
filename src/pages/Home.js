@@ -11,7 +11,7 @@ import Logo from '../../public/logo.png';
 
 export default class Home extends AbstractView {
   constructor($target, props) {
-    super($target, props, '홈 | yummy');
+    super($target, props, '홈 | Yummy');
   }
 
   setup() {

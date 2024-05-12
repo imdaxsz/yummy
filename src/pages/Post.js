@@ -13,7 +13,7 @@ import AbstractView from './AbstractView';
 
 export default class Post extends AbstractView {
   constructor($target, props) {
-    super($target, props, '맛집 | yummy');
+    super($target, props, '맛집 | Yummy');
   }
 
   setup() {

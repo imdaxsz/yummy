@@ -5,7 +5,7 @@ import AbstractView from './AbstractView';
 
 export default class SignIn extends AbstractView {
   constructor($target, props) {
-    super($target, props, '로그인 | yummy');
+    super($target, props, '로그인 | Yummy');
   }
 
   template() {

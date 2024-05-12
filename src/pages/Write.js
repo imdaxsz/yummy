@@ -23,7 +23,7 @@ import AbstractView from './AbstractView';
 export default class Write extends AbstractView {
   scrollY; // 지도 modal 렌더링 여부에 따라 스크롤 위치 변경하기 위한 속성
   constructor($target, props) {
-    super($target, props, '글쓰기 | yummy');
+    super($target, props, '글쓰기 | Yummy');
   }
 
   setup() {
@@ -155,6 +155,7 @@ export default class Write extends AbstractView {
 
     new Header($header, {
       left: 'prev',
+      to: '/',
       center: '',
       right: FormButton(isLoading),
     });

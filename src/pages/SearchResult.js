@@ -12,7 +12,7 @@ import AbstractView from './AbstractView';
 
 export default class SearchResult extends AbstractView {
   constructor($target, props) {
-    super($target, props, '검색 결과 | yummy');
+    super($target, props, '검색 결과 | Yummy');
   }
 
   setup() {

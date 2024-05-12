@@ -7,7 +7,7 @@ import AbstractView from './AbstractView';
 
 export default class ListInfo extends AbstractView {
   constructor($target, props) {
-    super($target, props, '맛집 목록 | yummy');
+    super($target, props, '맛집 목록 | Yummy');
   }
 
   setup() {

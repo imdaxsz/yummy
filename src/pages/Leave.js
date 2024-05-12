@@ -6,7 +6,7 @@ export default class Leave extends AbstractView {
   $button;
 
   constructor($target, props) {
-    super($target, props, '회원탈퇴 | yummy');
+    super($target, props, '회원탈퇴 | Yummy');
     this.$button = this.$target.querySelector('#leave');
   }
 

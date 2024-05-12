@@ -101,7 +101,7 @@ export default class ListHeader extends Component {
           isLiked: likes.includes(store.state.user.uid),
         });
       }
-      document.title = `${this.state.title} | yummy`;
+      document.title = `${this.state.title} | Yummy`;
     });
   }
 }
