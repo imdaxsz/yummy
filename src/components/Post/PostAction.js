@@ -2,7 +2,7 @@ import Component from '@components';
 import Snackbar from '@components/Snackbar';
 import store from '@stores';
 import { toggleLikePost } from '@apis/likes';
-import sharePage from '@utils/share';
+import sharePage from '@utils/sharePage';
 
 export default class PostAction extends Component {
   template() {
