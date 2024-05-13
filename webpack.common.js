@@ -61,8 +61,8 @@ module.exports = {
       patterns: [{ from: './offline.html', to: 'offline.html' }],
     }),
     new WebpackPwaManifest({
-      name: 'yummy',
-      short_name: 'yummy',
+      name: 'Yummy',
+      short_name: 'Yummy',
       description: '맛집 정보 공유 웹앱',
       background_color: '#ffffff',
       crossorigin: 'anonymous',
@@ -71,7 +71,7 @@ module.exports = {
       orientation: 'any',
       scope: '/',
       start_url: '/',
-      theme_color: '#ffcd00',
+      theme_color: '#ffffff',
       icons: [
         {
           src: path.resolve(__dirname, 'public/logo-512x512.png'),
