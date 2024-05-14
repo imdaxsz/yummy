@@ -4,4 +4,5 @@ module.exports = {
     '@components/(.*)': '<rootDir>/src/components/$1',
     '@stores/(.*)': '<rootDir>/src/stores/$1',
   },
+  transformIgnorePatterns: ['node_modules/(?!(animejs)/)'],
 };
