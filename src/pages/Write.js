@@ -8,7 +8,7 @@ import Categories from '@components/Write/Categories';
 import FileInput from '@components/Write/FileInput';
 import Map from '@components/Write/Map';
 import scrollLock from '@utils/scrollLock';
-import animate from '@utils/verticalAnimation';
+import verticalAnimate from '@utils/verticalAnimation';
 import { addPost, getPost, updatePost } from '@apis/post';
 import { deleteImageFile, getImageUrl } from '@apis/image';
 import store from '@stores';
@@ -379,7 +379,7 @@ export default class Write extends AbstractView {
       this.scrollY = window.scrollY;
       this.setState({ ...this.state, isMapModalVisible: !prev });
     }
-    const el = animate('#map-modal', 200, prev, () => {
+    const el = verticalAnimate('#map-modal', 200, prev, () => {
       this.setState({ ...this.state, isMapModalVisible: !prev });
     });
     el.play();
