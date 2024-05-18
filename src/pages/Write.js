@@ -54,17 +54,19 @@ export default class Write extends AbstractView {
     const isOffLine = !navigator.onLine;
 
     return `
+      <div id='header' class='bg-white flex max-w-screen-sm w-full fixed top-0 h-60 z-10'></div>
       ${
         isOffLine
           ? `<div class='h-[70dvh] flex-col flex-center'>
               <h1 class='text-primary text-40'>⚠️</h1>
-              <p class='text-zinc-600'>네트워크 환경을 확인해주세요.</p>
+              <p class='text-zinc-600'>오프라인 상태예요.</p>
+              <p class='text-zinc-600 -mt-4'>인터넷 연결을 확인해 주세요.</p>
               </div>`
           : ``
       }
       ${
         !isOffLine
-          ? `<div id='header' class='bg-white flex max-w-screen-sm w-full fixed top-0 h-60 z-10'></div>
+          ? `
             <form id='editor' class='px-24 pt-8 py-100 tracking-tight'>
               <input
                 id='name'
