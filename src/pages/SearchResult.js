@@ -12,7 +12,7 @@ import AbstractView from './AbstractView';
 
 export default class SearchResult extends AbstractView {
   constructor($target, props) {
-    super($target, props, '검색 결과 | yummy');
+    super($target, props, '검색 결과 | Yummy');
   }
 
   setup() {
@@ -44,7 +44,7 @@ export default class SearchResult extends AbstractView {
         <div id='searchbar' class='w-full'></div>
       </div>
       <div id='filtered' class='px-16 flex gap-7 mb-8 flex-wrap'></div>
-      <div class='px-16 pb-90'>
+      <div class='px-16 ct-pb'>
       ${
         completed && Boolean(list.length || posts.length)
           ? `

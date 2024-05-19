@@ -23,15 +23,15 @@ const router = async ($container) => {
         window.location.pathname + window.location.search,
       );
       // 로그인 페이지로 redirect
-      navigate('/signin');
+      navigate('/signin', true);
       return;
     }
 
-    if (page.name === 'Home') {
+    if (['Home', 'Write'].includes(page.name)) {
       // eslint-disable-next-line new-cap
       new page.view($container);
       return;
-    } 
+    }
 
     getView(page.name).then((Page) => {
       new Page($container);

@@ -73,7 +73,9 @@ export const signIn = async () => {
     if (isNewMember) await createList(uid, email);
     
     const redirect = sessionStorage.getItem('redirect');
-    if (redirect) {
+    const pathname = window.location.pathname;
+
+    if (redirect && pathname === '/signin') {
       navigate(redirect);
       sessionStorage.removeItem('redirect');
     }

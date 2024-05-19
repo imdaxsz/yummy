@@ -2,7 +2,7 @@ import Component from '@components';
 import Snackbar from '@components/Snackbar';
 import store from '@stores';
 import { toggleLikeList } from '@apis/likes';
-import sharePage from '@utils/share';
+import sharePage from '@utils/sharePage';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '@libs/firebase';
 
@@ -101,7 +101,7 @@ export default class ListHeader extends Component {
           isLiked: likes.includes(store.state.user.uid),
         });
       }
-      document.title = `${this.state.title} | yummy`;
+      document.title = `${this.state.title} | Yummy`;
     });
   }
 }

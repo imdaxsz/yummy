@@ -3,6 +3,7 @@ const BundleAnalyzerPlugin =
   require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const commonConfig = require('./webpack.common');
 
 const prodConfig = {
@@ -24,6 +25,9 @@ const prodConfig = {
       linkType: false,
       filename: '[name].[contenthash:6].css',
       chunkFilename: '[name].[id].[contenthash:6].css',
+    }),
+    new CopyPlugin({
+      patterns: [{ from: 'public/robots.txt', to: './robots.txt' }],
     }),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',

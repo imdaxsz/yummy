@@ -11,7 +11,7 @@ import Logo from '../../public/logo.png';
 
 export default class Home extends AbstractView {
   constructor($target, props) {
-    super($target, props, '홈 | yummy');
+    super($target, props, '홈 | Yummy');
   }
 
   setup() {
@@ -22,7 +22,7 @@ export default class Home extends AbstractView {
     const { sort } = this.state;
     return `
       <div id='header' class='bg-white flex max-w-screen-sm w-full fixed top-0 h-60 z-10'></div>
-      <div id='content' class='px-16 pb-90'>
+      <div id='content' class='px-16 ct-pb'>
         <div id='searchbar' class='pt-12'></div>
         <button id='sort' aria-label='정렬하기' class='py-24 block ml-auto'>
           <p class='text-14 flex items-center text-zinc-500'>

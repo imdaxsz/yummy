@@ -8,7 +8,7 @@ import anime from 'animejs/lib/anime.es';
  * @param {*} callback 애니메이션 완료 후 실행할 함수
  * @returns
  */
-const animate = (
+const verticalAnimate = (
   selector,
   duration = 200,
   reverse = false,
@@ -26,4 +26,4 @@ const animate = (
   return el;
 };
 
-export default animate;
+export default verticalAnimate;

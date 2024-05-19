@@ -15,7 +15,7 @@ import AbstractView from './AbstractView';
 
 export default class Archive extends AbstractView {
   constructor($target, props) {
-    super($target, props, '보관함 | yummy');
+    super($target, props, '보관함 | Yummy');
   }
 
   setup() {
@@ -36,7 +36,7 @@ export default class Archive extends AbstractView {
     const { isMyList } = this.state;
     return `
       <div id='header' class='bg-white flex max-w-screen-sm w-full fixed top-0 h-60 z-10'></div>
-      <div class='px-16 pb-90'>
+      <div class='px-16 ct-pb'>
         <div id='tabs'></div>
         ${
           isMyList

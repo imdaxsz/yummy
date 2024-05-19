@@ -3,7 +3,7 @@ import Component from '@components';
 import Modal from '@components/Modal';
 import Snackbar from '@components/Snackbar';
 import store from '@stores';
-import sharePage from '@utils/share';
+import sharePage from '@utils/sharePage';
 
 export default class MyListHeader extends Component {
   $input;

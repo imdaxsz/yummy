@@ -1,4 +1,5 @@
 import Home from '@pages/Home';
+import Write from '@pages/Write';
 
 export const getView = (name) => import(`./${name}`).then((mod) => mod.default);
 
@@ -8,6 +9,7 @@ export const routes = [
   {
     path: /^\/write(\?mode=edit&id=[^&\s]+)?$/,
     name: 'Write',
+    view: Write,
     private: true,
   },
   { path: /^\/post\/[\w]+$/, name: 'Post' },

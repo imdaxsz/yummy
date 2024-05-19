@@ -8,7 +8,7 @@ import Categories from '@components/Write/Categories';
 import FileInput from '@components/Write/FileInput';
 import Map from '@components/Write/Map';
 import scrollLock from '@utils/scrollLock';
-import animate from '@utils/verticalAnimation';
+import verticalAnimate from '@utils/verticalAnimation';
 import { addPost, getPost, updatePost } from '@apis/post';
 import { deleteImageFile, getImageUrl } from '@apis/image';
 import store from '@stores';
@@ -23,7 +23,7 @@ import AbstractView from './AbstractView';
 export default class Write extends AbstractView {
   scrollY; // 지도 modal 렌더링 여부에 따라 스크롤 위치 변경하기 위한 속성
   constructor($target, props) {
-    super($target, props, '글쓰기 | yummy');
+    super($target, props, '글쓰기 | Yummy');
   }
 
   setup() {
@@ -51,60 +51,81 @@ export default class Write extends AbstractView {
       locationInfo: { id },
       isMapModalVisible,
     } = this.state;
+    const isOffLine = !navigator.onLine;
 
     return `
       <div id='header' class='bg-white flex max-w-screen-sm w-full fixed top-0 h-60 z-10'></div>
-      <form id='editor' class='px-24 pt-8 py-100 tracking-tight'>
-        <input
-          id='name'
-          type='text'
-          class='w-full h-34 text-24 mb-32'
-          value='${name}' 
-          placeholder='맛집 이름을 입력하세요.' 
-        />
-        <p class ='text-14 font-medium mb-12 '>카테고리</p>
-        <div id='categories' class='flex-center gap-7 mb-40 flex-wrap text-zinc-500'></div>
-        ${
-          attachments.length === 0
-            ? `<div id='fileInput-container'></div>`
-            : `<div id='attachments'></div>`
-        }
-        <div id='rating' class='p-8 my-16'></div>
-        ${ratingValue !== 0 ? `<div id='evaluation' class='mb-48 text-14'></div>` : ``}
-        <p class ='text-14 font-medium mb-6'>추천 메뉴</p>
-        <input
-          id='recommendMenu'
-          type='text'
-          class='w-full mb-50'
-          value='${recommendMenu}' 
-          placeholder='추천 메뉴가 있다면 입력하세요.' 
-        />
-        <hr class='mb-24'/>
-        <textarea
-          id='memo'
-          class='w-full min-h-150 resize-none'
-          placeholder='이 맛집에 대한 메모를 남겨보세요.'
-        >${memo}</textarea>
-        ${
-          id
-            ? `
-              <div id='placeLocation' class='flex items-center justify-between'></div>
+      ${
+        isOffLine
+          ? `<div class='h-[70dvh] flex-col flex-center'>
+              <h1 class='text-primary text-40'>⚠️</h1>
+              <p class='text-zinc-600'>오프라인 상태예요.</p>
+              <p class='text-zinc-600 -mt-4'>인터넷 연결을 확인해 주세요.</p>
+              </div>`
+          : ``
+      }
+      ${
+        !isOffLine
+          ? `
+            <form id='editor' class='px-24 pt-8 py-100 tracking-tight'>
+              <input
+                id='name'
+                type='text'
+                class='w-full h-34 text-24 mb-32'
+                value='${name}' 
+                placeholder='맛집 이름을 입력하세요.' 
+              />
+              <p class ='text-14 font-medium mb-12 '>카테고리</p>
+              <div id='categories' class='flex-center gap-7 mb-40 flex-wrap text-zinc-500'></div>
+              ${
+                attachments.length === 0
+                  ? `<div id='fileInput-container'></div>`
+                  : `<div id='attachments'></div>`
+              }
+              <div id='rating' class='p-8 my-16'></div>
+              ${ratingValue !== 0 ? `<div id='evaluation' class='mb-48 text-14'></div>` : ``}
+              <p class ='text-14 font-medium mb-6'>추천 메뉴</p>
+              <input
+                id='recommendMenu'
+                type='text'
+                class='w-full mb-50'
+                value='${recommendMenu}' 
+                placeholder='추천 메뉴가 있다면 입력하세요.' 
+              />
+              <hr class='mb-24'/>
+              <textarea
+                id='memo'
+                class='w-full min-h-150 resize-none'
+                placeholder='이 맛집에 대한 메모를 남겨보세요.'
+              >${memo}</textarea>
+              ${
+                id
+                  ? `
+                    <div id='placeLocation' class='flex items-center justify-between'></div>
+                  `
+                  : `<button
+                      id='addLocation'
+                      aria-label='위치 정보 추가'
+                      class='flex-center gap-4 text-zinc-600 p-4'
+                    >
+                      <i class='ph ph-map-pin text-24 block'></i>
+                      위치 정보 추가
+                    </button>`
+              }
+            </form>
+            ${isMapModalVisible ? `<div id="map-modal" ></div>` : ``}
             `
-            : `<button
-                id='addLocation'
-                aria-label='위치 정보 추가'
-                class='flex-center gap-4 text-zinc-600 p-4'
-              >
-                <i class='ph ph-map-pin text-24 block'></i>
-                위치 정보 추가
-              </button>`
-        }
-      </form>
-      ${isMapModalVisible ? `<div id="map-modal" ></div>` : ``}
+          : ``
+      }
+      
     `;
   }
 
   async didMount() {
+    if (!navigator.onLine) {
+      return;
+    }
+
     const $header = this.$target.querySelector('#header');
     const $categories = this.$target.querySelector('#categories');
     const $attachments = this.$target.querySelector('#attachments');
@@ -136,6 +157,7 @@ export default class Write extends AbstractView {
 
     new Header($header, {
       left: 'prev',
+      to: '/',
       center: '',
       right: FormButton(isLoading),
     });
@@ -359,7 +381,7 @@ export default class Write extends AbstractView {
       this.scrollY = window.scrollY;
       this.setState({ ...this.state, isMapModalVisible: !prev });
     }
-    const el = animate('#map-modal', 200, prev, () => {
+    const el = verticalAnimate('#map-modal', 200, prev, () => {
       this.setState({ ...this.state, isMapModalVisible: !prev });
     });
     el.play();

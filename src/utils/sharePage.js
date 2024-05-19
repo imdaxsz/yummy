@@ -37,7 +37,7 @@ const copyURL = async (url) => {
     await navigator.clipboard.writeText(url);
     new Snackbar({ message: '링크가 복사되었어요.' });
   } catch (error) {
-    alert('오류가 발생했어요.');
+    window.alert('오류가 발생했어요.');
     console.log('Error with copy Url: ', error);
   }
 };

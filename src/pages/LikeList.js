@@ -9,7 +9,7 @@ import AbstractView from './AbstractView';
 
 export default class LikeList extends AbstractView {
   constructor($target, props) {
-    super($target, props, '좋아요 | yummy');
+    super($target, props, '좋아요 | Yummy');
   }
 
   setup() {
@@ -23,7 +23,7 @@ export default class LikeList extends AbstractView {
 
     return `
       <div id='header' class='bg-white flex max-w-screen-sm w-full fixed top-0 h-60 z-10'></div>
-      <div class='px-16 pb-90'>
+      <div class='px-16 ct-pb'>
         ${
           items && items.length > 0
             ? `<p class='pt-16 pb-30 text-13 text-zinc-400 text-end'>
