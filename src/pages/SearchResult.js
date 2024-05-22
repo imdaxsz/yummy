@@ -105,12 +105,14 @@ export default class SearchResult extends AbstractView {
     list.forEach((item) => {
       const el = document.createElement('div');
       $list.appendChild(el);
+      const { user, isLoggedIn } = store.state;
+      const isLiked = isLoggedIn ? item.likes.includes(user.uid) : false;
       new Card(el, {
         id: item.id,
         title: item.title,
         userId: item.email.split('@')[0],
         likeCount: item.likeCount,
-        isLiked: item.likes.includes(store.state.user.uid),
+        isLiked,
         thumbnail: item.thumbnail,
       });
     });
