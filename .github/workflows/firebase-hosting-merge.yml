@@ -11,7 +11,7 @@ jobs:
       - name: get env
         run: |
           touch .env.production
-          echo "${{ secrets.ENV_PRODUCTION }}" >> .env.production
+          echo "${{ secrets.ENV_PRODUCTION }}" > .env.production
         shell: bash
       - name: build application
         run: npm ci && npm run build
