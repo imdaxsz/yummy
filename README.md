@@ -21,3 +21,8 @@ Vanilla JavaScript로 구현된 SPA 구조의 맛집 리스트 공유 웹앱입�
 
 ## Link
 ▶️ [사이트 바로가기](https://yummy-b566a.web.app/)
+
+<br/>
+
+## 시연 영상
+📹 [Wiki](https://github.com/imdaxsz/yummy/wiki/%EC%8B%9C%EC%97%B0-%EC%98%81%EC%83%81)
